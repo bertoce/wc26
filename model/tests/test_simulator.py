@@ -287,7 +287,91 @@ class TestRoundSurvival:
             )
 
 
-class TestKnockoutMatchups:
+class TestBracketSeeding:
+    """Standard tournament seeding pairs strong vs weak in R32 — not adjacent
+    advancers in the order they came out of groups."""
+
+    def test_seed_order_2(self):
+        from wc26.simulator import bracket_seed_order
+        assert bracket_seed_order(2) == [1, 2]
+
+    def test_seed_order_4(self):
+        from wc26.simulator import bracket_seed_order
+        assert bracket_seed_order(4) == [1, 4, 2, 3]
+
+    def test_seed_order_8(self):
+        from wc26.simulator import bracket_seed_order
+        assert bracket_seed_order(8) == [1, 8, 4, 5, 2, 7, 3, 6]
+
+    def test_seed_order_32_top_seeds_separated(self):
+        """Seeds 1 and 2 should be in opposite halves — meeting only in the final."""
+        from wc26.simulator import bracket_seed_order
+        order = bracket_seed_order(32)
+        assert len(order) == 32
+        assert order.index(1) < 16
+        assert order.index(2) >= 16
+
+    def test_seed_order_pairs_top_with_bottom(self):
+        """In standard seeding, seed N's first opponent is seed (32 - N + 1)."""
+        from wc26.simulator import bracket_seed_order
+        order = bracket_seed_order(32)
+        # Pairs are adjacent indices: (order[0], order[1]), (order[2], order[3]), ...
+        for i in range(0, 32, 2):
+            high, low = order[i], order[i + 1]
+            assert high + low == 33, f"pair ({high}, {low}) doesn't sum to 33"
+
+
+class TestSeededBracketSimulation:
+    """End-to-end: with seeded bracket, the strongest team faces a low seed
+    in R32 (not a fellow group winner)."""
+
+    @pytest.fixture
+    def twelve_groups(self):
+        """48 teams, 12 groups of 4, designed so STR0 is clearly best."""
+        teams = []
+        fixtures = []
+        for g_idx, group in enumerate("ABCDEFGHIJKL"):
+            # Each group has a strong (S), medium (M), and two weak teams (W1, W2)
+            s = Team(code=f"S{g_idx:02d}", name=f"Strong-{group}",
+                     attack=0.4 + g_idx * 0.01, defence=-0.4, confederation="UEFA")
+            m = Team(code=f"M{g_idx:02d}", name=f"Mid-{group}",
+                     attack=0.0, defence=0.0, confederation="UEFA")
+            w1 = Team(code=f"X{g_idx:02d}", name=f"Weak1-{group}",
+                      attack=-0.4, defence=0.4, confederation="CAF")
+            w2 = Team(code=f"Y{g_idx:02d}", name=f"Weak2-{group}",
+                      attack=-0.5, defence=0.5, confederation="CAF")
+            teams.extend([s, m, w1, w2])
+            ts = [s, m, w1, w2]
+            for i, h in enumerate(ts):
+                for a in ts[i + 1:]:
+                    fixtures.append(Fixture(
+                        home=h.code, away=a.code, neutral=True,
+                        stage="group", group=group,
+                    ))
+        return teams, fixtures
+
+    def test_top_seed_avoids_same_group_in_r32(self, twelve_groups):
+        """Across many sims, the R32 matchups for the best winner should
+        almost never include a team from their own group."""
+        teams, fixtures = twelve_groups
+        results = simulate_tournament(
+            teams=teams, fixtures=fixtures, n_sims=200, seed=99,
+            qualifiers_per_group=2, best_thirds=8,
+        )
+        # For each R32 match, find pairs and check no same-group rematches
+        # Same-group teams share the same letter prefix index (e.g., S00 and M00 both end with "00")
+        same_group_count = 0
+        total_matchups = 0
+        for match_idx, matchups in results["matchup_distribution"].get(32, {}).items():
+            for (h, a), p in matchups.items():
+                # Group is the last 2 chars (e.g., "00" through "11")
+                if h[-2:] == a[-2:]:
+                    same_group_count += p
+                total_matchups += p
+        same_group_rate = same_group_count / max(total_matchups, 1)
+        assert same_group_rate < 0.05, (
+            f"Same-group R32 rematches at {same_group_rate:.2%} — seeding not working"
+        )
     """Per-slot matchup distribution across all sims — used to build the
     most-likely-bracket forecast."""
 

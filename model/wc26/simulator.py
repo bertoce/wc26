@@ -148,10 +148,118 @@ def _simulate_group_stage(
 
 
 def _single_elim_pairings(advancers: list[str]) -> list[tuple[str, str]]:
-    """Pair adjacent teams in the order given (deterministic for testability)."""
+    """Pair adjacent teams in the order given (deterministic for testability).
+
+    This is the inner-rounds pairing — once seeding has placed teams in their
+    bracket slots, R16/QF/SF/F just pair winners of adjacent matches.
+    """
     if len(advancers) % 2 != 0:
         raise ValueError(f"Need an even number of advancers, got {len(advancers)}")
     return [(advancers[i], advancers[i + 1]) for i in range(0, len(advancers), 2)]
+
+
+def bracket_seed_order(n: int) -> list[int]:
+    """Standard tournament seeding for a single-elimination bracket of size n.
+
+    n must be a power of 2. Returns the seed numbers (1-indexed) in the order
+    they should be laid out in the bracket — pairing adjacent yields the
+    canonical structure where #1 vs #n, the top half ends at the seed-2 path,
+    and seeds 1 and 2 only meet in the final.
+
+    For n=4 returns [1, 4, 2, 3]. For n=32 returns the full 32-team layout.
+    """
+    if n == 2:
+        return [1, 2]
+    half = bracket_seed_order(n // 2)
+    out: list[int] = []
+    for s in half:
+        out.append(s)
+        out.append(n + 1 - s)
+    return out
+
+
+def _seed_advancers(
+    standings_by_group: dict[str, list[GroupStanding]],
+    qualifiers_per_group: int,
+    best_thirds: int,
+) -> list[tuple[str, str]]:
+    """Rank all advancers and return them as a list of (team, group) tuples
+    in seed order (best first).
+
+    Tiers: group winners > runners-up > best 3rds. Within tier, sort by
+    FIFA tiebreakers (points → GD → GF).
+    """
+    by_tier: list[list[tuple[GroupStanding, str]]] = [[] for _ in range(qualifiers_per_group + 1)]
+    thirds_pool: list[tuple[GroupStanding, str]] = []
+
+    for group, ranked in standings_by_group.items():
+        for pos, s in enumerate(ranked[:qualifiers_per_group]):
+            by_tier[pos].append((s, group))
+        if best_thirds > 0 and len(ranked) >= qualifiers_per_group + 1:
+            thirds_pool.append((ranked[qualifiers_per_group], group))
+
+    def _rank_key(entry: tuple[GroupStanding, str]):
+        s, _ = entry
+        # Sort descending: more points first
+        return (-s.points, -s.gd, -s.gf, s.team)
+
+    seeded: list[tuple[str, str]] = []
+    for tier in by_tier:
+        tier_sorted = sorted(tier, key=_rank_key)
+        seeded.extend((s.team, g) for s, g in tier_sorted)
+    if best_thirds > 0 and thirds_pool:
+        thirds_sorted = sorted(thirds_pool, key=_rank_key)[:best_thirds]
+        seeded.extend((s.team, g) for s, g in thirds_sorted)
+    return seeded
+
+
+def _build_r32_pairings(
+    seeded: list[tuple[str, str]],
+) -> list[tuple[str, str]]:
+    """Build the first-round bracket using standard tournament seeding, then
+    swap to avoid same-group rematches when possible.
+
+    `seeded` is a list of (team, group) tuples in seed order (best first).
+    Returns a list of (home_team, away_team) pairings for the first knockout
+    round, length = len(seeded) // 2.
+    """
+    n = len(seeded)
+    if n == 0:
+        return []
+    if n == 1:
+        return [(seeded[0][0], seeded[0][0])]  # degenerate — single team
+    if n & (n - 1) != 0:
+        # Not a power of 2 — fall back to adjacent pairing
+        return [(seeded[i][0], seeded[i + 1][0]) for i in range(0, n - 1, 2)]
+
+    # Lay out by seed order; pair adjacent
+    order = bracket_seed_order(n)
+    # order is 1-indexed seed numbers; seeded is 0-indexed
+    slots: list[tuple[str, str]] = [seeded[s - 1] for s in order]
+
+    # Build pairings and swap to avoid same-group rematches
+    pairings_with_groups: list[tuple[tuple[str, str], tuple[str, str]]] = [
+        (slots[i], slots[i + 1]) for i in range(0, n, 2)
+    ]
+    # If any pair has same group, find a swap candidate from a non-conflicting
+    # match in the same bracket half (so the bracket's seeding semantics survive).
+    half = len(pairings_with_groups) // 2
+    for half_offset, half_start in enumerate((0, half)):
+        for i in range(half_start, half_start + half):
+            (ta, ga), (tb, gb) = pairings_with_groups[i]
+            if ga == gb:
+                # Try swapping tb with another team in the same half
+                for j in range(half_start, half_start + half):
+                    if j == i:
+                        continue
+                    (tc, gc), (td, gd) = pairings_with_groups[j]
+                    # Swap tb ↔ td if it removes the conflict without creating one
+                    if gd != ga and gc != gb:
+                        pairings_with_groups[i] = ((ta, ga), (td, gd))
+                        pairings_with_groups[j] = ((tc, gc), (tb, gb))
+                        break
+
+    return [(pa[0], pb[0]) for pa, pb in pairings_with_groups]
 
 
 def _simulate_knockout(
@@ -160,15 +268,23 @@ def _simulate_knockout(
     home_advantage: float,
     rho: float,
     rng: np.random.Generator,
+    r32_pairings: list[tuple[str, str]] | None = None,
 ) -> tuple[str, dict[int, list[str]], dict[int, list[tuple[str, str]]]]:
     """Single-elimination from the given list.
 
-    Returns (champion, rounds_remaining, matchups_per_round) where:
-      - rounds_remaining[k] = teams alive when k teams remained
-      - matchups_per_round[k] = ordered list of (home, away) matchups played
-        when the round had k teams in it (one entry per match)
+    If r32_pairings is provided, use it for the first round (this is how
+    seeded brackets work — the first round's pairings come from the seeding,
+    subsequent rounds just pair adjacent winners).
+
+    Returns (champion, rounds_remaining, matchups_per_round).
     """
-    current = list(advancers)
+    # Determine starting order of the bracket: if we have explicit first-round
+    # pairings, lay teams out so adjacent pairing reproduces them; otherwise
+    # use the input order as-is.
+    if r32_pairings is not None:
+        current = [t for pair in r32_pairings for t in pair]
+    else:
+        current = list(advancers)
     rounds_remaining: dict[int, list[str]] = {len(current): list(current)}
     matchups_per_round: dict[int, list[tuple[str, str]]] = {}
     while len(current) > 1:
@@ -270,8 +386,15 @@ def simulate_tournament(
             rounds_remaining = {len(advancers): list(advancers), 1: [champion] if champion else []}
             matchups_this_sim: dict[int, list[tuple[str, str]]] = {}
         else:
+            # Build seeded first-round pairings (avoids same-group R32 rematches,
+            # and pairs top seeds with bottom seeds).
+            seeded = _seed_advancers(
+                standings, qualifiers_per_group, best_thirds,
+            )
+            r32_pairings = _build_r32_pairings(seeded)
             champion, rounds_remaining, matchups_this_sim = _simulate_knockout(
-                advancers, teams_by_code, home_advantage, rho, rng
+                advancers, teams_by_code, home_advantage, rho, rng,
+                r32_pairings=r32_pairings,
             )
         if champion is not None:
             win_counts[champion] += 1

@@ -1,0 +1,96 @@
+name: Update WC26 predictions
+
+# Runs the prediction pipeline on a schedule, commits the updated
+# predictions.json, and pushes to main. Vercel then auto-deploys.
+#
+# Why GitHub Actions instead of Vercel Cron Jobs?
+# - Pipeline runtime ~90s (Dixon-Coles MLE fit + 20k Monte Carlo sims).
+#   Vercel Hobby has a 60s function timeout that would cause failures;
+#   Pro tier (300s) would work but isn't required for this project.
+# - Pipeline needs system libomp for XGBoost — trivial in apt, awkward
+#   in Vercel's Python runtime.
+# - We want to persist the JSON without standing up Vercel Blob — pushing
+#   to the repo is simpler and triggers an automatic Vercel deploy.
+# Migrate to Vercel Cron + Blob if the pipeline shrinks below 60s and
+# committing to the repo gets noisy.
+#
+# Setup (one-time):
+#   1. Push this repo to GitHub (any visibility)
+#   2. Vercel dashboard → Project → Settings → Git → connect this GH repo
+#   3. Repo Settings → Secrets and variables → Actions →
+#      add secret FOOTBALL_DATA_API_KEY with your football-data.org key
+#   4. Repo Settings → Actions → General → Workflow permissions →
+#      "Read and write permissions" (so the action can push commits)
+
+on:
+  schedule:
+    # Once daily at 12:00 UTC. Crank up to every 30 min during the tournament
+    # by adding e.g. '*/30 12-23 * 6-7 *' for June-July match-window hours.
+    - cron: '0 12 * * *'
+  workflow_dispatch:  # manual trigger from the Actions tab
+
+# Avoid concurrent runs racing on the same commit
+concurrency:
+  group: predict
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: 'model/requirements.txt'
+
+      - name: Install system libomp (XGBoost runtime, even if unused)
+        run: sudo apt-get install -y libomp-dev
+
+      - name: Install Python dependencies
+        working-directory: model
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+
+      - name: Run prediction pipeline
+        working-directory: model
+        env:
+          FOOTBALL_DATA_API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
+        run: python scripts/03_run_simulation.py
+
+      - name: Commit updated predictions if changed
+        run: |
+          git config user.name  "wc26-bot"
+          git config user.email "wc26-bot@users.noreply.github.com"
+          git add web/lib/data/predictions.json
+
+          # Strip the generated_at timestamp before comparing so we don't
+          # commit pure-timestamp changes — only commit when actual numbers shifted.
+          if git diff --staged --quiet -- web/lib/data/predictions.json; then
+            echo "No prediction changes — skipping commit."
+            exit 0
+          fi
+
+          # Check whether anything other than generated_at moved
+          diff_lines=$(git diff --staged -- web/lib/data/predictions.json | \
+            grep -E '^[+-]' | \
+            grep -vE '^(---|\+\+\+|[+-]\s*"generated_at")' | \
+            wc -l)
+
+          if [ "$diff_lines" -eq 0 ]; then
+            echo "Only generated_at changed — skipping commit."
+            git reset HEAD -- web/lib/data/predictions.json
+            exit 0
+          fi
+
+          git commit -m "Update predictions $(date -u +%Y-%m-%d) [skip ci]"
+          git push

@@ -5,6 +5,7 @@ import { PredictionsTable } from "@/components/predictions-table";
 import { GroupMatchesSection } from "@/components/group-matches-section";
 import { RoundProbabilitiesTable } from "@/components/round-probabilities-table";
 import { BracketView } from "@/components/bracket-view";
+import { CompoundProbabilityExplainer } from "@/components/compound-probability-explainer";
 import { predictions, topN } from "@/lib/predictions";
 
 export default function Home() {
@@ -82,6 +83,9 @@ export default function Home() {
           <RoundProbabilitiesTable />
         </CardContent>
       </Card>
+
+      {/* Compounding-probability explainer */}
+      <CompoundProbabilityExplainer />
 
       {/* Most-likely knockout bracket */}
       <section className="space-y-3">
