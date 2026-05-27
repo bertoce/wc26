@@ -160,9 +160,15 @@ def _simulate_knockout(
     home_advantage: float,
     rho: float,
     rng: np.random.Generator,
-) -> str:
-    """Single-elimination from the given list, returning the eventual champion."""
+) -> tuple[str, dict[int, list[str]]]:
+    """Single-elimination from the given list.
+
+    Returns (champion, rounds_remaining) where rounds_remaining[k] is the list
+    of teams that were alive when k teams remained in the bracket. The starting
+    set lives at key len(advancers); the champion lives at key 1.
+    """
     current = list(advancers)
+    rounds_remaining: dict[int, list[str]] = {len(current): list(current)}
     while len(current) > 1:
         pairings = _single_elim_pairings(current)
         winners = []
@@ -171,7 +177,45 @@ def _simulate_knockout(
             winner, _, _ = simulate_knockout_match(h, a, lam, mu, rng)
             winners.append(winner)
         current = winners
-    return current[0]
+        rounds_remaining[len(current)] = list(current)
+    return current[0], rounds_remaining
+
+
+def predict_group_fixtures(
+    fixtures: list["Fixture"],
+    teams_by_code: dict[str, "Team"],
+    home_advantage: float,
+    rho: float,
+) -> list[dict]:
+    """Compute deterministic W/D/L + expected goals for each group fixture.
+
+    Knockout-stage fixtures (where teams are still placeholders pre-tournament)
+    are skipped. Returns a list of dicts with keys:
+        home, away, group, p_home_win, p_draw, p_away_win,
+        expected_home_goals, expected_away_goals.
+    """
+    out: list[dict] = []
+    for f in fixtures:
+        if f.stage != "group":
+            continue
+        if f.home not in teams_by_code or f.away not in teams_by_code:
+            continue
+        lam, mu = _expected_goals(
+            f.home, f.away, teams_by_code, home_advantage, rho, neutral=f.neutral
+        )
+        p_h, p_d, p_a = match_outcome_probabilities(lam, mu, rho=rho)
+        out.append({
+            "home": f.home,
+            "away": f.away,
+            "group": f.group,
+            "neutral": f.neutral,
+            "p_home_win": p_h,
+            "p_draw": p_d,
+            "p_away_win": p_a,
+            "expected_home_goals": lam,
+            "expected_away_goals": mu,
+        })
+    return out
 
 
 def simulate_tournament(
@@ -191,6 +235,10 @@ def simulate_tournament(
     """
     teams_by_code = {t.code: t for t in teams}
     win_counts: dict[str, int] = defaultdict(int)
+    # round_counts[tla][k] = number of sims where the team was alive when k teams remained
+    round_counts: dict[str, dict[int, int]] = {
+        t.code: defaultdict(int) for t in teams
+    }
     rng = np.random.default_rng(seed)
 
     for _ in range(n_sims):
@@ -210,17 +258,29 @@ def simulate_tournament(
             advancers.extend(s.team for s in ranked_thirds[:best_thirds])
 
         if len(advancers) < 2:
-            # Degenerate; pick the top team
-            champion = advancers[0]
+            champion = advancers[0] if advancers else None
+            rounds_remaining = {len(advancers): list(advancers), 1: [champion] if champion else []}
         else:
-            champion = _simulate_knockout(
+            champion, rounds_remaining = _simulate_knockout(
                 advancers, teams_by_code, home_advantage, rho, rng
             )
-        win_counts[champion] += 1
+        if champion is not None:
+            win_counts[champion] += 1
+
+        # Tally survival for this sim
+        for k, alive in rounds_remaining.items():
+            for tla in alive:
+                if tla in round_counts:
+                    round_counts[tla][k] += 1
 
     win_probability = {t.code: win_counts.get(t.code, 0) / n_sims for t in teams}
+    round_survival = {
+        tla: {k: cnt / n_sims for k, cnt in counts.items()}
+        for tla, counts in round_counts.items()
+    }
     return {
         "win_probability": win_probability,
+        "round_survival": round_survival,
         "n_sims": n_sims,
         "seed": seed,
     }

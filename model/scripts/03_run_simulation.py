@@ -35,7 +35,12 @@ from wc26.ingest import (  # noqa: E402
     results_to_matches,
 )
 from wc26.priors import TeamPriorFeatures, apply_priors  # noqa: E402
-from wc26.simulator import Fixture, Team, simulate_tournament  # noqa: E402
+from wc26.simulator import (  # noqa: E402
+    Fixture,
+    Team,
+    predict_group_fixtures,
+    simulate_tournament,
+)
 
 N_SIMS = 20_000
 SEED = 2026
@@ -183,6 +188,7 @@ def main() -> None:
     print(f"  {len(group_matches)} group-stage matches scheduled")
 
     fixtures: list[Fixture] = []
+    fixture_dates: dict[tuple[str, str, str | None], str] = {}
     skipped = 0
     for m in group_matches:
         home_tla = m["homeTeam"].get("tla")
@@ -198,6 +204,7 @@ def main() -> None:
             stage="group",
             group=group,
         ))
+        fixture_dates[(home_tla, away_tla, group)] = m.get("utcDate", "")
     if skipped:
         print(f"  ⚠ skipped {skipped} matches with missing team data (likely TBD slots)")
     print(f"  {len(fixtures)} usable group fixtures across "
@@ -220,6 +227,7 @@ def main() -> None:
     )
 
     raw_probs = results["win_probability"]
+    round_survival = results["round_survival"]
     print(f"\n  Top 12 by raw simulator win probability (pre-priors):")
     for i, (tla, p) in enumerate(sorted(raw_probs.items(), key=lambda kv: -kv[1])[:12], 1):
         name = tla_to_name_fd.get(tla, tla)
@@ -261,6 +269,40 @@ def main() -> None:
     print()
 
     # -----------------------------------------------------------------------
+    header("STEP 7: Per-match group-stage W/D/L predictions")
+    # -----------------------------------------------------------------------
+    teams_by_code = {t.code: t for t in teams}
+    group_preds_raw = predict_group_fixtures(
+        fixtures=fixtures,
+        teams_by_code=teams_by_code,
+        home_advantage=model.home_advantage,
+        rho=model.rho,
+    )
+    group_preds = []
+    for gp in group_preds_raw:
+        key = (gp["home"], gp["away"], gp["group"])
+        group_preds.append({
+            **gp,
+            "home_name": tla_to_name_fd.get(gp["home"], gp["home"]),
+            "away_name": tla_to_name_fd.get(gp["away"], gp["away"]),
+            "utc_date": fixture_dates.get(key, ""),
+        })
+    print(f"  computed {len(group_preds)} per-fixture predictions")
+    # Show a few examples
+    sample = sorted(group_preds, key=lambda p: p.get("utc_date", ""))[:3]
+    for p in sample:
+        print(f"    {p['group']:>2}  {p['home']:>3} vs {p['away']:<3}  "
+              f"H/D/A = {p['p_home_win']*100:4.1f}% / {p['p_draw']*100:4.1f}% / {p['p_away_win']*100:4.1f}%  "
+              f"xG = {p['expected_home_goals']:.2f}–{p['expected_away_goals']:.2f}")
+
+    # Round-survival named for WC26 (32→R32, 16→R16, 8→QF, 4→SF, 2→F, 1→Win)
+    ROUND_NAMES = {32: "reach_r32", 16: "reach_r16", 8: "reach_qf",
+                   4: "reach_sf", 2: "reach_final", 1: "win"}
+    round_probs: dict[str, dict[str, float]] = {}
+    for tla, surv in round_survival.items():
+        round_probs[tla] = {ROUND_NAMES[k]: v for k, v in surv.items() if k in ROUND_NAMES}
+
+    # -----------------------------------------------------------------------
     # Save predictions.json
     # -----------------------------------------------------------------------
     out = {
@@ -274,7 +316,7 @@ def main() -> None:
             "dc_home_advantage": model.home_advantage,
             "dc_rho": model.rho,
             "dc_fit_matches": len(dc_matches),
-            "model_version": "0.1.0",
+            "model_version": "0.2.0",
         },
         "predictions": [
             {
@@ -282,14 +324,22 @@ def main() -> None:
                 "name": tla_to_name_fd.get(tla, tla),
                 "win_probability_raw": raw_probs.get(tla, 0.0),
                 "win_probability_adjusted": adjusted.get(tla, 0.0),
+                "round_probability": round_probs.get(tla, {}),
             }
             for tla, _ in sorted_adj
         ],
+        "group_matches": sorted(group_preds, key=lambda p: (p.get("group") or "", p.get("utc_date", ""))),
     }
     out_path = ROOT / "model" / "data" / "processed" / "predictions.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(out, indent=2))
-    print(f"  → predictions saved to {out_path.relative_to(ROOT)}")
+    print(f"\n  → predictions saved to {out_path.relative_to(ROOT)}")
+
+    # Also copy into web/lib/data so the dashboard picks it up on next build
+    web_path = ROOT / "web" / "lib" / "data" / "predictions.json"
+    if web_path.parent.exists():
+        web_path.write_text(json.dumps(out, indent=2))
+        print(f"  → mirrored to {web_path.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

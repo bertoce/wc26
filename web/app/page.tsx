@@ -2,6 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WinnerCard } from "@/components/winner-card";
 import { TopChart } from "@/components/top-chart";
 import { PredictionsTable } from "@/components/predictions-table";
+import { GroupMatchesSection } from "@/components/group-matches-section";
+import { RoundProbabilitiesTable } from "@/components/round-probabilities-table";
 import { predictions, topN } from "@/lib/predictions";
 
 export default function Home() {
@@ -64,12 +66,46 @@ export default function Home() {
         </CardContent>
       </Card>
 
-      {/* Full table */}
+      {/* Round-by-round survival per team */}
       <Card className="bg-card border-border">
         <CardHeader>
           <CardTitle className="text-base font-medium">
-            All {all.length} qualified teams
+            Round-by-round survival probability
           </CardTitle>
+          <p className="text-xs text-muted-foreground mt-1">
+            Each cell: chance the team reaches that round, across {meta.n_sims.toLocaleString()} simulated tournaments.
+            Sorted by P(reach R32).
+          </p>
+        </CardHeader>
+        <CardContent className="px-0 sm:px-6 pb-0 sm:pb-6">
+          <RoundProbabilitiesTable />
+        </CardContent>
+      </Card>
+
+      {/* Per-match group-stage predictions */}
+      <section className="space-y-3">
+        <div className="px-1">
+          <h3 className="text-base font-medium">Group stage — every match</h3>
+          <p className="text-xs text-muted-foreground mt-1">
+            Deterministic Dixon-Coles W/D/L + expected goals (xG) for each of the {predictions.group_matches.length} scheduled group matches.
+            <span className="text-emerald-400"> Green</span> = home win share,
+            <span className="text-muted-foreground"> grey</span> = draw,
+            <span className="text-rose-400"> red</span> = away win.
+          </p>
+        </div>
+        <GroupMatchesSection />
+      </section>
+
+      {/* Full prediction-decomposition table */}
+      <Card className="bg-card border-border">
+        <CardHeader>
+          <CardTitle className="text-base font-medium">
+            All {all.length} qualified teams — win prob decomposition
+          </CardTitle>
+          <p className="text-xs text-muted-foreground mt-1">
+            Raw simulator probability vs. pattern-prior-adjusted probability,
+            with the delta from confederation/host/pedigree/market priors.
+          </p>
         </CardHeader>
         <CardContent className="px-0 sm:px-6 pb-0 sm:pb-6">
           <PredictionsTable data={all} />

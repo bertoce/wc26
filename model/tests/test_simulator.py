@@ -8,6 +8,7 @@ from wc26.simulator import (
     simulate_match,
     simulate_knockout_match,
     simulate_tournament,
+    predict_group_fixtures,
     Team,
     Fixture,
 )
@@ -142,3 +143,145 @@ class TestSimulateTournament:
         r1 = simulate_tournament(teams=teams, fixtures=fixtures, n_sims=500, seed=123)
         r2 = simulate_tournament(teams=teams, fixtures=fixtures, n_sims=500, seed=123)
         assert r1["win_probability"] == r2["win_probability"]
+
+
+class TestPredictGroupFixtures:
+    """Per-fixture deterministic W/D/L predictions for the group stage."""
+
+    @pytest.fixture
+    def field(self):
+        teams = [
+            Team(code="STR", name="Strong", attack=0.6, defence=-0.6, confederation="UEFA"),
+            Team(code="GD2", name="Good", attack=0.2, defence=-0.2, confederation="UEFA"),
+            Team(code="AVG", name="Average", attack=0.0, defence=0.0, confederation="AFC"),
+            Team(code="WK1", name="Weak", attack=-0.5, defence=0.5, confederation="CAF"),
+        ]
+        fixtures = [
+            Fixture(home="STR", away="WK1", neutral=True, stage="group", group="A"),
+            Fixture(home="GD2", away="AVG", neutral=True, stage="group", group="A"),
+            Fixture(home="WK1", away="STR", neutral=True, stage="group", group="A"),
+        ]
+        return teams, fixtures
+
+    def test_returns_one_prediction_per_fixture(self, field):
+        teams, fixtures = field
+        preds = predict_group_fixtures(
+            fixtures=fixtures,
+            teams_by_code={t.code: t for t in teams},
+            home_advantage=0.25,
+            rho=-0.1,
+        )
+        assert len(preds) == len(fixtures)
+
+    def test_probabilities_sum_to_one(self, field):
+        teams, fixtures = field
+        preds = predict_group_fixtures(
+            fixtures=fixtures,
+            teams_by_code={t.code: t for t in teams},
+            home_advantage=0.25,
+            rho=-0.1,
+        )
+        for p in preds:
+            assert (p["p_home_win"] + p["p_draw"] + p["p_away_win"]) == pytest.approx(1.0, abs=1e-3)
+
+    def test_stronger_team_more_likely_to_win(self, field):
+        teams, fixtures = field
+        preds = predict_group_fixtures(
+            fixtures=fixtures,
+            teams_by_code={t.code: t for t in teams},
+            home_advantage=0.25,
+            rho=-0.1,
+        )
+        # STR vs WK1 — home: STR much stronger
+        str_vs_wk1 = next(p for p in preds if p["home"] == "STR" and p["away"] == "WK1")
+        assert str_vs_wk1["p_home_win"] > 0.7
+        assert str_vs_wk1["p_away_win"] < 0.1
+
+    def test_expected_goals_present_and_positive(self, field):
+        teams, fixtures = field
+        preds = predict_group_fixtures(
+            fixtures=fixtures,
+            teams_by_code={t.code: t for t in teams},
+            home_advantage=0.25,
+            rho=-0.1,
+        )
+        for p in preds:
+            assert p["expected_home_goals"] > 0
+            assert p["expected_away_goals"] > 0
+
+    def test_only_group_stage_fixtures_returned(self):
+        """Non-group fixtures (knockouts placeholders) should be skipped."""
+        teams = [
+            Team(code="A", name="A", attack=0.0, defence=0.0),
+            Team(code="B", name="B", attack=0.0, defence=0.0),
+        ]
+        fixtures = [
+            Fixture(home="A", away="B", neutral=True, stage="group", group="A"),
+            Fixture(home="A", away="B", neutral=True, stage="final"),
+        ]
+        preds = predict_group_fixtures(
+            fixtures=fixtures,
+            teams_by_code={t.code: t for t in teams},
+            home_advantage=0.0,
+            rho=0.0,
+        )
+        assert len(preds) == 1
+
+
+class TestRoundSurvival:
+    """Per-team probabilities of reaching each round of the tournament."""
+
+    @pytest.fixture
+    def tiny_field(self):
+        teams = [
+            Team(code="STR", name="Strong", attack=0.6, defence=-0.6, confederation="UEFA"),
+            Team(code="GD2", name="Good", attack=0.2, defence=-0.2, confederation="UEFA"),
+            Team(code="AVG", name="Average", attack=0.0, defence=0.0, confederation="AFC"),
+            Team(code="WK1", name="Weak", attack=-0.5, defence=0.5, confederation="CAF"),
+        ]
+        fixtures = [
+            Fixture(home="STR", away="GD2", neutral=True, stage="group"),
+            Fixture(home="STR", away="AVG", neutral=True, stage="group"),
+            Fixture(home="STR", away="WK1", neutral=True, stage="group"),
+            Fixture(home="GD2", away="AVG", neutral=True, stage="group"),
+            Fixture(home="GD2", away="WK1", neutral=True, stage="group"),
+            Fixture(home="AVG", away="WK1", neutral=True, stage="group"),
+        ]
+        return teams, fixtures
+
+    def test_simulator_returns_round_survival(self, tiny_field):
+        teams, fixtures = tiny_field
+        results = simulate_tournament(
+            teams=teams, fixtures=fixtures, n_sims=500, seed=7,
+        )
+        assert "round_survival" in results
+        # Keyed by team code, then by remaining-teams-count
+        for t in teams:
+            assert t.code in results["round_survival"]
+
+    def test_round_survival_monotonically_decreasing(self, tiny_field):
+        teams, fixtures = tiny_field
+        results = simulate_tournament(
+            teams=teams, fixtures=fixtures, n_sims=1000, seed=7,
+        )
+        for tla, survival in results["round_survival"].items():
+            # survival[k] = P(team still in tournament when k teams remain)
+            # As k decreases, survival should weakly decrease.
+            keys_sorted_desc = sorted(survival.keys(), reverse=True)
+            values = [survival[k] for k in keys_sorted_desc]
+            for i in range(len(values) - 1):
+                assert values[i] >= values[i + 1] - 0.001, (
+                    f"survival broke monotonicity for {tla}: "
+                    f"{dict(zip(keys_sorted_desc, values))}"
+                )
+
+    def test_final_round_survival_equals_win_probability(self, tiny_field):
+        teams, fixtures = tiny_field
+        results = simulate_tournament(
+            teams=teams, fixtures=fixtures, n_sims=1000, seed=7,
+        )
+        for tla in [t.code for t in teams]:
+            survival = results["round_survival"][tla]
+            assert survival[1] == pytest.approx(
+                results["win_probability"][tla], abs=1e-6
+            )
