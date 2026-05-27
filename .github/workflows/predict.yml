@@ -68,15 +68,16 @@ jobs:
         run: python scripts/03_run_simulation.py
 
       - name: Commit updated predictions if changed
+        id: commit
         run: |
-          git config user.name  "wc26-bot"
-          git config user.email "wc26-bot@users.noreply.github.com"
+          # Author commits as the repo owner so they link to the GitHub profile
+          git config user.name  "brto"
+          git config user.email "beto.ceballos@gmail.com"
           git add web/lib/data/predictions.json
 
-          # Strip the generated_at timestamp before comparing so we don't
-          # commit pure-timestamp changes — only commit when actual numbers shifted.
           if git diff --staged --quiet -- web/lib/data/predictions.json; then
             echo "No prediction changes — skipping commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -89,8 +90,26 @@ jobs:
           if [ "$diff_lines" -eq 0 ]; then
             echo "Only generated_at changed — skipping commit."
             git reset HEAD -- web/lib/data/predictions.json
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           git commit -m "Update predictions $(date -u +%Y-%m-%d) [skip ci]"
           git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      # Deploy via Vercel CLI directly — bypasses Vercel's GitHub auto-deploy
+      # (which fails because the project's Root Directory is the repo root
+      # but the Next.js app lives in web/).
+      - name: Deploy to Vercel
+        if: steps.commit.outputs.changed == 'true' && env.VERCEL_TOKEN != ''
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        working-directory: web
+        run: |
+          npm install -g vercel@latest
+          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+          vercel build --prod --token="$VERCEL_TOKEN"
+          vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
