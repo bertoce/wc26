@@ -1,65 +1,118 @@
-import Image from "next/image";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { WinnerCard } from "@/components/winner-card";
+import { TopChart } from "@/components/top-chart";
+import { PredictionsTable } from "@/components/predictions-table";
+import { predictions, topN } from "@/lib/predictions";
 
 export default function Home() {
+  const all = predictions.predictions;
+  const top12 = topN(12);
+  const winner = top12[0];
+  const runnerUp = top12[1];
+  const meta = predictions.metadata;
+  const generatedAt = new Date(meta.generated_at);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <main className="mx-auto w-full max-w-5xl px-4 sm:px-6 py-10 sm:py-14 space-y-8">
+      {/* Header */}
+      <header className="space-y-1">
+        <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
+          wc26 · model v{meta.model_version}
+        </p>
+        <h2 className="text-lg font-medium text-muted-foreground">
+          Dixon-Coles + historical-pattern model · 20,000 Monte Carlo tournaments
+        </h2>
+      </header>
+
+      {/* Hero */}
+      <WinnerCard winner={winner} runnerUp={runnerUp} />
+
+      {/* Metadata strip */}
+      <Card className="bg-card/50 border-border">
+        <CardContent className="p-4 grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
+          <Stat label="Simulations" value={meta.n_sims.toLocaleString()} />
+          <Stat label="Teams" value={meta.n_teams.toString()} />
+          <Stat label="Group fixtures" value={meta.n_group_fixtures.toString()} />
+          <Stat
+            label="DC fit matches"
+            value={meta.dc_fit_matches.toLocaleString()}
+          />
+          <Stat
+            label="Home advantage γ"
+            value={meta.dc_home_advantage.toFixed(3)}
+            mono
+          />
+          <Stat label="Dixon-Coles ρ" value={meta.dc_rho.toFixed(3)} mono />
+          <Stat label="Host continent" value={meta.host_continent} />
+          <Stat
+            label="Generated"
+            value={generatedAt.toISOString().slice(0, 16).replace("T", " ")}
+            mono
+          />
+        </CardContent>
+      </Card>
+
+      {/* Top 12 chart */}
+      <Card className="bg-card border-border">
+        <CardHeader>
+          <CardTitle className="text-base font-medium">
+            Top 12 — adjusted win probability
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <TopChart data={top12} />
+        </CardContent>
+      </Card>
+
+      {/* Full table */}
+      <Card className="bg-card border-border">
+        <CardHeader>
+          <CardTitle className="text-base font-medium">
+            All {all.length} qualified teams
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="px-0 sm:px-6 pb-0 sm:pb-6">
+          <PredictionsTable data={all} />
+        </CardContent>
+      </Card>
+
+      {/* Footer */}
+      <footer className="text-xs text-muted-foreground leading-relaxed space-y-1 pb-8">
+        <p>
+          Per-match model: Dixon-Coles Poisson fit on{" "}
+          {meta.dc_fit_matches.toLocaleString()} competitive matches since 2018
+          (martj42/international_results). Pattern priors blend confederation,
+          host-continent, title pedigree, and squad market value.
+        </p>
+        <p>
+          Caveats: simplified knockout bracket pairing; no injury data; pattern
+          priors hand-calibrated; squad market values are estimates. Run with
+          seed {meta.seed}.
+        </p>
+      </footer>
+    </main>
+  );
+}
+
+function Stat({
+  label,
+  value,
+  mono = false,
+}: {
+  label: string;
+  value: string;
+  mono?: boolean;
+}) {
+  return (
+    <div>
+      <div className="text-muted-foreground text-xs uppercase tracking-wider">
+        {label}
+      </div>
+      <div
+        className={`mt-1 ${mono ? "font-mono" : ""} tabular-nums text-foreground`}
+      >
+        {value}
+      </div>
     </div>
   );
 }
