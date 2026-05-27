@@ -1,0 +1,304 @@
+{
+  "metadata": {
+    "generated_at": "2026-05-27T11:14:55.055778+00:00",
+    "n_sims": 20000,
+    "seed": 2026,
+    "host_continent": "North America",
+    "n_teams": 48,
+    "n_group_fixtures": 72,
+    "dc_home_advantage": 0.29099002571679017,
+    "dc_rho": -0.0514814254372092,
+    "dc_fit_matches": 2393,
+    "model_version": "0.1.0"
+  },
+  "predictions": [
+    {
+      "tla": "BRA",
+      "name": "Brazil",
+      "win_probability_raw": 0.14735,
+      "win_probability_adjusted": 0.23399717711702828
+    },
+    {
+      "tla": "ENG",
+      "name": "England",
+      "win_probability_raw": 0.0835,
+      "win_probability_adjusted": 0.1436285917947898
+    },
+    {
+      "tla": "ARG",
+      "name": "Argentina",
+      "win_probability_raw": 0.1292,
+      "win_probability_adjusted": 0.12836273723727323
+    },
+    {
+      "tla": "FRA",
+      "name": "France",
+      "win_probability_raw": 0.0665,
+      "win_probability_adjusted": 0.12227325856294595
+    },
+    {
+      "tla": "ESP",
+      "name": "Spain",
+      "win_probability_raw": 0.1125,
+      "win_probability_adjusted": 0.12141243253216728
+    },
+    {
+      "tla": "POR",
+      "name": "Portugal",
+      "win_probability_raw": 0.05545,
+      "win_probability_adjusted": 0.05038518811929928
+    },
+    {
+      "tla": "GER",
+      "name": "Germany",
+      "win_probability_raw": 0.0246,
+      "win_probability_adjusted": 0.036762406135239845
+    },
+    {
+      "tla": "URY",
+      "name": "Uruguay",
+      "win_probability_raw": 0.04465,
+      "win_probability_adjusted": 0.030094980996403096
+    },
+    {
+      "tla": "COL",
+      "name": "Colombia",
+      "win_probability_raw": 0.058,
+      "win_probability_adjusted": 0.0267051851075698
+    },
+    {
+      "tla": "NED",
+      "name": "Netherlands",
+      "win_probability_raw": 0.03195,
+      "win_probability_adjusted": 0.024668771033270424
+    },
+    {
+      "tla": "BEL",
+      "name": "Belgium",
+      "win_probability_raw": 0.0372,
+      "win_probability_adjusted": 0.02199243479013852
+    },
+    {
+      "tla": "ECU",
+      "name": "Ecuador",
+      "win_probability_raw": 0.0467,
+      "win_probability_adjusted": 0.018507182490473673
+    },
+    {
+      "tla": "SUI",
+      "name": "Switzerland",
+      "win_probability_raw": 0.0242,
+      "win_probability_adjusted": 0.011713796884352099
+    },
+    {
+      "tla": "CRO",
+      "name": "Croatia",
+      "win_probability_raw": 0.009,
+      "win_probability_adjusted": 0.004765679403038905
+    },
+    {
+      "tla": "PAR",
+      "name": "Paraguay",
+      "win_probability_raw": 0.0129,
+      "win_probability_adjusted": 0.004672256035571495
+    },
+    {
+      "tla": "MAR",
+      "name": "Morocco",
+      "win_probability_raw": 0.0234,
+      "win_probability_adjusted": 0.0032450338519301168
+    },
+    {
+      "tla": "SWE",
+      "name": "Sweden",
+      "win_probability_raw": 0.00425,
+      "win_probability_adjusted": 0.002202865273138574
+    },
+    {
+      "tla": "MEX",
+      "name": "Mexico",
+      "win_probability_raw": 0.01175,
+      "win_probability_adjusted": 0.0017829476456484993
+    },
+    {
+      "tla": "NOR",
+      "name": "Norway",
+      "win_probability_raw": 0.0032,
+      "win_probability_adjusted": 0.0016121449261401511
+    },
+    {
+      "tla": "NZL",
+      "name": "New Zealand",
+      "win_probability_raw": 0.02205,
+      "win_probability_adjusted": 0.0014884381320961371
+    },
+    {
+      "tla": "USA",
+      "name": "United States",
+      "win_probability_raw": 0.00825,
+      "win_probability_adjusted": 0.0014256145160718911
+    },
+    {
+      "tla": "SCO",
+      "name": "Scotland",
+      "win_probability_raw": 0.003,
+      "win_probability_adjusted": 0.0012879180803659887
+    },
+    {
+      "tla": "CAN",
+      "name": "Canada",
+      "win_probability_raw": 0.00695,
+      "win_probability_adjusted": 0.0010441011736252327
+    },
+    {
+      "tla": "TUR",
+      "name": "Turkey",
+      "win_probability_raw": 0.0022,
+      "win_probability_adjusted": 0.0010028511770257857
+    },
+    {
+      "tla": "JPN",
+      "name": "Japan",
+      "win_probability_raw": 0.0074,
+      "win_probability_adjusted": 0.0009285739423614991
+    },
+    {
+      "tla": "AUT",
+      "name": "Austria",
+      "win_probability_raw": 0.00185,
+      "win_probability_adjusted": 0.0008865439292234932
+    },
+    {
+      "tla": "CZE",
+      "name": "Czechia",
+      "win_probability_raw": 0.00175,
+      "win_probability_adjusted": 0.0007364090963264731
+    },
+    {
+      "tla": "SEN",
+      "name": "Senegal",
+      "win_probability_raw": 0.0046,
+      "win_probability_adjusted": 0.0005830228137713904
+    },
+    {
+      "tla": "AUS",
+      "name": "Australia",
+      "win_probability_raw": 0.00365,
+      "win_probability_adjusted": 0.0004021789671104413
+    },
+    {
+      "tla": "KOR",
+      "name": "South Korea",
+      "win_probability_raw": 0.00295,
+      "win_probability_adjusted": 0.00038527224301208494
+    },
+    {
+      "tla": "CIV",
+      "name": "Ivory Coast",
+      "win_probability_raw": 0.0019,
+      "win_probability_adjusted": 0.00023841763384957408
+    },
+    {
+      "tla": "IRN",
+      "name": "Iran",
+      "win_probability_raw": 0.00165,
+      "win_probability_adjusted": 0.00019112837098476484
+    },
+    {
+      "tla": "EGY",
+      "name": "Egypt",
+      "win_probability_raw": 0.00105,
+      "win_probability_adjusted": 0.00012041693485704636
+    },
+    {
+      "tla": "TUN",
+      "name": "Tunisia",
+      "win_probability_raw": 0.0009,
+      "win_probability_adjusted": 9.818068426646415e-05
+    },
+    {
+      "tla": "ALG",
+      "name": "Algeria",
+      "win_probability_raw": 0.0008,
+      "win_probability_adjusted": 8.992953888803264e-05
+    },
+    {
+      "tla": "UZB",
+      "name": "Uzbekistan",
+      "win_probability_raw": 0.0007,
+      "win_probability_adjusted": 7.191573380848032e-05
+    },
+    {
+      "tla": "JOR",
+      "name": "Jordan",
+      "win_probability_raw": 0.0007,
+      "win_probability_adjusted": 6.90958775520776e-05
+    },
+    {
+      "tla": "KSA",
+      "name": "Saudi Arabia",
+      "win_probability_raw": 0.00055,
+      "win_probability_adjusted": 5.650521942094883e-05
+    },
+    {
+      "tla": "CUW",
+      "name": "Cura\u00e7ao",
+      "win_probability_raw": 0.00025,
+      "win_probability_adjusted": 3.1527987791117644e-05
+    },
+    {
+      "tla": "BIH",
+      "name": "Bosnia-Herzegovina",
+      "win_probability_raw": 5e-05,
+      "win_probability_adjusted": 2.021525950417661e-05
+    },
+    {
+      "tla": "PAN",
+      "name": "Panama",
+      "win_probability_raw": 0.00015,
+      "win_probability_adjusted": 1.9590603321165197e-05
+    },
+    {
+      "tla": "RSA",
+      "name": "South Africa",
+      "win_probability_raw": 0.00015,
+      "win_probability_adjusted": 1.5879834421187736e-05
+    },
+    {
+      "tla": "GHA",
+      "name": "Ghana",
+      "win_probability_raw": 5e-05,
+      "win_probability_adjusted": 5.677084111228722e-06
+    },
+    {
+      "tla": "COD",
+      "name": "Congo DR",
+      "win_probability_raw": 5e-05,
+      "win_probability_adjusted": 5.454482459248009e-06
+    },
+    {
+      "tla": "QAT",
+      "name": "Qatar",
+      "win_probability_raw": 5e-05,
+      "win_probability_adjusted": 5.085725735788241e-06
+    },
+    {
+      "tla": "CPV",
+      "name": "Cape Verde Islands",
+      "win_probability_raw": 5e-05,
+      "win_probability_adjusted": 4.985021619021656e-06
+    },
+    {
+      "tla": "HAI",
+      "name": "Haiti",
+      "win_probability_raw": 0.0,
+      "win_probability_adjusted": 0.0
+    },
+    {
+      "tla": "IRQ",
+      "name": "Iraq",
+      "win_probability_raw": 0.0,
+      "win_probability_adjusted": 0.0
+    }
+  ]
+}

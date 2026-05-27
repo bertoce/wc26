@@ -1,0 +1,22 @@
+# Data + numerics
+pandas>=2.2
+numpy>=1.26
+scipy>=1.13
+pyarrow>=16.0
+
+# Modeling
+xgboost>=2.0
+scikit-learn>=1.5
+
+# Ingest
+requests>=2.32
+beautifulsoup4>=4.12
+lxml>=5.2
+
+# Storage / utils
+python-dotenv>=1.0
+tqdm>=4.66
+
+# Testing (TDD)
+pytest>=8.0
+pytest-cov>=5.0
