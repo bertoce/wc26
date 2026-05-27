@@ -4,6 +4,7 @@ import { TopChart } from "@/components/top-chart";
 import { PredictionsTable } from "@/components/predictions-table";
 import { GroupMatchesSection } from "@/components/group-matches-section";
 import { RoundProbabilitiesTable } from "@/components/round-probabilities-table";
+import { BracketView } from "@/components/bracket-view";
 import { predictions, topN } from "@/lib/predictions";
 
 export default function Home() {
@@ -81,6 +82,20 @@ export default function Home() {
           <RoundProbabilitiesTable />
         </CardContent>
       </Card>
+
+      {/* Most-likely knockout bracket */}
+      <section className="space-y-3">
+        <div className="px-1">
+          <h3 className="text-base font-medium">Most-likely knockout bracket</h3>
+          <p className="text-xs text-muted-foreground mt-1">
+            For each slot in the bracket, the team that appears there most often across {meta.n_sims.toLocaleString()} simulations.
+            The <span className="font-mono">matchup %</span> on each card is the probability the exact pairing occurs;
+            the <span className="font-mono">H/D/A</span> bar shows what would happen <em>if it does</em>.
+            Probabilities compound deeper into the bracket — at the final, even the most likely matchup is uncertain.
+          </p>
+        </div>
+        <BracketView />
+      </section>
 
       {/* Per-match group-stage predictions */}
       <section className="space-y-3">

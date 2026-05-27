@@ -160,17 +160,21 @@ def _simulate_knockout(
     home_advantage: float,
     rho: float,
     rng: np.random.Generator,
-) -> tuple[str, dict[int, list[str]]]:
+) -> tuple[str, dict[int, list[str]], dict[int, list[tuple[str, str]]]]:
     """Single-elimination from the given list.
 
-    Returns (champion, rounds_remaining) where rounds_remaining[k] is the list
-    of teams that were alive when k teams remained in the bracket. The starting
-    set lives at key len(advancers); the champion lives at key 1.
+    Returns (champion, rounds_remaining, matchups_per_round) where:
+      - rounds_remaining[k] = teams alive when k teams remained
+      - matchups_per_round[k] = ordered list of (home, away) matchups played
+        when the round had k teams in it (one entry per match)
     """
     current = list(advancers)
     rounds_remaining: dict[int, list[str]] = {len(current): list(current)}
+    matchups_per_round: dict[int, list[tuple[str, str]]] = {}
     while len(current) > 1:
+        round_size = len(current)
         pairings = _single_elim_pairings(current)
+        matchups_per_round[round_size] = list(pairings)
         winners = []
         for h, a in pairings:
             lam, mu = _expected_goals(h, a, teams_by_code, home_advantage, rho, neutral=True)
@@ -178,7 +182,7 @@ def _simulate_knockout(
             winners.append(winner)
         current = winners
         rounds_remaining[len(current)] = list(current)
-    return current[0], rounds_remaining
+    return current[0], rounds_remaining, matchups_per_round
 
 
 def predict_group_fixtures(
@@ -239,6 +243,10 @@ def simulate_tournament(
     round_counts: dict[str, dict[int, int]] = {
         t.code: defaultdict(int) for t in teams
     }
+    # matchup_counts[k][match_idx][(home_tla, away_tla)] = count
+    matchup_counts: dict[int, dict[int, dict[tuple[str, str], int]]] = defaultdict(
+        lambda: defaultdict(lambda: defaultdict(int))
+    )
     rng = np.random.default_rng(seed)
 
     for _ in range(n_sims):
@@ -260,8 +268,9 @@ def simulate_tournament(
         if len(advancers) < 2:
             champion = advancers[0] if advancers else None
             rounds_remaining = {len(advancers): list(advancers), 1: [champion] if champion else []}
+            matchups_this_sim: dict[int, list[tuple[str, str]]] = {}
         else:
-            champion, rounds_remaining = _simulate_knockout(
+            champion, rounds_remaining, matchups_this_sim = _simulate_knockout(
                 advancers, teams_by_code, home_advantage, rho, rng
             )
         if champion is not None:
@@ -273,14 +282,27 @@ def simulate_tournament(
                 if tla in round_counts:
                     round_counts[tla][k] += 1
 
+        # Tally matchups for this sim
+        for round_size, pairings in matchups_this_sim.items():
+            for match_idx, (h, a) in enumerate(pairings):
+                matchup_counts[round_size][match_idx][(h, a)] += 1
+
     win_probability = {t.code: win_counts.get(t.code, 0) / n_sims for t in teams}
     round_survival = {
         tla: {k: cnt / n_sims for k, cnt in counts.items()}
         for tla, counts in round_counts.items()
     }
+    matchup_distribution = {
+        round_size: {
+            match_idx: {pair: cnt / n_sims for pair, cnt in pair_counts.items()}
+            for match_idx, pair_counts in by_match.items()
+        }
+        for round_size, by_match in matchup_counts.items()
+    }
     return {
         "win_probability": win_probability,
         "round_survival": round_survival,
+        "matchup_distribution": matchup_distribution,
         "n_sims": n_sims,
         "seed": seed,
     }

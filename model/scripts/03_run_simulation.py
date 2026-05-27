@@ -228,6 +228,7 @@ def main() -> None:
 
     raw_probs = results["win_probability"]
     round_survival = results["round_survival"]
+    matchup_distribution = results["matchup_distribution"]
     print(f"\n  Top 12 by raw simulator win probability (pre-priors):")
     for i, (tla, p) in enumerate(sorted(raw_probs.items(), key=lambda kv: -kv[1])[:12], 1):
         name = tla_to_name_fd.get(tla, tla)
@@ -303,6 +304,60 @@ def main() -> None:
         round_probs[tla] = {ROUND_NAMES[k]: v for k, v in surv.items() if k in ROUND_NAMES}
 
     # -----------------------------------------------------------------------
+    header("STEP 8: Build most-likely knockout bracket")
+    # -----------------------------------------------------------------------
+    import numpy as np  # noqa: E402
+    from wc26.dixon_coles import match_outcome_probabilities  # noqa: E402
+
+    BRACKET_ROUND_NAMES = {32: "R32", 16: "R16", 8: "QF", 4: "SF", 2: "F"}
+    knockout_bracket = []
+    for round_size in [32, 16, 8, 4, 2]:
+        by_match = matchup_distribution.get(round_size, {})
+        if not by_match:
+            continue
+        round_matches = []
+        for match_idx in sorted(by_match.keys()):
+            matchups = by_match[match_idx]
+            if not matchups:
+                continue
+            # Most likely matchup (specific pair) at this slot
+            top_pair, top_p = max(matchups.items(), key=lambda kv: kv[1])
+            home_top, away_top = top_pair
+            # Marginal probability each side is the most-likely team in its slot
+            home_marginal = sum(p for (h, _), p in matchups.items() if h == home_top)
+            away_marginal = sum(p for (_, a), p in matchups.items() if a == away_top)
+            # W/D/L for the most-likely matchup using clipped DC params (neutral venue)
+            th = teams_by_code[home_top]
+            ta = teams_by_code[away_top]
+            lam = float(np.exp(th.attack + ta.defence))
+            mu = float(np.exp(ta.attack + th.defence))
+            p_h, p_d, p_a = match_outcome_probabilities(lam, mu, rho=model.rho)
+            round_matches.append({
+                "match_idx": match_idx,
+                "home_top": home_top,
+                "home_top_name": tla_to_name_fd.get(home_top, home_top),
+                "p_home_top": home_marginal,
+                "away_top": away_top,
+                "away_top_name": tla_to_name_fd.get(away_top, away_top),
+                "p_away_top": away_marginal,
+                "p_matchup_top": top_p,
+                "p_home_win": p_h,
+                "p_draw": p_d,
+                "p_away_win": p_a,
+                "expected_home_goals": lam,
+                "expected_away_goals": mu,
+            })
+        knockout_bracket.append({
+            "round": BRACKET_ROUND_NAMES[round_size],
+            "round_size": round_size,
+            "n_matches": len(round_matches),
+            "matches": round_matches,
+        })
+        print(f"  {BRACKET_ROUND_NAMES[round_size]:>4}  {len(round_matches)} matches  "
+              f"(most likely: {round_matches[0]['home_top']} vs {round_matches[0]['away_top']} "
+              f"@ {round_matches[0]['p_matchup_top']*100:.1f}%)")
+
+    # -----------------------------------------------------------------------
     # Save predictions.json
     # -----------------------------------------------------------------------
     out = {
@@ -316,7 +371,7 @@ def main() -> None:
             "dc_home_advantage": model.home_advantage,
             "dc_rho": model.rho,
             "dc_fit_matches": len(dc_matches),
-            "model_version": "0.2.0",
+            "model_version": "0.3.0",
         },
         "predictions": [
             {
@@ -329,6 +384,7 @@ def main() -> None:
             for tla, _ in sorted_adj
         ],
         "group_matches": sorted(group_preds, key=lambda p: (p.get("group") or "", p.get("utc_date", ""))),
+        "knockout_bracket": knockout_bracket,
     }
     out_path = ROOT / "model" / "data" / "processed" / "predictions.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)

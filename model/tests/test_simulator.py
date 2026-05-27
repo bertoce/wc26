@@ -285,3 +285,64 @@ class TestRoundSurvival:
             assert survival[1] == pytest.approx(
                 results["win_probability"][tla], abs=1e-6
             )
+
+
+class TestKnockoutMatchups:
+    """Per-slot matchup distribution across all sims — used to build the
+    most-likely-bracket forecast."""
+
+    @pytest.fixture
+    def tiny_field(self):
+        teams = [
+            Team(code="STR", name="Strong", attack=0.6, defence=-0.6, confederation="UEFA"),
+            Team(code="GD2", name="Good", attack=0.2, defence=-0.2, confederation="UEFA"),
+            Team(code="AVG", name="Average", attack=0.0, defence=0.0, confederation="AFC"),
+            Team(code="WK1", name="Weak", attack=-0.5, defence=0.5, confederation="CAF"),
+        ]
+        fixtures = [
+            Fixture(home="STR", away="GD2", neutral=True, stage="group"),
+            Fixture(home="STR", away="AVG", neutral=True, stage="group"),
+            Fixture(home="STR", away="WK1", neutral=True, stage="group"),
+            Fixture(home="GD2", away="AVG", neutral=True, stage="group"),
+            Fixture(home="GD2", away="WK1", neutral=True, stage="group"),
+            Fixture(home="AVG", away="WK1", neutral=True, stage="group"),
+        ]
+        return teams, fixtures
+
+    def test_simulator_returns_matchup_distribution(self, tiny_field):
+        teams, fixtures = tiny_field
+        results = simulate_tournament(
+            teams=teams, fixtures=fixtures, n_sims=500, seed=11,
+        )
+        assert "matchup_distribution" in results
+
+    def test_matchup_probs_sum_to_one_per_match(self, tiny_field):
+        """For every (round_size, match_idx), the matchup probabilities sum to 1
+        — exactly one matchup happens at that bracket position per sim."""
+        teams, fixtures = tiny_field
+        results = simulate_tournament(
+            teams=teams, fixtures=fixtures, n_sims=2000, seed=11,
+        )
+        dist = results["matchup_distribution"]
+        for round_size, by_match in dist.items():
+            for match_idx, matchups in by_match.items():
+                total = sum(matchups.values())
+                assert total == pytest.approx(1.0, abs=0.01), (
+                    f"round_size={round_size} match_idx={match_idx} "
+                    f"matchup probs sum to {total:.4f}, not 1.0"
+                )
+
+    def test_dominant_team_most_likely_in_some_slot(self, tiny_field):
+        """STR should appear as the home or away side in the most-likely final
+        matchup more than 50% of the time."""
+        teams, fixtures = tiny_field
+        results = simulate_tournament(
+            teams=teams, fixtures=fixtures, n_sims=2000, seed=11,
+        )
+        dist = results["matchup_distribution"]
+        # Final round has size=2, match_idx=0
+        final_matchups = dist.get(2, {}).get(0, {})
+        str_appears = sum(
+            p for (h, a), p in final_matchups.items() if "STR" in (h, a)
+        )
+        assert str_appears > 0.6, f"STR appears in only {str_appears:.2%} of finals"

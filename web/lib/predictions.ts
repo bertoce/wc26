@@ -49,6 +49,29 @@ export type GroupMatch = {
   expected_away_goals: number;
 };
 
+export type KnockoutMatch = {
+  match_idx: number;
+  home_top: string;
+  home_top_name: string;
+  p_home_top: number;
+  away_top: string;
+  away_top_name: string;
+  p_away_top: number;
+  p_matchup_top: number;
+  p_home_win: number;
+  p_draw: number;
+  p_away_win: number;
+  expected_home_goals: number;
+  expected_away_goals: number;
+};
+
+export type KnockoutRound = {
+  round: "R32" | "R16" | "QF" | "SF" | "F";
+  round_size: number;
+  n_matches: number;
+  matches: KnockoutMatch[];
+};
+
 export type PredictionsFile = {
   metadata: {
     generated_at: string;
@@ -64,6 +87,15 @@ export type PredictionsFile = {
   };
   predictions: Prediction[];
   group_matches: GroupMatch[];
+  knockout_bracket: KnockoutRound[];
+};
+
+export const ROUND_FULL_NAMES: Record<KnockoutRound["round"], string> = {
+  R32: "Round of 32",
+  R16: "Round of 16",
+  QF: "Quarter-finals",
+  SF: "Semi-finals",
+  F: "Final",
 };
 
 export const predictions: PredictionsFile = data as PredictionsFile;
