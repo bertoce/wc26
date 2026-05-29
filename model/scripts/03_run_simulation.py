@@ -34,6 +34,12 @@ from wc26.ingest import (  # noqa: E402
     load_results,
     results_to_matches,
 )
+from wc26.injuries import (  # noqa: E402
+    adjusted_squad_value,
+    injury_impacts,
+    load_injuries,
+    out_value_for_team,
+)
 from wc26.priors import TeamPriorFeatures, apply_priors  # noqa: E402
 from wc26.simulator import (  # noqa: E402
     Fixture,
@@ -249,13 +255,28 @@ def main() -> None:
     # -----------------------------------------------------------------------
     header("STEP 6: Apply historical-pattern priors")
     # -----------------------------------------------------------------------
+    # Load injury data and adjust each team's effective squad value before
+    # passing to the market-value prior. `out` players' Transfermarkt values
+    # are subtracted; `doubtful` players are informational only.
+    injuries = load_injuries(ROOT / "model" / "data" / "static" / "injuries.json")
+    nonzero_impacts = [i for i in injury_impacts(injuries) if i.out_count > 0]
+    if nonzero_impacts:
+        print(f"  Applying injuries to {len(nonzero_impacts)} teams:")
+        for imp in sorted(nonzero_impacts, key=lambda i: -i.out_value_eur_m):
+            print(f"    {imp.team_tla}  −€{imp.out_value_eur_m:.0f}M  "
+                  f"({imp.out_count} out, {imp.doubtful_count} doubtful)")
+    else:
+        print(f"  No active injuries reported in injuries.json — squad values unchanged.")
+
     feat_objs = {
         tla: TeamPriorFeatures(
             confederation=f["confederation"],
             continent=f["continent"],
             prior_wins=f["prior_wins"],
             prior_semis=f["prior_semis"],
-            squad_value_eur_m=f["squad_value_eur_m"],
+            squad_value_eur_m=adjusted_squad_value(
+                f["squad_value_eur_m"], injuries, tla,
+            ),
         )
         for tla, f in features.items()
     }

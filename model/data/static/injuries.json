@@ -1,0 +1,31 @@
+{
+  "_meta": {
+    "description": "Manually-curated injury status for WC26 squads. Edit as news breaks.",
+    "schema": {
+      "TEAM_TLA": {
+        "out": [
+          { "name": "Player Name", "tm_value_eur_m": 200, "note": "free-text" }
+        ],
+        "doubtful": [
+          { "name": "Player Name", "tm_value_eur_m": 30, "note": "free-text" }
+        ]
+      }
+    },
+    "applied_how": "Sum of `out` players' tm_value_eur_m is subtracted from the team's total squad market value before the market-value prior is applied. `doubtful` is informational only — not subtracted.",
+    "as_of": "2026-05-29",
+    "instructions": "Populate `out` and `doubtful` per team. Use Transfermarkt for player values. Set tm_value_eur_m to 0 or omit if unknown — the team just won't get penalized for that specific player."
+  },
+
+  "ARG": { "out": [], "doubtful": [] },
+  "BRA": { "out": [], "doubtful": [] },
+  "ESP": { "out": [], "doubtful": [] },
+  "FRA": { "out": [], "doubtful": [] },
+  "ENG": { "out": [], "doubtful": [] },
+  "POR": { "out": [], "doubtful": [] },
+  "GER": { "out": [], "doubtful": [] },
+  "NED": { "out": [], "doubtful": [] },
+  "BEL": { "out": [], "doubtful": [] },
+  "URY": { "out": [], "doubtful": [] },
+  "COL": { "out": [], "doubtful": [] },
+  "CRO": { "out": [], "doubtful": [] }
+}
