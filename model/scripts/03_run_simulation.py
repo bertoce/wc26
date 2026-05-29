@@ -47,6 +47,13 @@ SEED = 2026
 RECENT_YEAR_CUTOFF = 2018
 HOST_CONTINENT = "North America"
 
+# Time-decay weighting for the Dixon-Coles fit. ln(2) ≈ 0.693 gives a 1-year
+# half-life — a match from 1 year ago counts ~50%, 2 years ~25%, 4 years ~6%,
+# 8 years ~0.4%. Net effect: the model reflects the *current* generation of
+# players, not the 2018 squads (Messi/Ronaldo of that era ≠ today's teams).
+DC_TIME_DECAY_PER_YEAR = 0.693
+DC_REF_YEAR = 2026
+
 # Tournaments to use for Dixon-Coles fit. Friendlies excluded — too noisy.
 COMPETITIVE_KEYWORDS = (
     "FIFA World Cup",
@@ -122,9 +129,14 @@ def main() -> None:
         for row in recent.itertuples(index=False)
     ]
 
-    print("  fitting Dixon-Coles (this may take 30-60s)...")
+    print(f"  fitting Dixon-Coles with time decay "
+          f"(1-yr half-life ≈ {DC_TIME_DECAY_PER_YEAR:.3f}/yr, ref={DC_REF_YEAR}) ...")
     model = DixonColesModel()
-    model.fit(dc_matches)
+    model.fit(
+        dc_matches,
+        time_decay_per_year=DC_TIME_DECAY_PER_YEAR,
+        ref_year=DC_REF_YEAR,
+    )
     print(f"  ✓ fit done.  home_advantage γ = {model.home_advantage:+.3f}  ρ = {model.rho:+.3f}")
     print(f"  ✓ parameters for {len(model.attack)} teams")
 

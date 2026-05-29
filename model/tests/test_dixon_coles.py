@@ -127,3 +127,93 @@ class TestDixonColesModelFit:
         p_home_at_home, _, p_away_at_home = model.predict_match("T0", "T1", neutral=False)
         # At home, T0's win prob should be higher than at neutral
         assert p_home_at_home > p_home_neutral
+
+
+class TestTimeDecay:
+    """Exponential time-decay weighting in DC.fit() should shift parameter
+    estimates toward more recent matches when a team's strength changes over time."""
+
+    def _synthesize_changing_team(self, seed: int = 42):
+        """Team T0 is WEAK from 2018-2022, then STRONG from 2023-2026.
+        Other teams are uniformly average. With time decay, fits should see
+        T0 as strong; without decay, fits should average it out toward zero."""
+        rng = np.random.default_rng(seed)
+        teams = [f"T{i}" for i in range(6)]
+        # T0 is the "changing" team. Others are average (0).
+        # Old era: T0 attack = -0.7  (weak)
+        # New era: T0 attack = +0.7  (strong)
+        matches = []
+
+        def add_matches(year: int, t0_attack: float, n: int):
+            for _ in range(n):
+                home, away = rng.choice(teams, size=2, replace=False)
+                a_h = t0_attack if home == "T0" else 0.0
+                a_a = t0_attack if away == "T0" else 0.0
+                # Everyone has neutral defence
+                lam = np.exp(a_h + 0.0 + 0.0)  # neutral venue, no defence shift
+                mu = np.exp(a_a + 0.0)
+                hg = rng.poisson(lam)
+                ag = rng.poisson(mu)
+                matches.append({
+                    "date": f"{year}-06-15",
+                    "home": home, "away": away,
+                    "home_goals": int(hg), "away_goals": int(ag),
+                    "neutral": True,
+                })
+
+        # 5 matches/year in old era (weak T0): 2018-2022 = 5 years × 60 matches = 300 matches
+        for yr in (2018, 2019, 2020, 2021, 2022):
+            add_matches(yr, t0_attack=-0.7, n=60)
+        # Same volume in new era (strong T0): 2023-2026 = 4 years × 60 matches = 240 matches
+        for yr in (2023, 2024, 2025, 2026):
+            add_matches(yr, t0_attack=+0.7, n=60)
+
+        return matches
+
+    def test_no_decay_averages_eras(self):
+        """Without time decay, the fit should land between the two eras' values.
+        Since old-era matches (n=300, weak) outweigh new-era (n=240, strong),
+        T0's estimated attack should be on the negative side or near zero."""
+        matches = self._synthesize_changing_team()
+        model = DixonColesModel()
+        model.fit(matches, time_decay_per_year=0.0)
+        # Without decay, T0 is averaged. Should be in [-0.7, +0.7] but closer to 0
+        # because the two eras pull it both ways. The KEY assertion is that it's
+        # clearly NOT at +0.7 (the recent value).
+        assert model.attack["T0"] < 0.3, (
+            f"Without decay, T0 attack={model.attack['T0']:+.3f} — should be averaged, not recent-dominated"
+        )
+
+    def test_decay_shifts_toward_recent(self):
+        """With a 1-year half-life (ln(2) ≈ 0.693), recent matches dominate.
+        Matches from 2018 (8 years ago) get weight ~0.004 — effectively ignored.
+        T0's estimated attack should be much closer to +0.7 than to 0 or -0.7."""
+        matches = self._synthesize_changing_team()
+        model = DixonColesModel()
+        model.fit(matches, time_decay_per_year=0.693, ref_year=2026)
+        # Recent value is +0.7. Fit should be near it (within sampling noise).
+        assert model.attack["T0"] > 0.3, (
+            f"With decay, T0 attack={model.attack['T0']:+.3f} — should reflect recent +0.7 strength"
+        )
+
+    def test_decay_estimate_closer_to_recent_than_no_decay(self):
+        """Direct comparison: decay-fit's T0 attack should be CLOSER to +0.7 (recent)
+        than no-decay-fit's T0 attack."""
+        matches = self._synthesize_changing_team()
+        m_no = DixonColesModel(); m_no.fit(matches, time_decay_per_year=0.0)
+        m_yes = DixonColesModel(); m_yes.fit(matches, time_decay_per_year=0.693, ref_year=2026)
+        recent_truth = 0.7
+        no_decay_dist = abs(m_no.attack["T0"] - recent_truth)
+        with_decay_dist = abs(m_yes.attack["T0"] - recent_truth)
+        assert with_decay_dist < no_decay_dist, (
+            f"Decay distance to recent={with_decay_dist:.3f} should be < "
+            f"no-decay distance={no_decay_dist:.3f}"
+        )
+
+    def test_zero_decay_equals_no_decay(self):
+        """time_decay_per_year=0 must produce the same fit as omitting the argument."""
+        matches = self._synthesize_changing_team()
+        m1 = DixonColesModel(); m1.fit(matches)
+        m2 = DixonColesModel(); m2.fit(matches, time_decay_per_year=0.0)
+        for t in m1.attack:
+            assert m1.attack[t] == pytest.approx(m2.attack[t], abs=1e-6)
