@@ -76,7 +76,13 @@ export default function Home() {
           </CardTitle>
           <p className="text-xs text-muted-foreground mt-1">
             Each cell: chance the team reaches that round, across {meta.n_sims.toLocaleString()} simulated tournaments.
-            Sorted by P(reach R32).
+            Rows sorted by the published cup probability.
+            <br />
+            <span className="text-[11px]">
+              R32–Final columns are the raw simulator output (pattern priors don&apos;t affect per-round survival).
+              The <strong>Win*</strong> column shows the prior-adjusted probability that matches the headline +
+              chart above.
+            </span>
           </p>
         </CardHeader>
         <CardContent className="px-0 sm:px-6 pb-0 sm:pb-6">
