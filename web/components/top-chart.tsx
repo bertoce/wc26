@@ -71,8 +71,8 @@ export function TopChart({ data }: TopChartProps) {
           {chartData.map((entry, idx) => (
             <Cell
               key={entry.tla}
-              fill={idx === 0 ? "var(--color-primary)" : "var(--color-muted-foreground)"}
-              fillOpacity={idx === 0 ? 1 : 0.55}
+              fill={idx === 0 ? "var(--color-chart-accent)" : "var(--color-chart-muted)"}
+              fillOpacity={idx === 0 ? 1 : 0.6}
             />
           ))}
         </Bar>
