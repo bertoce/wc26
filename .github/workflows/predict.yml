@@ -45,12 +45,14 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      # actions/checkout@v5 and setup-python@v6 run on Node.js 24, dodging
+      # the deprecation of Node.js 20 on GitHub runners on 2026-06-02.
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 1
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
           cache: 'pip'
@@ -63,8 +65,15 @@ jobs:
         working-directory: model
         run: |
           pip install --upgrade pip
+          # Deps are exact-pinned in requirements.txt — no surprise upgrades.
           pip install -r requirements.txt
           pip install -e .
+
+      # Sanity test before we trust the pipeline output enough to deploy it.
+      # 64 tests covering Elo, Dixon-Coles, simulator, priors, bracket seeding.
+      - name: Run tests
+        working-directory: model
+        run: pytest -q
 
       - name: Run prediction pipeline
         working-directory: model
@@ -114,9 +123,11 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         working-directory: web
         run: |
-          # pnpm is needed because vercel build reads pnpm-lock.yaml and shells
+          # pnpm needed because vercel build reads pnpm-lock.yaml and shells
           # out to `pnpm install` — ENOENT otherwise on a fresh GH runner.
-          npm install -g vercel@latest pnpm@11
+          # Lockfile is v9.0 (pnpm 9/10); Vercel picks pnpm@10 by default for
+          # this project, so we match that to avoid lockfile-mismatch errors.
+          npm install -g vercel@latest pnpm@10
           vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
           vercel build --prod --token="$VERCEL_TOKEN"
           vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
