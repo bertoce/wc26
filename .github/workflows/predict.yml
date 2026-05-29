@@ -28,6 +28,11 @@ on:
     # by adding e.g. '*/30 12-23 * 6-7 *' for June-July match-window hours.
     - cron: '0 12 * * *'
   workflow_dispatch:  # manual trigger from the Actions tab
+    inputs:
+      force_deploy:
+        description: 'Deploy to Vercel even if predictions did not change (useful for testing or re-publishing the same data)'
+        type: boolean
+        default: false
 
 # Avoid concurrent runs racing on the same commit
 concurrency:
@@ -102,7 +107,7 @@ jobs:
       # (which fails because the project's Root Directory is the repo root
       # but the Next.js app lives in web/).
       - name: Deploy to Vercel
-        if: steps.commit.outputs.changed == 'true' && env.VERCEL_TOKEN != ''
+        if: (steps.commit.outputs.changed == 'true' || inputs.force_deploy == true) && env.VERCEL_TOKEN != ''
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
