@@ -47,6 +47,27 @@ MARKET_VALUE_CENTER_EUR_M: float = 400.0
 MARKET_VALUE_SCALE: float = 1000.0  # log-odds change per €1B above center
 
 
+# Team-chemistry log-odds bumps. Hand-curated ratings —
+#   high   = settled squad, coach continuity, recent unity signals
+#   medium = ordinary or unclear
+#   low    = recent upheaval, dressing-room issues, new manager
+# Magnitudes are intentionally small (~10 pp shifts at moderate baselines)
+# since chemistry is an unmeasured signal and we don't want it to dominate.
+CHEMISTRY_LOG_ODDS: dict[str, float] = {
+    "high":   +0.10,
+    "medium":  0.0,
+    "low":    -0.10,
+}
+
+
+def chemistry_log_odds(rating: str | None) -> float:
+    """Look up the log-odds bump for a chemistry rating. Unknown ratings
+    (None, empty string, or any string not in CHEMISTRY_LOG_ODDS) return 0."""
+    if not rating:
+        return 0.0
+    return CHEMISTRY_LOG_ODDS.get(rating, 0.0)
+
+
 @dataclass
 class TeamPriorFeatures:
     confederation: str
@@ -54,6 +75,7 @@ class TeamPriorFeatures:
     prior_wins: int = 0       # FIFA World Cup wins
     prior_semis: int = 0      # FIFA World Cup semifinal appearances (incl. wins)
     squad_value_eur_m: float = MARKET_VALUE_CENTER_EUR_M
+    chemistry: str | None = None  # "high" | "medium" | "low" | None
 
 
 def confederation_log_odds(confederation: str) -> float:
@@ -102,6 +124,7 @@ def apply_priors(
             + host_continent_log_odds(f.continent, host_continent)
             + pedigree_log_odds(f.prior_wins, f.prior_semis)
             + market_value_log_odds(f.squad_value_eur_m)
+            + chemistry_log_odds(f.chemistry)
         )
         adjusted[team] = max(p * exp(log_adj), 0.0)
 

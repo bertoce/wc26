@@ -268,6 +268,18 @@ def main() -> None:
     else:
         print(f"  No active injuries reported in injuries.json — squad values unchanged.")
 
+    # Load team chemistry ratings (hand-curated). Missing teams / "medium" → 0 bump.
+    chem_path = ROOT / "model" / "data" / "static" / "team_chemistry.json"
+    chemistry_data = json.loads(chem_path.read_text()) if chem_path.exists() else {}
+    chemistry_data = {k: v for k, v in chemistry_data.items() if not k.startswith("_")}
+    n_high = sum(1 for v in chemistry_data.values() if v.get("chemistry") == "high")
+    n_low = sum(1 for v in chemistry_data.values() if v.get("chemistry") == "low")
+    if n_high or n_low:
+        print(f"  Chemistry overrides: {n_high} high, {n_low} low "
+              f"(rest neutral or unset)")
+    else:
+        print(f"  No chemistry overrides set — all teams treated as neutral.")
+
     feat_objs = {
         tla: TeamPriorFeatures(
             confederation=f["confederation"],
@@ -277,6 +289,7 @@ def main() -> None:
             squad_value_eur_m=adjusted_squad_value(
                 f["squad_value_eur_m"], injuries, tla,
             ),
+            chemistry=chemistry_data.get(tla, {}).get("chemistry"),
         )
         for tla, f in features.items()
     }

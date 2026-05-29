@@ -9,6 +9,7 @@ These encode the empirical patterns from past World Cups:
 
 import pytest
 from wc26.priors import (
+    chemistry_log_odds,
     confederation_log_odds,
     host_continent_log_odds,
     pedigree_log_odds,
@@ -72,6 +73,36 @@ class TestMarketValuePrior:
         assert market_value_log_odds(squad_value_eur_m=400.0) == pytest.approx(0.0, abs=0.5)
 
 
+class TestChemistryPrior:
+    """Team chemistry is a small hand-curated bump — 'high' = settled squad
+    with coach continuity, 'low' = recent upheaval, 'medium' (or missing) = neutral."""
+
+    def test_high_chemistry_positive(self):
+        assert chemistry_log_odds("high") > 0
+
+    def test_medium_chemistry_zero(self):
+        assert chemistry_log_odds("medium") == pytest.approx(0.0)
+
+    def test_low_chemistry_negative(self):
+        assert chemistry_log_odds("low") < 0
+
+    def test_missing_or_none_is_zero(self):
+        """Unknown ratings should be treated as neutral, not penalized."""
+        assert chemistry_log_odds(None) == pytest.approx(0.0)
+        assert chemistry_log_odds("") == pytest.approx(0.0)
+        assert chemistry_log_odds("unknown") == pytest.approx(0.0)
+
+    def test_high_greater_than_low(self):
+        assert chemistry_log_odds("high") > chemistry_log_odds("low")
+
+    def test_magnitude_modest(self):
+        """The bump should be modest — chemistry is seasoning, not the main course.
+        |log_odds| should stay below 0.25 so a single rating can't flip a
+        prediction's ordering by more than ~30% relative."""
+        assert abs(chemistry_log_odds("high")) <= 0.25
+        assert abs(chemistry_log_odds("low")) <= 0.25
+
+
 class TestApplyPriors:
     def test_returns_normalized_probabilities(self):
         """After applying priors and renormalizing, probs must sum to 1."""
@@ -120,3 +151,29 @@ class TestApplyPriors:
         adjusted = apply_priors(base, features, host_continent="North America")
         assert adjusted["FRA"] > 0.5
         assert adjusted["JPN"] < 0.5
+
+    def test_chemistry_shifts_otherwise_equal_teams(self):
+        """Two teams with identical baselines & priors should diverge purely on chemistry."""
+        base = {"A": 0.5, "B": 0.5}
+        common = {"confederation": "UEFA", "continent": "Europe",
+                  "prior_wins": 0, "prior_semis": 0, "squad_value_eur_m": 400}
+        features = {
+            "A": TeamPriorFeatures(**common, chemistry="high"),
+            "B": TeamPriorFeatures(**common, chemistry="low"),
+        }
+        adjusted = apply_priors(base, features, host_continent="North America")
+        assert adjusted["A"] > 0.5
+        assert adjusted["B"] < 0.5
+
+    def test_chemistry_default_does_not_shift(self):
+        """If chemistry is left unset (default None), it should produce 0 bump."""
+        base = {"A": 0.5, "B": 0.5}
+        common = {"confederation": "UEFA", "continent": "Europe",
+                  "prior_wins": 0, "prior_semis": 0, "squad_value_eur_m": 400}
+        features = {
+            "A": TeamPriorFeatures(**common),
+            "B": TeamPriorFeatures(**common),
+        }
+        adjusted = apply_priors(base, features, host_continent="North America")
+        assert adjusted["A"] == pytest.approx(0.5)
+        assert adjusted["B"] == pytest.approx(0.5)
