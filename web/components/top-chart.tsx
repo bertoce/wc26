@@ -55,6 +55,10 @@ export function TopChart({ data }: TopChartProps) {
             color: "var(--color-foreground)",
             fontSize: 12,
           }}
+          // Recharts sets inline color: black on these internal nodes by default,
+          // so contentStyle alone leaves the text unreadable in dark mode.
+          itemStyle={{ color: "var(--color-foreground)" }}
+          labelStyle={{ color: "var(--color-muted-foreground)", marginBottom: 4 }}
           formatter={(value, name) => {
             const v = typeof value === "number" ? value : Number(value);
             return [
