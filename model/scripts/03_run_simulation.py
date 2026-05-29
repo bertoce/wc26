@@ -47,6 +47,7 @@ from wc26.simulator import (  # noqa: E402
     predict_group_fixtures,
     simulate_tournament,
 )
+from wc26.venues import is_host_home_fixture  # noqa: E402
 
 N_SIMS = 20_000
 SEED = 2026
@@ -208,6 +209,7 @@ def main() -> None:
     fixtures: list[Fixture] = []
     fixture_dates: dict[tuple[str, str, str | None], str] = {}
     skipped = 0
+    n_host_home = 0
     for m in group_matches:
         home_tla = m["homeTeam"].get("tla")
         away_tla = m["awayTeam"].get("tla")
@@ -215,10 +217,16 @@ def main() -> None:
             skipped += 1
             continue
         group = (m.get("group") or "").replace("GROUP_", "") or None
+        # Host nations (MEX/USA/CAN) play their group matches in their own
+        # country and get home advantage. All other group matches and all
+        # knockouts are treated as neutral.
+        host_home = is_host_home_fixture(home_tla, "group")
+        if host_home:
+            n_host_home += 1
         fixtures.append(Fixture(
             home=home_tla,
             away=away_tla,
-            neutral=True,  # tournament played in USA/Canada/Mexico — treat all as neutral
+            neutral=not host_home,
             stage="group",
             group=group,
         ))
@@ -226,7 +234,8 @@ def main() -> None:
     if skipped:
         print(f"  ⚠ skipped {skipped} matches with missing team data (likely TBD slots)")
     print(f"  {len(fixtures)} usable group fixtures across "
-          f"{len({f.group for f in fixtures})} groups")
+          f"{len({f.group for f in fixtures})} groups "
+          f"({n_host_home} with host-team home advantage)")
 
     # -----------------------------------------------------------------------
     header("STEP 5: Run tournament simulator")
@@ -417,7 +426,7 @@ def main() -> None:
             "dc_home_advantage": model.home_advantage,
             "dc_rho": model.rho,
             "dc_fit_matches": len(dc_matches),
-            "model_version": "0.3.0",
+            "model_version": "0.4.0",
         },
         "predictions": [
             {
