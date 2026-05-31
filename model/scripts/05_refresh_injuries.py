@@ -14,6 +14,8 @@ against whatever injuries.json was last committed.
 API budget: 1 request per team = ~48/day, well under the 100/day free tier.
 """
 
+from __future__ import annotations  # local Python is 3.9 — needed for new-style type hints
+
 import json
 import os
 import sys

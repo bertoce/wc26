@@ -13,6 +13,8 @@ Re-run only if:
   - API-Football changes a team's ID (very rare)
 """
 
+from __future__ import annotations  # local Python is 3.9 — needed for `int | None`
+
 import json
 import os
 import sys
