@@ -68,7 +68,18 @@ def main() -> None:
     for tla, err in errors:
         print(f"  ERROR {tla}: {err}")
 
-    # Run through aggregator (Phase 2 will pass more sources here)
+    # SAFETY: if no source returned any injury data, do NOT touch
+    # injuries.json. This preserves manual edits — otherwise a cron run with
+    # an empty fetch would wipe a user-curated file.
+    #
+    # API-Football's free plan returns 0 injuries for WC26 (the tournament is
+    # on a paid season). Until we get a working source, we treat empty fetches
+    # as "no info" rather than "no injuries".
+    if not af_injuries:
+        print("  No injury data from any source — leaving injuries.json untouched.")
+        print("  (Manual edits to injuries.json are preserved.)")
+        return
+
     merged = merge_injuries(af_injuries)
 
     # Preserve _meta block from the existing injuries.json (schema docs, etc.)
