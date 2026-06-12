@@ -228,6 +228,98 @@ class TestPredictGroupFixtures:
         assert len(preds) == 1
 
 
+class TestKnownResults:
+    """Once a match has actually been played, every simulation must use the
+    real score for it — only unplayed fixtures get simulated."""
+
+    @pytest.fixture
+    def tiny_field(self):
+        teams = [
+            Team(code="STR", name="Strong", attack=0.6, defence=-0.6, confederation="UEFA"),
+            Team(code="GD2", name="Good", attack=0.2, defence=-0.2, confederation="UEFA"),
+            Team(code="AVG", name="Average", attack=0.0, defence=0.0, confederation="AFC"),
+            Team(code="WK1", name="Weak", attack=-0.5, defence=0.5, confederation="CAF"),
+        ]
+        fixtures = [
+            Fixture(home="STR", away="GD2", neutral=True, stage="group", group="A"),
+            Fixture(home="STR", away="AVG", neutral=True, stage="group", group="A"),
+            Fixture(home="STR", away="WK1", neutral=True, stage="group", group="A"),
+            Fixture(home="GD2", away="AVG", neutral=True, stage="group", group="A"),
+            Fixture(home="GD2", away="WK1", neutral=True, stage="group", group="A"),
+            Fixture(home="AVG", away="WK1", neutral=True, stage="group", group="A"),
+        ]
+        return teams, fixtures
+
+    def test_locked_upset_changes_outcome_distribution(self, tiny_field):
+        """Lock 'weak team thrashed the strong team 4-0'. The strong team's
+        win probability must drop sharply vs the unconditioned run, because
+        in every universe it now carries an -4 GD loss."""
+        teams, fixtures = tiny_field
+        unconditioned = simulate_tournament(
+            teams=teams, fixtures=fixtures, n_sims=2000, seed=42,
+        )
+        conditioned = simulate_tournament(
+            teams=teams, fixtures=fixtures, n_sims=2000, seed=42,
+            known_results=[
+                {"home": "STR", "away": "WK1", "group": "A",
+                 "home_goals": 0, "away_goals": 4},
+            ],
+        )
+        assert conditioned["win_probability"]["STR"] < unconditioned["win_probability"]["STR"]
+        # And the weak team — now guaranteed 3 points + huge GD — improves
+        assert conditioned["win_probability"]["WK1"] > unconditioned["win_probability"]["WK1"]
+
+    def test_all_group_matches_locked_makes_groups_deterministic(self, tiny_field):
+        """If every group match is locked, group standings are identical in
+        every sim — only the knockout varies. The advancement probabilities
+        must be exactly 0 or 1."""
+        teams, fixtures = tiny_field
+        # Lock all 6 matches: STR wins all, GD2 beats AVG+WK1, AVG beats WK1
+        known = [
+            {"home": "STR", "away": "GD2", "group": "A", "home_goals": 2, "away_goals": 0},
+            {"home": "STR", "away": "AVG", "group": "A", "home_goals": 2, "away_goals": 0},
+            {"home": "STR", "away": "WK1", "group": "A", "home_goals": 2, "away_goals": 0},
+            {"home": "GD2", "away": "AVG", "group": "A", "home_goals": 1, "away_goals": 0},
+            {"home": "GD2", "away": "WK1", "group": "A", "home_goals": 1, "away_goals": 0},
+            {"home": "AVG", "away": "WK1", "group": "A", "home_goals": 1, "away_goals": 0},
+        ]
+        results = simulate_tournament(
+            teams=teams, fixtures=fixtures, n_sims=500, seed=7,
+            known_results=known,
+        )
+        # Top 2 (STR 9pts, GD2 6pts) always reach the 2-team knockout;
+        # AVG (3pts) and WK1 (0pts) never do.
+        surv = results["round_survival"]
+        assert surv["STR"][2] == pytest.approx(1.0)
+        assert surv["GD2"][2] == pytest.approx(1.0)
+        assert surv["AVG"].get(2, 0.0) == pytest.approx(0.0)
+        assert surv["WK1"].get(2, 0.0) == pytest.approx(0.0)
+
+    def test_no_known_results_identical_to_omitting_param(self, tiny_field):
+        """known_results=None and known_results=[] both equal the old behaviour."""
+        teams, fixtures = tiny_field
+        base = simulate_tournament(teams=teams, fixtures=fixtures, n_sims=300, seed=11)
+        with_none = simulate_tournament(teams=teams, fixtures=fixtures, n_sims=300, seed=11,
+                                        known_results=None)
+        with_empty = simulate_tournament(teams=teams, fixtures=fixtures, n_sims=300, seed=11,
+                                         known_results=[])
+        assert base["win_probability"] == with_none["win_probability"]
+        assert base["win_probability"] == with_empty["win_probability"]
+
+    def test_unknown_fixture_in_known_results_ignored(self, tiny_field):
+        """A known result for a fixture not in the schedule shouldn't crash
+        or distort — it's just ignored."""
+        teams, fixtures = tiny_field
+        results = simulate_tournament(
+            teams=teams, fixtures=fixtures, n_sims=200, seed=3,
+            known_results=[
+                {"home": "XXX", "away": "YYY", "group": "Z",
+                 "home_goals": 1, "away_goals": 0},
+            ],
+        )
+        assert sum(results["win_probability"].values()) == pytest.approx(1.0, abs=0.01)
+
+
 class TestRoundSurvival:
     """Per-team probabilities of reaching each round of the tournament."""
 

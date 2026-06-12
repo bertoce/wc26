@@ -97,8 +97,11 @@ jobs:
           # Author commits as the repo owner so they link to the GitHub profile
           git config user.name  "brto"
           git config user.email "beto.ceballos@gmail.com"
-          # Also commit injuries.json refresh (the refresh step may have rewritten it)
-          git add web/lib/data/predictions.json model/data/static/injuries.json
+          # Also commit injuries.json refresh (the refresh step may have
+          # rewritten it) and the pre-match snapshot store (accumulates
+          # frozen predictions for finished matches across runs).
+          git add web/lib/data/predictions.json model/data/static/injuries.json \
+                  model/data/state/prematch_snapshots.json
 
           if git diff --staged --quiet -- web/lib/data/predictions.json; then
             echo "No prediction changes — skipping commit."

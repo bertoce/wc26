@@ -41,6 +41,8 @@ from wc26.injuries import (  # noqa: E402
     out_value_for_team,
 )
 from wc26.priors import TeamPriorFeatures, apply_priors  # noqa: E402
+from wc26.results import extract_finished_group_results, result_key  # noqa: E402
+from wc26.snapshots import load_snapshots, save_snapshots, update_snapshots  # noqa: E402
 from wc26.simulator import (  # noqa: E402
     Fixture,
     Team,
@@ -201,10 +203,27 @@ def main() -> None:
         for tla, name in missing_dc:
             print(f"      {tla}  {name}")
 
-    # Fixtures: only the 72 group-stage matches
-    fd_matches = fetch_wc26_matches()["matches"]
+    # Fixtures: only the 72 group-stage matches.
+    # force=True — during the tournament, match statuses + scores change
+    # between runs; a stale cache would hide finished results.
+    fd_matches = fetch_wc26_matches(force=True)["matches"]
     group_matches = [m for m in fd_matches if m["stage"] == "GROUP_STAGE"]
     print(f"  {len(group_matches)} group-stage matches scheduled")
+
+    # Extract real results for matches already played — these get locked
+    # into every simulation instead of being re-simulated.
+    known_results = extract_finished_group_results(fd_matches)
+    finished_keys = {
+        result_key(kr["group"], kr["home"], kr["away"]) for kr in known_results
+    }
+    if known_results:
+        print(f"  {len(known_results)} group matches FINISHED — locking real scores:")
+        for kr in known_results[:6]:
+            print(f"    {kr['group']}  {kr['home']} {kr['home_goals']}–{kr['away_goals']} {kr['away']}")
+        if len(known_results) > 6:
+            print(f"    … and {len(known_results) - 6} more")
+    else:
+        print("  No finished group matches yet — all 72 fixtures simulated.")
 
     fixtures: list[Fixture] = []
     fixture_dates: dict[tuple[str, str, str | None], str] = {}
@@ -251,6 +270,7 @@ def main() -> None:
         rho=model.rho,
         qualifiers_per_group=2,
         best_thirds=8,
+        known_results=known_results,
     )
 
     raw_probs = results["win_probability"]
@@ -351,6 +371,61 @@ def main() -> None:
               f"H/D/A = {p['p_home_win']*100:4.1f}% / {p['p_draw']*100:4.1f}% / {p['p_away_win']*100:4.1f}%  "
               f"xG = {p['expected_home_goals']:.2f}–{p['expected_away_goals']:.2f}")
 
+    # -----------------------------------------------------------------------
+    # Pre-match snapshot store: freeze predictions for finished fixtures.
+    # The dashboard's "predicted vs actual" comparison uses the FROZEN
+    # pre-match numbers, never the latest re-fit (which has seen the result).
+    # -----------------------------------------------------------------------
+    snapshots_path = ROOT / "model" / "data" / "state" / "prematch_snapshots.json"
+    snapshots = load_snapshots(snapshots_path)
+    snapshots = update_snapshots(snapshots, group_preds, finished_keys)
+    save_snapshots(snapshots_path, snapshots)
+    n_frozen = sum(1 for k in snapshots if k in finished_keys)
+    print(f"  snapshot store: {len(snapshots)} fixtures tracked, {n_frozen} frozen")
+
+    # Actual scores for finished matches, keyed like the snapshot store
+    actuals: dict[str, dict] = {}
+    for kr in known_results:
+        actuals[result_key(kr["group"], kr["home"], kr["away"])] = kr
+
+    def _outcome(hg: int, ag: int) -> str:
+        return "H" if hg > ag else ("A" if ag > hg else "D")
+
+    def _predicted_outcome(p: dict) -> str:
+        probs = {"H": p["p_home_win"], "D": p["p_draw"], "A": p["p_away_win"]}
+        return max(probs, key=probs.get)
+
+    # Enrich each fixture entry: status, actual score, frozen pre-match probs
+    enriched_preds = []
+    for gp in group_preds:
+        key = result_key(gp["group"], gp["home"], gp["away"])
+        entry = dict(gp)
+        actual = actuals.get(key)
+        if actual is not None:
+            snap = snapshots.get(key, {})
+            # Use the FROZEN pre-match probabilities for display
+            for f in ("p_home_win", "p_draw", "p_away_win",
+                      "expected_home_goals", "expected_away_goals"):
+                if f in snap:
+                    entry[f] = snap[f]
+            entry["status"] = "FINISHED"
+            entry["actual_home_goals"] = actual["home_goals"]
+            entry["actual_away_goals"] = actual["away_goals"]
+            entry["prediction_post_hoc"] = bool(snap.get("post_hoc", False))
+            entry["predicted_outcome"] = _predicted_outcome(entry)
+            entry["actual_outcome"] = _outcome(actual["home_goals"], actual["away_goals"])
+            entry["prediction_hit"] = entry["predicted_outcome"] == entry["actual_outcome"]
+        else:
+            entry["status"] = "SCHEDULED"
+        enriched_preds.append(entry)
+    group_preds = enriched_preds
+
+    n_finished = sum(1 for p in group_preds if p["status"] == "FINISHED")
+    if n_finished:
+        n_hits = sum(1 for p in group_preds if p.get("prediction_hit"))
+        print(f"  finished: {n_finished} matches — model's most-likely outcome "
+              f"hit {n_hits}/{n_finished}")
+
     # Round-survival named for WC26 (32→R32, 16→R16, 8→QF, 4→SF, 2→F, 1→Win)
     ROUND_NAMES = {32: "reach_r32", 16: "reach_r16", 8: "reach_qf",
                    4: "reach_sf", 2: "reach_final", 1: "win"}
@@ -426,7 +501,8 @@ def main() -> None:
             "dc_home_advantage": model.home_advantage,
             "dc_rho": model.rho,
             "dc_fit_matches": len(dc_matches),
-            "model_version": "0.4.0",
+            "model_version": "0.5.0",
+            "n_finished_matches": len(known_results),
         },
         "predictions": [
             {

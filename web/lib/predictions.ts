@@ -34,6 +34,8 @@ export type Prediction = {
   round_probability?: Partial<Record<RoundKey, number>>;
 };
 
+export type MatchOutcome = "H" | "D" | "A";
+
 export type GroupMatch = {
   group: string | null;
   home: string;
@@ -42,11 +44,23 @@ export type GroupMatch = {
   away_name: string;
   neutral: boolean;
   utc_date: string;
+  /** For FINISHED matches these are the FROZEN pre-match probabilities —
+   * what the model said before kickoff, never retro-fitted. */
   p_home_win: number;
   p_draw: number;
   p_away_win: number;
   expected_home_goals: number;
   expected_away_goals: number;
+  status?: "FINISHED" | "SCHEDULED";
+  actual_home_goals?: number;
+  actual_away_goals?: number;
+  predicted_outcome?: MatchOutcome;
+  actual_outcome?: MatchOutcome;
+  prediction_hit?: boolean;
+  /** True when the match finished before we ever snapshotted it — the
+   * "pre-match" numbers were computed by a model that had already seen
+   * the result. Take the comparison with a grain of salt. */
+  prediction_post_hoc?: boolean;
 };
 
 export type KnockoutMatch = {
@@ -84,6 +98,7 @@ export type PredictionsFile = {
     dc_rho: number;
     dc_fit_matches: number;
     model_version: string;
+    n_finished_matches?: number;
   };
   predictions: Prediction[];
   group_matches: GroupMatch[];

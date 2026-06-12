@@ -116,8 +116,14 @@ def _simulate_group_stage(
     home_advantage: float,
     rho: float,
     rng: np.random.Generator,
+    locked_results: dict[tuple[str, str], tuple[int, int]] | None = None,
 ) -> dict[str, list[GroupStanding]]:
-    """Run all group fixtures and return standings per group."""
+    """Run all group fixtures and return standings per group.
+
+    locked_results maps (home, away) → (home_goals, away_goals) for matches
+    that have actually been played — those scores are applied verbatim in
+    every simulation instead of being drawn from the model.
+    """
     # Initialise standings — group by Fixture.group, falling back to a single "X" group
     by_group: dict[str, dict[str, GroupStanding]] = defaultdict(dict)
     for f in fixtures:
@@ -128,10 +134,14 @@ def _simulate_group_stage(
 
     for f in fixtures:
         g = f.group or "X"
-        lam, mu = _expected_goals(
-            f.home, f.away, teams_by_code, home_advantage, rho, neutral=f.neutral
-        )
-        hg, ag = simulate_match(lam, mu, rng)
+        locked = (locked_results or {}).get((f.home, f.away))
+        if locked is not None:
+            hg, ag = locked
+        else:
+            lam, mu = _expected_goals(
+                f.home, f.away, teams_by_code, home_advantage, rho, neutral=f.neutral
+            )
+            hg, ag = simulate_match(lam, mu, rng)
         h = by_group[g][f.home]
         a = by_group[g][f.away]
         h.played += 1; a.played += 1
@@ -347,13 +357,26 @@ def simulate_tournament(
     rho: float = -0.1,
     qualifiers_per_group: int = 2,
     best_thirds: int = 0,
+    known_results: list[dict] | None = None,
 ) -> dict:
     """Simulate the tournament n_sims times and return per-team win probabilities.
 
     For the test fixture (1 group of 4): qualifiers_per_group=2 → top-2 to final.
     For WC26 (12 groups of 4): qualifiers_per_group=2, best_thirds=8 → 32 teams to R32.
+
+    known_results: list of {home, away, group, home_goals, away_goals} dicts
+    for matches already played in the real tournament. Those fixtures use the
+    actual score in every simulation; only the remaining fixtures vary.
+    Results referencing fixtures not in the schedule are silently ignored.
     """
     teams_by_code = {t.code: t for t in teams}
+    # Build (home, away) → (hg, ag) lookup, restricted to fixtures that exist
+    scheduled_pairs = {(f.home, f.away) for f in fixtures}
+    locked_results: dict[tuple[str, str], tuple[int, int]] = {}
+    for kr in known_results or []:
+        pair = (kr["home"], kr["away"])
+        if pair in scheduled_pairs:
+            locked_results[pair] = (int(kr["home_goals"]), int(kr["away_goals"]))
     win_counts: dict[str, int] = defaultdict(int)
     # round_counts[tla][k] = number of sims where the team was alive when k teams remained
     round_counts: dict[str, dict[int, int]] = {
@@ -367,7 +390,8 @@ def simulate_tournament(
 
     for _ in range(n_sims):
         standings = _simulate_group_stage(
-            fixtures, teams_by_code, home_advantage, rho, rng
+            fixtures, teams_by_code, home_advantage, rho, rng,
+            locked_results=locked_results,
         )
         # Collect top-N from each group
         advancers: list[str] = []
