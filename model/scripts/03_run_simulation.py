@@ -42,7 +42,11 @@ from wc26.injuries import (  # noqa: E402
 )
 from wc26.priors import TeamPriorFeatures, apply_priors  # noqa: E402
 from wc26.history import append_history  # noqa: E402
-from wc26.results import extract_finished_group_results, result_key  # noqa: E402
+from wc26.results import (  # noqa: E402
+    extract_finished_group_results,
+    known_results_to_dc_matches,
+    result_key,
+)
 from wc26.snapshots import load_snapshots, save_snapshots, update_snapshots  # noqa: E402
 from wc26.simulator import (  # noqa: E402
     Fixture,
@@ -97,7 +101,9 @@ def main() -> None:
     # -----------------------------------------------------------------------
     header("STEP 1: Load historical international results")
     # -----------------------------------------------------------------------
-    df = load_results()
+    # force=True — during the tournament the dataset updates with real WC
+    # results within days; a stale local cache would hide them from the fit.
+    df = load_results(force=True)
     print(f"  loaded {len(df):,} matches ({df.date.min().date()} → {df.date.max().date()})")
 
     # -----------------------------------------------------------------------
@@ -138,6 +144,22 @@ def main() -> None:
         }
         for row in recent.itertuples(index=False)
     ]
+
+    # Fetch the WC26 schedule now (force=True — statuses change during the
+    # tournament) and inject any FINISHED results straight into the fit.
+    # The martj42 CSV lags real matches by days; injecting fd.org's results
+    # means team strengths react within minutes of full-time. Dedup inside
+    # known_results_to_dc_matches prevents double-counting once the CSV
+    # catches up.
+    fd_matches = fetch_wc26_matches(force=True)["matches"]
+    known_results = extract_finished_group_results(fd_matches)
+    tla_to_hist_name = {tla: f["name_historical"] for tla, f in features.items()}
+    injected = known_results_to_dc_matches(known_results, tla_to_hist_name, dc_matches)
+    if injected:
+        print(f"  injecting {len(injected)} finished tournament matches into the fit:")
+        for r in injected:
+            print(f"    {r['date']}  {r['home']} {r['home_goals']}–{r['away_goals']} {r['away']}")
+        dc_matches.extend(injected)
 
     print(f"  fitting Dixon-Coles with time decay "
           f"(1-yr half-life ≈ {DC_TIME_DECAY_PER_YEAR:.3f}/yr, ref={DC_REF_YEAR}) ...")
@@ -204,16 +226,12 @@ def main() -> None:
         for tla, name in missing_dc:
             print(f"      {tla}  {name}")
 
-    # Fixtures: only the 72 group-stage matches.
-    # force=True — during the tournament, match statuses + scores change
-    # between runs; a stale cache would hide finished results.
-    fd_matches = fetch_wc26_matches(force=True)["matches"]
+    # Fixtures: only the 72 group-stage matches. fd_matches + known_results
+    # were already fetched fresh in STEP 3 (before the DC fit, so finished
+    # results could be injected into it).
     group_matches = [m for m in fd_matches if m["stage"] == "GROUP_STAGE"]
     print(f"  {len(group_matches)} group-stage matches scheduled")
 
-    # Extract real results for matches already played — these get locked
-    # into every simulation instead of being re-simulated.
-    known_results = extract_finished_group_results(fd_matches)
     finished_keys = {
         result_key(kr["group"], kr["home"], kr["away"]) for kr in known_results
     }

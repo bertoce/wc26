@@ -86,6 +86,76 @@ class TestExtractFinishedGroupResults:
         assert results[0]["away_goals"] == 1
 
 
+class TestKnownResultsToDcMatches:
+    """Finished tournament results get injected into the Dixon-Coles fit as
+    extra match rows — so team strengths update within minutes of full-time
+    instead of waiting days for the historical dataset to catch up."""
+
+    TLA_TO_NAME = {"MEX": "Mexico", "RSA": "South Africa",
+                   "KOR": "South Korea", "CZE": "Czech Republic",
+                   "BRA": "Brazil"}
+
+    def _kr(self, home="MEX", away="RSA", hg=2, ag=0, utc="2026-06-11T19:00:00Z"):
+        return {"home": home, "away": away, "group": "A",
+                "home_goals": hg, "away_goals": ag, "utc_date": utc}
+
+    def test_converts_tlas_to_historical_names(self):
+        from wc26.results import known_results_to_dc_matches
+        rows = known_results_to_dc_matches([self._kr()], self.TLA_TO_NAME, [])
+        assert rows[0]["home"] == "Mexico"
+        assert rows[0]["away"] == "South Africa"
+        assert rows[0]["home_goals"] == 2
+        assert rows[0]["away_goals"] == 0
+
+    def test_date_comes_from_utc_date(self):
+        from wc26.results import known_results_to_dc_matches
+        rows = known_results_to_dc_matches([self._kr()], self.TLA_TO_NAME, [])
+        assert rows[0]["date"] == "2026-06-11"
+
+    def test_host_home_match_is_non_neutral(self):
+        """Mexico's group match at home gets the home-advantage flag."""
+        from wc26.results import known_results_to_dc_matches
+        rows = known_results_to_dc_matches([self._kr(home="MEX")], self.TLA_TO_NAME, [])
+        assert rows[0]["neutral"] is False
+
+    def test_non_host_match_is_neutral(self):
+        from wc26.results import known_results_to_dc_matches
+        rows = known_results_to_dc_matches(
+            [self._kr(home="KOR", away="CZE")], self.TLA_TO_NAME, [])
+        assert rows[0]["neutral"] is True
+
+    def test_dedup_against_existing_historical_rows(self):
+        """If the historical CSV already includes the match (same date +
+        teams), don't inject a duplicate — it would double-count."""
+        from wc26.results import known_results_to_dc_matches
+        existing = [{"date": "2026-06-11", "home": "Mexico", "away": "South Africa",
+                     "home_goals": 2, "away_goals": 0, "neutral": False}]
+        rows = known_results_to_dc_matches([self._kr()], self.TLA_TO_NAME, existing)
+        assert rows == []
+
+    def test_unknown_tla_skipped(self):
+        from wc26.results import known_results_to_dc_matches
+        rows = known_results_to_dc_matches(
+            [self._kr(home="XXX")], self.TLA_TO_NAME, [])
+        assert rows == []
+
+    def test_multiple_results_mixed(self):
+        from wc26.results import known_results_to_dc_matches
+        existing = [{"date": "2026-06-11", "home": "Mexico", "away": "South Africa"}]
+        rows = known_results_to_dc_matches(
+            [self._kr(), self._kr(home="KOR", away="CZE", hg=2, ag=1)],
+            self.TLA_TO_NAME, existing)
+        assert len(rows) == 1
+        assert rows[0]["home"] == "South Korea"
+
+
+class TestExtractIncludesDate:
+    def test_utc_date_present(self):
+        m = _fd_match()
+        results = extract_finished_group_results([m])
+        assert results[0]["utc_date"] == "2026-06-11"
+
+
 class TestResultKey:
     def test_key_is_stable_and_unique_per_fixture(self):
         assert result_key("A", "MEX", "RSA") == "A:MEX-RSA"
