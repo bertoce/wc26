@@ -41,6 +41,7 @@ from wc26.injuries import (  # noqa: E402
     out_value_for_team,
 )
 from wc26.priors import TeamPriorFeatures, apply_priors  # noqa: E402
+from wc26.history import append_history  # noqa: E402
 from wc26.results import extract_finished_group_results, result_key  # noqa: E402
 from wc26.snapshots import load_snapshots, save_snapshots, update_snapshots  # noqa: E402
 from wc26.simulator import (  # noqa: E402
@@ -521,6 +522,20 @@ def main() -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(out, indent=2))
     print(f"\n  → predictions saved to {out_path.relative_to(ROOT)}")
+
+    # Append this run's headline numbers to the probability history log —
+    # an easy-to-query record of how the model's view evolved over time.
+    history_path = ROOT / "model" / "data" / "state" / "probability_history.jsonl"
+    append_history(history_path, {
+        "generated_at": out["metadata"]["generated_at"],
+        "model_version": out["metadata"]["model_version"],
+        "n_finished_matches": out["metadata"]["n_finished_matches"],
+        "win_probability_adjusted": {
+            p["tla"]: round(p["win_probability_adjusted"], 5)
+            for p in out["predictions"]
+        },
+    })
+    print(f"  → history appended to {history_path.relative_to(ROOT)}")
 
     # Also copy into web/lib/data so the dashboard picks it up on next build
     web_path = ROOT / "web" / "lib" / "data" / "predictions.json"

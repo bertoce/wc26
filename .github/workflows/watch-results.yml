@@ -1,0 +1,67 @@
+name: Watch for finished matches
+
+# Lightweight poller: every 15 minutes during match windows, makes ONE
+# football-data.org API call to count FINISHED group matches, and compares
+# against the count baked into the committed predictions.json. If a new
+# match has finished since the last pipeline run, it triggers the full
+# "Update WC26 predictions" workflow via workflow_dispatch.
+#
+# Net effect: the reassessment runs within ~15 minutes of any match ending,
+# and the heavy 90-second pipeline only runs when there's actually a new
+# result — instead of blindly re-running every 30 minutes.
+#
+# Why GitHub Actions and not Vercel Cron: same reasons documented in
+# predict.yml (the triggered pipeline needs >60s runtime + apt deps).
+#
+# NOTE: counts GROUP_STAGE matches only. When knockouts begin (June 28),
+# extend the jq filter alongside the knockout-conditioning work (task #42).
+
+on:
+  schedule:
+    # Match windows, June–July 2026 (UTC). Afternoon/evening block + late
+    # US West games. Remove after the final (July 19).
+    - cron: '*/15 14-23 * 6,7 *'
+    - cron: '*/15 0-4 * 6,7 *'
+  workflow_dispatch: {}  # manual test trigger
+
+concurrency:
+  group: watch-results
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write   # needed to dispatch predict.yml
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: Compare finished-match counts
+        id: compare
+        env:
+          FOOTBALL_DATA_API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
+        run: |
+          live=$(curl -s -H "X-Auth-Token: $FOOTBALL_DATA_API_KEY" \
+            "https://api.football-data.org/v4/competitions/WC/matches" | \
+            jq '[.matches[] | select(.stage=="GROUP_STAGE" and .status=="FINISHED")] | length')
+          committed=$(jq '.metadata.n_finished_matches // 0' web/lib/data/predictions.json)
+          echo "live=$live committed=$committed"
+          if [ -z "$live" ] || [ "$live" = "null" ]; then
+            echo "API returned no usable data — skipping (will retry next tick)."
+            echo "new_results=false" >> "$GITHUB_OUTPUT"
+          elif [ "$live" -gt "$committed" ]; then
+            echo "New finished matches detected ($committed → $live)."
+            echo "new_results=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No new results."
+            echo "new_results=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Trigger prediction pipeline
+        if: steps.compare.outputs.new_results == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run predict.yml --repo ${{ github.repository }}

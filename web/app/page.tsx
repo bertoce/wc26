@@ -8,6 +8,12 @@ import { BracketView } from "@/components/bracket-view";
 import { CompoundProbabilityExplainer } from "@/components/compound-probability-explainer";
 import { predictions, topN } from "@/lib/predictions";
 
+/** While the group stage is running, the page shows only the per-match
+ * group-stage data (scores, frozen pre-match predictions, model scoreboard).
+ * Flip to false to restore the full dashboard (winner card, chart, bracket,
+ * round-survival and decomposition tables) — e.g. when knockouts begin. */
+const GROUP_STAGE_ONLY = true;
+
 export default function Home() {
   const all = predictions.predictions;
   const top12 = topN(12);
@@ -28,6 +34,7 @@ export default function Home() {
         </h2>
       </header>
 
+      {!GROUP_STAGE_ONLY && (<>
       {/* Hero */}
       <WinnerCard winner={winner} runnerUp={runnerUp} />
 
@@ -106,6 +113,7 @@ export default function Home() {
         </div>
         <BracketView />
       </section>
+      </>)}
 
       {/* Per-match group-stage predictions */}
       <section className="space-y-3">
@@ -122,6 +130,7 @@ export default function Home() {
       </section>
 
       {/* Full prediction-decomposition table */}
+      {!GROUP_STAGE_ONLY && (
       <Card className="bg-card border-border">
         <CardHeader>
           <CardTitle className="text-base font-medium">
@@ -136,6 +145,7 @@ export default function Home() {
           <PredictionsTable data={all} />
         </CardContent>
       </Card>
+      )}
 
       {/* Footer */}
       <footer className="text-xs text-muted-foreground leading-relaxed space-y-1 pb-8">

@@ -24,15 +24,12 @@ name: Update WC26 predictions
 
 on:
   schedule:
-    # Daily baseline at 12:00 UTC.
+    # Daily baseline at 12:00 UTC (refreshes the DC fit with new historical
+    # data even on days without matches). During match windows, the
+    # watch-results.yml workflow polls every 15 min and triggers this
+    # pipeline via workflow_dispatch the moment a match finishes — so no
+    # blind high-frequency cron is needed here.
     - cron: '0 12 * * *'
-    # Tournament match windows (June-July 2026): every 30 min through the
-    # afternoon/evening kickoff block and the late-night US West games.
-    # The smart-diff below means most runs exit without committing — only
-    # runs that catch a newly-finished match produce a commit + deploy.
-    # Revert to daily-only after the final (July 19).
-    - cron: '*/30 14-23 * 6,7 *'
-    - cron: '*/30 0-4 * 6,7 *'
   workflow_dispatch:  # manual trigger from the Actions tab
     inputs:
       force_deploy:
@@ -104,10 +101,11 @@ jobs:
           git config user.name  "brto"
           git config user.email "beto.ceballos@gmail.com"
           # Also commit injuries.json refresh (the refresh step may have
-          # rewritten it) and the pre-match snapshot store (accumulates
-          # frozen predictions for finished matches across runs).
+          # rewritten it), the pre-match snapshot store, and the
+          # probability-history log (both accumulate state across runs).
           git add web/lib/data/predictions.json model/data/static/injuries.json \
-                  model/data/state/prematch_snapshots.json
+                  model/data/state/prematch_snapshots.json \
+                  model/data/state/probability_history.jsonl
 
           if git diff --staged --quiet -- web/lib/data/predictions.json; then
             echo "No prediction changes — skipping commit."
