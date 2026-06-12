@@ -24,9 +24,15 @@ name: Update WC26 predictions
 
 on:
   schedule:
-    # Once daily at 12:00 UTC. Crank up to every 30 min during the tournament
-    # by adding e.g. '*/30 12-23 * 6-7 *' for June-July match-window hours.
+    # Daily baseline at 12:00 UTC.
     - cron: '0 12 * * *'
+    # Tournament match windows (June-July 2026): every 30 min through the
+    # afternoon/evening kickoff block and the late-night US West games.
+    # The smart-diff below means most runs exit without committing — only
+    # runs that catch a newly-finished match produce a commit + deploy.
+    # Revert to daily-only after the final (July 19).
+    - cron: '*/30 14-23 * 6,7 *'
+    - cron: '*/30 0-4 * 6,7 *'
   workflow_dispatch:  # manual trigger from the Actions tab
     inputs:
       force_deploy:
