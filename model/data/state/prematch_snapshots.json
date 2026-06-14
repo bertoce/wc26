@@ -1,21 +1,21 @@
 {
   "A:CZE-MEX": {
-    "expected_away_goals": 1.7801480046206677,
-    "expected_home_goals": 0.5995393260992333,
-    "p_away_win": 0.6490277897078638,
-    "p_draw": 0.2422476133719975,
-    "p_home_win": 0.10872459692013903,
+    "expected_away_goals": 1.9000409426052811,
+    "expected_home_goals": 0.5850327784661231,
+    "p_away_win": 0.6769326033995833,
+    "p_draw": 0.22926078653901838,
+    "p_home_win": 0.0938066100613986,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "A:CZE-RSA": {
-    "expected_away_goals": 1.4234652805075285,
-    "expected_home_goals": 1.2453732392749308,
-    "p_away_win": 0.3986779108735756,
-    "p_draw": 0.285033004279525,
-    "p_home_win": 0.31628908484689927,
+    "expected_away_goals": 1.5091712530515475,
+    "expected_home_goals": 1.2254223213297284,
+    "p_away_win": 0.4224756463263867,
+    "p_draw": 0.2846597758148945,
+    "p_home_win": 0.2928645778587188,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "A:KOR-CZE": {
     "expected_away_goals": 0.928679373968243,
@@ -27,13 +27,13 @@
     "snapshot_at": "2026-06-12T04:20:19Z"
   },
   "A:MEX-KOR": {
-    "expected_away_goals": 0.7471708190238326,
-    "expected_home_goals": 1.5407503158854512,
-    "p_away_win": 0.16832549170204952,
-    "p_draw": 0.28155323440127916,
-    "p_home_win": 0.5501212738966712,
+    "expected_away_goals": 0.7315114482094798,
+    "expected_home_goals": 1.5340775529122668,
+    "p_away_win": 0.1624626872982255,
+    "p_draw": 0.2876568411029824,
+    "p_home_win": 0.549880471598792,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "A:MEX-RSA": {
     "expected_away_goals": 0.5596205491749151,
@@ -45,40 +45,40 @@
     "snapshot_at": "2026-06-12T04:20:19Z"
   },
   "A:RSA-KOR": {
-    "expected_away_goals": 1.5520358760009012,
-    "expected_home_goals": 0.9337679829936397,
-    "p_away_win": 0.5046731358417524,
-    "p_draw": 0.28118471086035224,
-    "p_home_win": 0.21414215329789543,
+    "expected_away_goals": 1.53223971363519,
+    "expected_home_goals": 0.9042763156196695,
+    "p_away_win": 0.5040573583124011,
+    "p_draw": 0.2893214088030075,
+    "p_home_win": 0.20662123288459133,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "B:BIH-QAT": {
-    "expected_away_goals": 1.5015338673654872,
-    "expected_home_goals": 1.0506589664638109,
-    "p_away_win": 0.4630627004331011,
-    "p_draw": 0.2850025227029186,
-    "p_home_win": 0.25193477686398036,
+    "expected_away_goals": 1.6073561082067942,
+    "expected_home_goals": 1.0511588340676583,
+    "p_away_win": 0.4875068851052783,
+    "p_draw": 0.2797484748866844,
+    "p_home_win": 0.23274464000803738,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "B:CAN-BIH": {
-    "expected_away_goals": 0.5589794738789843,
-    "expected_home_goals": 3.4097967589307987,
-    "p_away_win": 0.028107137741283546,
-    "p_draw": 0.08150709351056801,
-    "p_home_win": 0.8903857687481486,
+    "expected_away_goals": 0.6927429119607604,
+    "expected_home_goals": 2.5589565602735234,
+    "p_away_win": 0.06981899235127965,
+    "p_draw": 0.16236307080831344,
+    "p_home_win": 0.7678179368404068,
     "post_hoc": false,
-    "snapshot_at": "2026-06-12T15:10:27Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "B:CAN-QAT": {
-    "expected_away_goals": 1.0231759210678646,
-    "expected_home_goals": 2.451404227041832,
-    "p_away_win": 0.1313090994257139,
-    "p_draw": 0.1899599922638647,
-    "p_home_win": 0.6787309083104215,
+    "expected_away_goals": 1.0232920217438057,
+    "expected_home_goals": 2.471989663169062,
+    "p_away_win": 0.12774694041397666,
+    "p_draw": 0.1916987606905262,
+    "p_home_win": 0.6805542988954973,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "B:QAT-SUI": {
     "expected_away_goals": 2.4276576279809756,
@@ -90,31 +90,31 @@
     "snapshot_at": "2026-06-13T13:22:53Z"
   },
   "B:SUI-BIH": {
-    "expected_away_goals": 0.701616393422679,
-    "expected_home_goals": 1.9543924528600751,
-    "p_away_win": 0.11478735685929373,
-    "p_draw": 0.22564153790604516,
-    "p_home_win": 0.6595711052346611,
+    "expected_away_goals": 0.7271154663381502,
+    "expected_home_goals": 2.030660227357358,
+    "p_away_win": 0.11109078164278599,
+    "p_draw": 0.22234324125700233,
+    "p_home_win": 0.6665659771002115,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "B:SUI-CAN": {
-    "expected_away_goals": 1.2407058605026915,
-    "expected_home_goals": 1.3317630334850437,
-    "p_away_win": 0.33245691277710554,
-    "p_draw": 0.2922365158719605,
-    "p_home_win": 0.3753065713509339,
+    "expected_away_goals": 1.2689951567182851,
+    "expected_home_goals": 1.2927803608159167,
+    "p_away_win": 0.34477582139639495,
+    "p_draw": 0.29923147891022245,
+    "p_home_win": 0.35599269969338265,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "C:BRA-HAI": {
-    "expected_away_goals": 0.48856489437009604,
-    "expected_home_goals": 2.540544324675379,
-    "p_away_win": 0.045228657460949395,
-    "p_draw": 0.14264650298718998,
-    "p_home_win": 0.8121248395518608,
+    "expected_away_goals": 0.4819572580997841,
+    "expected_home_goals": 2.5067994897180172,
+    "p_away_win": 0.0442629465553899,
+    "p_draw": 0.14810525016195833,
+    "p_home_win": 0.8076318032826517,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "C:BRA-MAR": {
     "expected_away_goals": 0.9774196864128222,
@@ -135,31 +135,31 @@
     "snapshot_at": "2026-06-13T21:39:06Z"
   },
   "C:MAR-HAI": {
-    "expected_away_goals": 0.42257361481257105,
-    "expected_home_goals": 2.3931805309550556,
-    "p_away_win": 0.04241346785246435,
-    "p_draw": 0.1504988632716278,
-    "p_home_win": 0.8070876688759079,
+    "expected_away_goals": 0.4255829517161476,
+    "expected_home_goals": 2.332927155539143,
+    "p_away_win": 0.04360857407112977,
+    "p_draw": 0.1602075551790009,
+    "p_home_win": 0.7961838707498693,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "C:SCO-BRA": {
-    "expected_away_goals": 1.3935831660011164,
-    "expected_home_goals": 0.6783340855659629,
-    "p_away_win": 0.529235536814151,
-    "p_draw": 0.3017619758409254,
-    "p_home_win": 0.1690024873449233,
+    "expected_away_goals": 1.439481737968062,
+    "expected_home_goals": 0.6641701352039087,
+    "p_away_win": 0.5431569348476557,
+    "p_draw": 0.3001346756551318,
+    "p_home_win": 0.15670838949721239,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "C:SCO-MAR": {
-    "expected_away_goals": 1.3127486376632005,
-    "expected_home_goals": 0.5867103631294672,
-    "p_away_win": 0.532227837957024,
-    "p_draw": 0.3137723008207828,
-    "p_home_win": 0.1539998612221932,
+    "expected_away_goals": 1.3396388702736366,
+    "expected_home_goals": 0.5864824770898474,
+    "p_away_win": 0.5374032842319323,
+    "p_draw": 0.3146271435396139,
+    "p_home_win": 0.14796957222845378,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "D:AUS-TUR": {
     "expected_away_goals": 0.8862132949320713,
@@ -171,40 +171,40 @@
     "snapshot_at": "2026-06-14T04:20:45Z"
   },
   "D:PAR-AUS": {
-    "expected_away_goals": 1.2949415563730662,
-    "expected_home_goals": 0.7352433144644939,
-    "p_away_win": 0.48537550622502335,
-    "p_draw": 0.3161976556072071,
-    "p_home_win": 0.1984268381677696,
+    "expected_away_goals": 1.386687966770107,
+    "expected_home_goals": 0.628689868414579,
+    "p_away_win": 0.5385727833295294,
+    "p_draw": 0.3076957204490863,
+    "p_home_win": 0.15373149622138432,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "D:TUR-PAR": {
-    "expected_away_goals": 1.269173284602569,
-    "expected_home_goals": 1.4208516109804101,
-    "p_away_win": 0.32298715665811495,
-    "p_draw": 0.28407378855753374,
-    "p_home_win": 0.3929390547843513,
+    "expected_away_goals": 1.3614337658641364,
+    "expected_home_goals": 1.3418837908217092,
+    "p_away_win": 0.35954039130560345,
+    "p_draw": 0.2899243607217206,
+    "p_home_win": 0.35053524797267593,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "D:TUR-USA": {
-    "expected_away_goals": 1.8026875517011565,
-    "expected_home_goals": 1.3033351067518066,
-    "p_away_win": 0.48057110628894006,
-    "p_draw": 0.2530461197702652,
-    "p_home_win": 0.26638277394079457,
+    "expected_away_goals": 1.8932743339099476,
+    "expected_home_goals": 1.2127120582218454,
+    "p_away_win": 0.5193394193916335,
+    "p_draw": 0.2508787965407914,
+    "p_home_win": 0.22978178406757505,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "D:USA-AUS": {
-    "expected_away_goals": 1.1878388837862328,
-    "expected_home_goals": 1.377890404421966,
-    "p_away_win": 0.3095560776190738,
-    "p_draw": 0.29145800500359653,
-    "p_home_win": 0.39898591737732964,
+    "expected_away_goals": 1.2532033174523063,
+    "expected_home_goals": 1.1780811720942084,
+    "p_away_win": 0.3640365573745405,
+    "p_draw": 0.30815726066208016,
+    "p_home_win": 0.3278061819633795,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "D:USA-PAR": {
     "expected_away_goals": 1.3103518780028662,
@@ -216,435 +216,435 @@
     "snapshot_at": "2026-06-12T22:26:17Z"
   },
   "E:CIV-ECU": {
-    "expected_away_goals": 0.960282389706822,
-    "expected_home_goals": 0.6684810460422006,
-    "p_away_win": 0.3971699421360687,
-    "p_draw": 0.3707698734822786,
-    "p_home_win": 0.2320601843816528,
+    "expected_away_goals": 0.952275612020119,
+    "expected_home_goals": 0.6599785492610677,
+    "p_away_win": 0.39370512088573817,
+    "p_draw": 0.3786231643362493,
+    "p_home_win": 0.22767171477801262,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "E:CUW-CIV": {
-    "expected_away_goals": 1.1374437353673934,
-    "expected_home_goals": 0.7406905736661532,
-    "p_away_win": 0.43623061728972584,
-    "p_draw": 0.3390493903664821,
-    "p_home_win": 0.22471999234379209,
+    "expected_away_goals": 1.114588437717366,
+    "expected_home_goals": 0.7277204438118049,
+    "p_away_win": 0.42942970467530683,
+    "p_draw": 0.3490530810122501,
+    "p_home_win": 0.22151721431244314,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "E:ECU-CUW": {
-    "expected_away_goals": 0.39013970651006985,
-    "expected_home_goals": 0.8606431669469726,
-    "p_away_win": 0.14896000175999446,
-    "p_draw": 0.4113601616529127,
-    "p_home_win": 0.4396798365870928,
+    "expected_away_goals": 0.3868609779585296,
+    "expected_home_goals": 0.8549441107522415,
+    "p_away_win": 0.14624445500702954,
+    "p_draw": 0.41753688146796064,
+    "p_home_win": 0.4362186635250097,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "E:ECU-GER": {
-    "expected_away_goals": 0.9762684750249697,
-    "expected_home_goals": 0.8145068920056393,
-    "p_away_win": 0.36588366210886425,
-    "p_draw": 0.3567124185261245,
-    "p_home_win": 0.27740391936501124,
+    "expected_away_goals": 0.9322637278082938,
+    "expected_home_goals": 0.8459366898388775,
+    "p_away_win": 0.3408781422450492,
+    "p_draw": 0.36564071588985025,
+    "p_home_win": 0.29348114186510055,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "E:GER-CIV": {
-    "expected_away_goals": 1.0764690841755824,
-    "expected_home_goals": 1.8534715763409773,
-    "p_away_win": 0.20673895389473557,
-    "p_draw": 0.24927384030677685,
-    "p_home_win": 0.5439872057984876,
+    "expected_away_goals": 1.1028454862455375,
+    "expected_home_goals": 1.7536722812685046,
+    "p_away_win": 0.223964595191591,
+    "p_draw": 0.26442549378900215,
+    "p_home_win": 0.5116099110194068,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "E:GER-CUW": {
-    "expected_away_goals": 0.6282501726173294,
-    "expected_home_goals": 1.6611547440699295,
-    "p_away_win": 0.12610901911119057,
-    "p_draw": 0.2607188682344816,
-    "p_home_win": 0.6131721126543279,
+    "expected_away_goals": 0.6464571974707161,
+    "expected_home_goals": 1.5744305221462298,
+    "p_away_win": 0.13680670296718622,
+    "p_draw": 0.2792781916284419,
+    "p_home_win": 0.5839151054043716,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "F:JPN-SWE": {
-    "expected_away_goals": 0.7904564716930156,
-    "expected_home_goals": 2.6115604276601987,
-    "p_away_win": 0.08240362636056285,
-    "p_draw": 0.16155754692783555,
-    "p_home_win": 0.7560388267116014,
+    "expected_away_goals": 0.7340104778625952,
+    "expected_home_goals": 2.7775044850641404,
+    "p_away_win": 0.06425787605154538,
+    "p_draw": 0.14563679694819523,
+    "p_home_win": 0.7901053270002594,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "F:NED-JPN": {
-    "expected_away_goals": 1.4157516159992716,
-    "expected_home_goals": 0.9370215333510435,
-    "p_away_win": 0.46749390023204784,
-    "p_draw": 0.2968295510972421,
-    "p_home_win": 0.2356765486707102,
+    "expected_away_goals": 1.5120525202694364,
+    "expected_home_goals": 0.8884202142345817,
+    "p_away_win": 0.5027407949850682,
+    "p_draw": 0.29183201896716815,
+    "p_home_win": 0.20542718604776367,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "F:NED-SWE": {
-    "expected_away_goals": 1.201591189209822,
-    "expected_home_goals": 2.6274917449179784,
-    "p_away_win": 0.146156614042266,
-    "p_draw": 0.18244695976966577,
-    "p_home_win": 0.6713964261880683,
+    "expected_away_goals": 1.2071207010744338,
+    "expected_home_goals": 2.683828511806607,
+    "p_away_win": 0.14046566314073977,
+    "p_draw": 0.181244430333774,
+    "p_home_win": 0.6782899065254862,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "F:SWE-TUN": {
-    "expected_away_goals": 1.5550484336918222,
-    "expected_home_goals": 1.4957181449791948,
-    "p_away_win": 0.38087740986026875,
-    "p_draw": 0.26414105102781016,
-    "p_home_win": 0.3549815391119211,
+    "expected_away_goals": 1.5751448320542958,
+    "expected_home_goals": 1.4360680397433672,
+    "p_away_win": 0.39504917960821984,
+    "p_draw": 0.2709229559978703,
+    "p_home_win": 0.33402786439390963,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "F:TUN-JPN": {
-    "expected_away_goals": 1.762301022052483,
-    "expected_home_goals": 0.5545645844906494,
-    "p_away_win": 0.6575661606919427,
-    "p_draw": 0.24181196114807643,
-    "p_home_win": 0.10062187815998083,
+    "expected_away_goals": 1.79883444699409,
+    "expected_home_goals": 0.5214157696693439,
+    "p_away_win": 0.6728808941331657,
+    "p_draw": 0.23845307589640638,
+    "p_home_win": 0.08866602997042818,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "F:TUN-NED": {
-    "expected_away_goals": 1.7730515972215137,
-    "expected_home_goals": 0.8430064683315794,
-    "p_away_win": 0.5825197129964652,
-    "p_draw": 0.25400232457608096,
-    "p_home_win": 0.1634779624274538,
+    "expected_away_goals": 1.7381657537633546,
+    "expected_home_goals": 0.8574969818787083,
+    "p_away_win": 0.5679091855371606,
+    "p_draw": 0.26377219749001557,
+    "p_home_win": 0.1683186169728234,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "G:BEL-EGY": {
-    "expected_away_goals": 1.296490422415097,
-    "expected_home_goals": 1.1492092362910242,
-    "p_away_win": 0.3852590046238209,
-    "p_draw": 0.300282772028296,
-    "p_home_win": 0.31445822334788315,
+    "expected_away_goals": 1.3258159018098383,
+    "expected_home_goals": 1.1138005407346545,
+    "p_away_win": 0.3981313126978592,
+    "p_draw": 0.30566176950067936,
+    "p_home_win": 0.29620691780146136,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "G:BEL-IRN": {
-    "expected_away_goals": 1.6850214170514468,
-    "expected_home_goals": 1.196312048779331,
-    "p_away_win": 0.4760327963851291,
-    "p_draw": 0.2647087725882998,
-    "p_home_win": 0.259258431026571,
+    "expected_away_goals": 1.7422226292152763,
+    "expected_home_goals": 1.1422917321834896,
+    "p_away_win": 0.49967969038138105,
+    "p_draw": 0.2653410524535616,
+    "p_home_win": 0.23497925716505746,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "G:EGY-IRN": {
-    "expected_away_goals": 1.1287487864822292,
-    "expected_home_goals": 0.9040793569790149,
-    "p_away_win": 0.392581162775874,
-    "p_draw": 0.33144109179741843,
-    "p_home_win": 0.2759777454267075,
+    "expected_away_goals": 1.1173073616502376,
+    "expected_home_goals": 0.8720107573182138,
+    "p_away_win": 0.39366655700211356,
+    "p_draw": 0.34104999728887475,
+    "p_home_win": 0.265283445709012,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "G:IRN-NZL": {
-    "expected_away_goals": 1.407845217512157,
-    "expected_home_goals": 0.7792368111963957,
-    "p_away_win": 0.5057472903489576,
-    "p_draw": 0.29992458467450384,
-    "p_home_win": 0.19432812497653856,
+    "expected_away_goals": 1.3170586212256303,
+    "expected_home_goals": 0.7771175765900015,
+    "p_away_win": 0.47765704338665926,
+    "p_draw": 0.318317273943487,
+    "p_home_win": 0.20402568266985394,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "G:NZL-BEL": {
-    "expected_away_goals": 0.7933617749222374,
-    "expected_home_goals": 2.0189133029721167,
-    "p_away_win": 0.12737723531325318,
-    "p_draw": 0.22299615782611584,
-    "p_home_win": 0.6496266068606309,
+    "expected_away_goals": 0.7746784875219513,
+    "expected_home_goals": 2.002472158723,
+    "p_away_win": 0.12288521674703864,
+    "p_draw": 0.22847062743503685,
+    "p_home_win": 0.6486441558179246,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "G:NZL-EGY": {
-    "expected_away_goals": 0.5995609624222139,
-    "expected_home_goals": 1.3524136356262282,
-    "p_away_win": 0.15271112110050472,
-    "p_draw": 0.3073303308728621,
-    "p_home_win": 0.539958548026633,
+    "expected_away_goals": 0.591379553532156,
+    "expected_home_goals": 1.2842083709179004,
+    "p_away_win": 0.1561585013799796,
+    "p_draw": 0.3241016673002232,
+    "p_home_win": 0.519739831319797,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "H:CPV-KSA": {
-    "expected_away_goals": 0.8875168325688133,
-    "expected_home_goals": 0.5862576488197426,
-    "p_away_win": 0.3933772232850648,
-    "p_draw": 0.3901856912960442,
-    "p_home_win": 0.21643708541889095,
+    "expected_away_goals": 0.8980105769349837,
+    "expected_home_goals": 0.5519217724308592,
+    "p_away_win": 0.40386451871673357,
+    "p_draw": 0.3964290145782218,
+    "p_home_win": 0.1997064667050448,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "H:ESP-CPV": {
-    "expected_away_goals": 0.5404326087429627,
-    "expected_home_goals": 2.865346576612733,
-    "p_away_win": 0.03973727795017295,
-    "p_draw": 0.1192526796932761,
-    "p_home_win": 0.841010042356551,
+    "expected_away_goals": 0.5558716163069303,
+    "expected_home_goals": 2.771802293124124,
+    "p_away_win": 0.04329330341764579,
+    "p_draw": 0.13091349684120898,
+    "p_home_win": 0.8257931997411454,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "H:ESP-KSA": {
-    "expected_away_goals": 0.4900895720193967,
-    "expected_home_goals": 1.7164177569917944,
-    "p_away_win": 0.0904837567939181,
-    "p_draw": 0.2439058347150957,
-    "p_home_win": 0.6656104084909862,
+    "expected_away_goals": 0.5209180635086351,
+    "expected_home_goals": 1.5964423607396867,
+    "p_away_win": 0.10488347286788607,
+    "p_draw": 0.26939199076843073,
+    "p_home_win": 0.6257245363636833,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "H:KSA-URY": {
-    "expected_away_goals": 0.9562619814471834,
-    "expected_home_goals": 0.37798225097904503,
-    "p_away_win": 0.47961990099413687,
-    "p_draw": 0.3878810139063819,
-    "p_home_win": 0.1324990850994811,
+    "expected_away_goals": 0.9018520696939281,
+    "expected_home_goals": 0.38591463828596473,
+    "p_away_win": 0.4545660336861138,
+    "p_draw": 0.40565368163774757,
+    "p_home_win": 0.13978028467613868,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "H:URY-CPV": {
-    "expected_away_goals": 0.4168093867278977,
-    "expected_home_goals": 1.5963607832202675,
-    "p_away_win": 0.0833572173348858,
-    "p_draw": 0.25738413360315177,
-    "p_home_win": 0.6592586490619625,
+    "expected_away_goals": 0.41180947401907003,
+    "expected_home_goals": 1.5658289308222466,
+    "p_away_win": 0.08236724594813163,
+    "p_draw": 0.2663906668481885,
+    "p_home_win": 0.6512420872036799,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "H:URY-ESP": {
-    "expected_away_goals": 1.2203150510716736,
-    "expected_home_goals": 0.8815154195695887,
-    "p_away_win": 0.4255695591912972,
-    "p_draw": 0.3217552075748254,
-    "p_home_win": 0.25267523323387747,
+    "expected_away_goals": 1.1911653457380704,
+    "expected_home_goals": 0.9083061997038996,
+    "p_away_win": 0.40724971536796145,
+    "p_draw": 0.33015521788021285,
+    "p_home_win": 0.26259506675182576,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "I:FRA-IRQ": {
-    "expected_away_goals": 0.6166618529149157,
-    "expected_home_goals": 1.3565338745138187,
-    "p_away_win": 0.15689794751275143,
-    "p_draw": 0.30689496235172914,
-    "p_home_win": 0.5362070901355194,
+    "expected_away_goals": 0.6554389978691431,
+    "expected_home_goals": 1.2443717880633736,
+    "p_away_win": 0.1798622318366388,
+    "p_draw": 0.3307107185776713,
+    "p_home_win": 0.48942704958569005,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "I:FRA-SEN": {
-    "expected_away_goals": 0.9826174594403327,
-    "expected_home_goals": 1.2223079277074216,
-    "p_away_win": 0.28162536992925047,
-    "p_draw": 0.31652438103572567,
-    "p_home_win": 0.40185024903502387,
+    "expected_away_goals": 0.9936263949599673,
+    "expected_home_goals": 1.1574019343902726,
+    "p_away_win": 0.2939987131610596,
+    "p_draw": 0.3288792082501045,
+    "p_home_win": 0.3771220785888357,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "I:IRQ-NOR": {
-    "expected_away_goals": 1.5728815914954417,
-    "expected_home_goals": 0.9688732312771792,
-    "p_away_win": 0.5013761421958625,
-    "p_draw": 0.2786203746739218,
-    "p_home_win": 0.22000348313021553,
+    "expected_away_goals": 1.4902274471545023,
+    "expected_home_goals": 1.053132794810883,
+    "p_away_win": 0.45660297205831896,
+    "p_draw": 0.29188245258823686,
+    "p_home_win": 0.2515145753534441,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "I:NOR-FRA": {
-    "expected_away_goals": 1.7452318752188472,
-    "expected_home_goals": 1.2879489498548535,
-    "p_away_win": 0.470280460623721,
-    "p_draw": 0.2579631426485364,
-    "p_home_win": 0.2717563967277426,
+    "expected_away_goals": 1.743567941738477,
+    "expected_home_goals": 1.2995422921056698,
+    "p_away_win": 0.46481467685740674,
+    "p_draw": 0.26294881739022996,
+    "p_home_win": 0.27223650575236324,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "I:NOR-SEN": {
-    "expected_away_goals": 1.5438473265974586,
-    "expected_home_goals": 1.4172485293218235,
-    "p_away_win": 0.39372135826742727,
-    "p_draw": 0.2685291201402129,
-    "p_home_win": 0.3377495215923597,
+    "expected_away_goals": 1.5965185863581592,
+    "expected_home_goals": 1.3860746013073852,
+    "p_away_win": 0.4105137907748639,
+    "p_draw": 0.27161137531360763,
+    "p_home_win": 0.31787483391152843,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "I:SEN-IRQ": {
-    "expected_away_goals": 0.6785696779604711,
-    "expected_home_goals": 1.200001687652212,
-    "p_away_win": 0.1960161092055838,
-    "p_draw": 0.3316181589887183,
-    "p_home_win": 0.4723657318056979,
+    "expected_away_goals": 0.6990825563520119,
+    "expected_home_goals": 1.139423730171392,
+    "p_away_win": 0.2086450598885751,
+    "p_draw": 0.34639908020868243,
+    "p_home_win": 0.44495585990274233,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "J:ALG-AUT": {
-    "expected_away_goals": 1.1999072782476736,
-    "expected_home_goals": 1.3800230838204226,
-    "p_away_win": 0.3123737781362176,
-    "p_draw": 0.29068787187627887,
-    "p_home_win": 0.39693834998750366,
+    "expected_away_goals": 1.1407727845589966,
+    "expected_home_goals": 1.3946885517098124,
+    "p_away_win": 0.2909656361350019,
+    "p_draw": 0.2981167944623714,
+    "p_home_win": 0.41091756940262664,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "J:ARG-ALG": {
-    "expected_away_goals": 0.6979917986588156,
-    "expected_home_goals": 2.044506000403365,
-    "p_away_win": 0.1065439040664202,
-    "p_draw": 0.214486449907081,
-    "p_home_win": 0.6789696460264988,
+    "expected_away_goals": 0.6855663684490697,
+    "expected_home_goals": 2.0186874756069306,
+    "p_away_win": 0.10407488312237083,
+    "p_draw": 0.22113229103932627,
+    "p_home_win": 0.6747928258383029,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "J:ARG-AUT": {
-    "expected_away_goals": 0.6399515314199953,
-    "expected_home_goals": 2.1558761884293904,
-    "p_away_win": 0.08768436740886798,
-    "p_draw": 0.1972699650743774,
-    "p_home_win": 0.7150456675167547,
+    "expected_away_goals": 0.6061674735321368,
+    "expected_home_goals": 2.182178624098562,
+    "p_away_win": 0.07825716468326253,
+    "p_draw": 0.19536163940980295,
+    "p_home_win": 0.7263811959069346,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "J:AUT-JOR": {
-    "expected_away_goals": 1.2964264289326763,
-    "expected_home_goals": 1.0271599507131113,
-    "p_away_win": 0.4126895636460421,
-    "p_draw": 0.3066305895158324,
-    "p_home_win": 0.28067984683812564,
+    "expected_away_goals": 1.3481589606479587,
+    "expected_home_goals": 0.9516286356967577,
+    "p_away_win": 0.44217022903020586,
+    "p_draw": 0.31015988364053054,
+    "p_home_win": 0.24766988732926346,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "J:JOR-ALG": {
-    "expected_away_goals": 1.12031800270514,
-    "expected_home_goals": 1.2294544683316702,
-    "p_away_win": 0.31944901811327814,
-    "p_draw": 0.3077059114960496,
-    "p_home_win": 0.3728450703906723,
+    "expected_away_goals": 1.076277788521394,
+    "expected_home_goals": 1.247153454319773,
+    "p_away_win": 0.3005365516161199,
+    "p_draw": 0.31498684400947224,
+    "p_home_win": 0.3844766043744078,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "J:JOR-ARG": {
-    "expected_away_goals": 1.7501641340769591,
-    "expected_home_goals": 0.6557100570045933,
-    "p_away_win": 0.626705555056718,
-    "p_draw": 0.24960668052403273,
-    "p_home_win": 0.12368776441924932,
+    "expected_away_goals": 1.6839819763517563,
+    "expected_home_goals": 0.6626945073940773,
+    "p_away_win": 0.6066295357046902,
+    "p_draw": 0.2640987902161156,
+    "p_home_win": 0.1292716740791942,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "K:COD-UZB": {
-    "expected_away_goals": 0.7611064963934059,
-    "expected_home_goals": 0.486250816772118,
-    "p_away_win": 0.37244416544405623,
-    "p_draw": 0.42658542637503577,
-    "p_home_win": 0.2009704081809081,
+    "expected_away_goals": 0.7739501691612602,
+    "expected_home_goals": 0.4851148901546389,
+    "p_away_win": 0.375377649061304,
+    "p_draw": 0.42877686395766124,
+    "p_home_win": 0.19584548698103474,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "K:COL-COD": {
-    "expected_away_goals": 0.6483356766455893,
-    "expected_home_goals": 1.4445633034307315,
-    "p_away_win": 0.15466957544000143,
-    "p_draw": 0.2935918079894189,
-    "p_home_win": 0.5517386165705798,
+    "expected_away_goals": 0.6498472064802208,
+    "expected_home_goals": 1.402192401063307,
+    "p_away_win": 0.15749293022855965,
+    "p_draw": 0.3056233674458764,
+    "p_home_win": 0.5368837023255639,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "K:COL-POR": {
-    "expected_away_goals": 1.3391927745961203,
-    "expected_home_goals": 1.5366202636303046,
-    "p_away_win": 0.3196082279139849,
-    "p_draw": 0.2724349601647557,
-    "p_home_win": 0.40795681192125943,
+    "expected_away_goals": 1.2846802652220173,
+    "expected_home_goals": 1.5717912633740347,
+    "p_away_win": 0.29700927681631073,
+    "p_draw": 0.2773393886143806,
+    "p_home_win": 0.4256513345693086,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "K:POR-COD": {
-    "expected_away_goals": 0.6745010268171572,
-    "expected_home_goals": 1.3097723385164495,
-    "p_away_win": 0.17909584091530073,
-    "p_draw": 0.3145467085748445,
-    "p_home_win": 0.5063574505098547,
+    "expected_away_goals": 0.7127574714644627,
+    "expected_home_goals": 1.2570087869184108,
+    "p_away_win": 0.19464255368272035,
+    "p_draw": 0.3280270311486349,
+    "p_home_win": 0.4773304151686447,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "K:POR-UZB": {
-    "expected_away_goals": 0.8096091478727316,
-    "expected_home_goals": 1.0043926378258679,
-    "p_away_win": 0.2703182909038223,
-    "p_draw": 0.35343049341210625,
-    "p_home_win": 0.37625121568407155,
+    "expected_away_goals": 0.8675614796172345,
+    "expected_home_goals": 0.9590216277493222,
+    "p_away_win": 0.2949541112475901,
+    "p_draw": 0.36041289154622796,
+    "p_home_win": 0.34463299720618196,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "K:UZB-COL": {
-    "expected_away_goals": 1.1077564429881412,
-    "expected_home_goals": 0.7782026621685416,
-    "p_away_win": 0.4171796370780325,
-    "p_draw": 0.3414674115314512,
-    "p_home_win": 0.24135295139051627,
+    "expected_away_goals": 1.069787938541074,
+    "expected_home_goals": 0.7909877153875846,
+    "p_away_win": 0.39882148542294427,
+    "p_draw": 0.35214322783741936,
+    "p_home_win": 0.24903528673963635,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "L:CRO-GHA": {
-    "expected_away_goals": 0.7646927115773153,
-    "expected_home_goals": 1.5821418438897596,
-    "p_away_win": 0.16759328560167142,
-    "p_draw": 0.27628924417312956,
-    "p_home_win": 0.556117470225199,
+    "expected_away_goals": 0.7785097234636408,
+    "expected_home_goals": 1.5165363822003664,
+    "p_away_win": 0.17658579745215344,
+    "p_draw": 0.2908394743177515,
+    "p_home_win": 0.532574728230095,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "L:ENG-CRO": {
-    "expected_away_goals": 0.7091566821729093,
-    "expected_home_goals": 1.4319711954410748,
-    "p_away_win": 0.17229318539565341,
-    "p_draw": 0.2963567054206001,
-    "p_home_win": 0.5313501091837465,
+    "expected_away_goals": 0.6832493716310691,
+    "expected_home_goals": 1.4277334826699057,
+    "p_away_win": 0.16318219806939874,
+    "p_draw": 0.3022464508502179,
+    "p_home_win": 0.5345713510803833,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "L:ENG-GHA": {
-    "expected_away_goals": 0.5342854886586925,
-    "expected_home_goals": 2.2321528346914707,
-    "p_away_win": 0.06556665502172085,
-    "p_draw": 0.17949849356360587,
-    "p_home_win": 0.7549348514146734,
+    "expected_away_goals": 0.5240460760738791,
+    "expected_home_goals": 2.1331734488180216,
+    "p_away_win": 0.06755069291604102,
+    "p_draw": 0.19385969108707504,
+    "p_home_win": 0.7385896159968839,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "L:GHA-PAN": {
-    "expected_away_goals": 1.4710663835346718,
-    "expected_home_goals": 0.980564888552512,
-    "p_away_win": 0.4717873806239804,
-    "p_draw": 0.2897157959099599,
-    "p_home_win": 0.23849682346605983,
+    "expected_away_goals": 1.4553261822002972,
+    "expected_home_goals": 0.9476332536317451,
+    "p_away_win": 0.472698105065726,
+    "p_draw": 0.2979509070925414,
+    "p_home_win": 0.22935098784173258,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "L:PAN-CRO": {
-    "expected_away_goals": 1.3015029563443012,
-    "expected_home_goals": 0.9437188417676101,
-    "p_away_win": 0.433927786805933,
-    "p_draw": 0.30966049871556445,
-    "p_home_win": 0.2564117144785025,
+    "expected_away_goals": 1.235520796055567,
+    "expected_home_goals": 0.9740501503451744,
+    "p_away_win": 0.40459785681105953,
+    "p_draw": 0.3217711718902985,
+    "p_home_win": 0.2736309712986419,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   },
   "L:PAN-ENG": {
-    "expected_away_goals": 1.836215586221286,
-    "expected_home_goals": 0.6593698029240906,
-    "p_away_win": 0.6452407074177571,
-    "p_draw": 0.2382461338601143,
-    "p_home_win": 0.11651315872212845,
+    "expected_away_goals": 1.7378944472035922,
+    "expected_home_goals": 0.6556721692781791,
+    "p_away_win": 0.6214151941538832,
+    "p_draw": 0.2561708957229263,
+    "p_home_win": 0.1224139101231903,
     "post_hoc": false,
-    "snapshot_at": "2026-06-14T04:20:45Z"
+    "snapshot_at": "2026-06-14T08:32:40Z"
   }
 }
