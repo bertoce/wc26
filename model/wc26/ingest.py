@@ -33,6 +33,38 @@ GITHUB_SHOOTOUTS_URL = (
 FOOTBALL_DATA_BASE = "https://api.football-data.org/v4"
 WC_COMPETITION_CODE = "WC"
 
+# football-data.org uses a handful of team codes that diverge from this
+# project's canonical TLAs (team_features.json and every other static data
+# file key off the ISO 3166-1 code). Normalize at the ingestion boundary so
+# every downstream consumer — fixture matching, the DC fit injection,
+# snapshot keys — sees one consistent code per team. Without this, fixtures
+# for the affected team get silently dropped (treated as "missing team
+# data") instead of appearing as scheduled/finished matches.
+FD_TLA_ALIASES = {
+    "URU": "URY",  # Uruguay
+}
+
+
+def normalize_fd_tla(tla: str | None) -> str | None:
+    return FD_TLA_ALIASES.get(tla, tla)
+
+
+def normalize_fd_teams(data: dict) -> dict:
+    """Normalize the `tla` field of every team in a /teams response, in place."""
+    for t in data.get("teams", []):
+        t["tla"] = normalize_fd_tla(t.get("tla"))
+    return data
+
+
+def normalize_fd_matches(data: dict) -> dict:
+    """Normalize homeTeam/awayTeam `tla` fields in a /matches response, in place."""
+    for m in data.get("matches", []):
+        for side in ("homeTeam", "awayTeam"):
+            team = m.get(side)
+            if team and team.get("tla"):
+                team["tla"] = normalize_fd_tla(team["tla"])
+    return data
+
 
 # ---------------------------------------------------------------------------
 # Historical match results (free, no auth)
@@ -124,26 +156,26 @@ def fetch_wc26_teams(force: bool = False) -> dict:
     """GET /v4/competitions/WC/teams — qualified teams for the current season."""
     path = RAW_DIR / "wc26_teams.json"
     if path.exists() and not force:
-        return json.loads(path.read_text())
+        return normalize_fd_teams(json.loads(path.read_text()))
     r = requests.get(f"{FOOTBALL_DATA_BASE}/competitions/{WC_COMPETITION_CODE}/teams",
                      headers=_fd_headers(), timeout=30)
     r.raise_for_status()
     data = r.json()
     path.write_text(json.dumps(data, indent=2))
-    return data
+    return normalize_fd_teams(data)
 
 
 def fetch_wc26_matches(force: bool = False) -> dict:
     """GET /v4/competitions/WC/matches — full fixture list with groups/stages."""
     path = RAW_DIR / "wc26_matches.json"
     if path.exists() and not force:
-        return json.loads(path.read_text())
+        return normalize_fd_matches(json.loads(path.read_text()))
     r = requests.get(f"{FOOTBALL_DATA_BASE}/competitions/{WC_COMPETITION_CODE}/matches",
                      headers=_fd_headers(), timeout=30)
     r.raise_for_status()
     data = r.json()
     path.write_text(json.dumps(data, indent=2))
-    return data
+    return normalize_fd_matches(data)
 
 
 def fetch_wc26_standings(force: bool = False) -> dict:
