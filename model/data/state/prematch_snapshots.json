@@ -486,13 +486,13 @@
     "snapshot_at": "2026-06-26T14:00:38Z"
   },
   "J:ALG-AUT": {
-    "expected_away_goals": 1.8268629904371072,
-    "expected_home_goals": 1.146085887073347,
-    "p_away_win": 0.5199679576338663,
-    "p_draw": 0.2553035171599229,
-    "p_home_win": 0.22472852520621073,
+    "expected_away_goals": 1.8959083739863964,
+    "expected_home_goals": 1.1589476177444884,
+    "p_away_win": 0.5332089186049135,
+    "p_draw": 0.24845762745066458,
+    "p_home_win": 0.21833345394442194,
     "post_hoc": false,
-    "snapshot_at": "2026-06-28T01:53:57Z"
+    "snapshot_at": "2026-06-28T04:04:25Z"
   },
   "J:ARG-ALG": {
     "expected_away_goals": 0.6922090758773555,
