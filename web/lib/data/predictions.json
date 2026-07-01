@@ -1,14 +1,14 @@
 {
   "metadata": {
-    "generated_at": "2026-06-30T13:53:37.051093+00:00",
+    "generated_at": "2026-07-01T14:04:54.453647+00:00",
     "n_sims": 20000,
     "seed": 2026,
     "host_continent": "North America",
     "n_teams": 48,
     "n_group_fixtures": 72,
-    "dc_home_advantage": 0.257611490778994,
-    "dc_rho": -0.10831302880497806,
-    "dc_fit_matches": 2498,
+    "dc_home_advantage": 0.2729784932585781,
+    "dc_rho": -0.10144923559421368,
+    "dc_fit_matches": 2501,
     "model_version": "0.5.0",
     "n_finished_matches": 72
   },
@@ -16,449 +16,449 @@
     {
       "tla": "ENG",
       "name": "England",
-      "win_probability_raw": 0.1298,
-      "win_probability_adjusted": 0.2114384043305403,
+      "win_probability_raw": 0.11845,
+      "win_probability_adjusted": 0.19899565942730135,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.79605,
-        "reach_qf": 0.55175,
-        "reach_sf": 0.3359,
-        "reach_final": 0.21255,
-        "win": 0.1298
+        "reach_r16": 0.77145,
+        "reach_qf": 0.5143,
+        "reach_sf": 0.31035,
+        "reach_final": 0.19855,
+        "win": 0.11845
       }
     },
     {
       "tla": "ESP",
       "name": "Spain",
-      "win_probability_raw": 0.1795,
-      "win_probability_adjusted": 0.1834551230404486,
+      "win_probability_raw": 0.18325,
+      "win_probability_adjusted": 0.19315623553541442,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.78235,
-        "reach_qf": 0.6093,
-        "reach_sf": 0.45735,
-        "reach_final": 0.2998,
-        "win": 0.1795
+        "reach_r16": 0.78935,
+        "reach_qf": 0.60065,
+        "reach_sf": 0.4467,
+        "reach_final": 0.2951,
+        "win": 0.18325
       }
     },
     {
       "tla": "FRA",
       "name": "France",
-      "win_probability_raw": 0.07745,
-      "win_probability_adjusted": 0.1348608883828295,
+      "win_probability_raw": 0.06985,
+      "win_probability_adjusted": 0.12543835870437972,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.52665,
-        "reach_qf": 0.37485,
-        "reach_sf": 0.2095,
-        "reach_final": 0.1307,
-        "win": 0.07745
+        "reach_r16": 0.5125,
+        "reach_qf": 0.3589,
+        "reach_sf": 0.1966,
+        "reach_final": 0.12185,
+        "win": 0.06985
       }
     },
     {
       "tla": "BRA",
       "name": "Brazil",
-      "win_probability_raw": 0.08175,
-      "win_probability_adjusted": 0.12294276962023924,
+      "win_probability_raw": 0.07745,
+      "win_probability_adjusted": 0.12012572217994694,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.7601,
-        "reach_qf": 0.53385,
-        "reach_sf": 0.30805,
-        "reach_final": 0.15395,
-        "win": 0.08175
-      }
-    },
-    {
-      "tla": "GER",
-      "name": "Germany",
-      "win_probability_raw": 0.06565,
-      "win_probability_adjusted": 0.09290911112828924,
-      "round_probability": {
-        "reach_r32": 1.0,
-        "reach_r16": 0.8101,
-        "reach_qf": 0.5018,
-        "reach_sf": 0.27,
-        "reach_final": 0.14035,
-        "win": 0.06565
+        "reach_r16": 0.74305,
+        "reach_qf": 0.51265,
+        "reach_sf": 0.2966,
+        "reach_final": 0.1468,
+        "win": 0.07745
       }
     },
     {
       "tla": "ARG",
       "name": "Argentina",
-      "win_probability_raw": 0.0986,
-      "win_probability_adjusted": 0.09277012120183478,
+      "win_probability_raw": 0.1089,
+      "win_probability_adjusted": 0.10567163986918943,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.7619,
-        "reach_qf": 0.5275,
-        "reach_sf": 0.32845,
-        "reach_final": 0.18855,
-        "win": 0.0986
+        "reach_r16": 0.74955,
+        "reach_qf": 0.53135,
+        "reach_sf": 0.3397,
+        "reach_final": 0.19935,
+        "win": 0.1089
+      }
+    },
+    {
+      "tla": "GER",
+      "name": "Germany",
+      "win_probability_raw": 0.0618,
+      "win_probability_adjusted": 0.09020101158725981,
+      "round_probability": {
+        "reach_r32": 1.0,
+        "reach_r16": 0.79215,
+        "reach_qf": 0.49915,
+        "reach_sf": 0.26745,
+        "reach_final": 0.13385,
+        "win": 0.0618
       }
     },
     {
       "tla": "POR",
       "name": "Portugal",
-      "win_probability_raw": 0.0576,
-      "win_probability_adjusted": 0.0495653948838977,
+      "win_probability_raw": 0.05845,
+      "win_probability_adjusted": 0.051872832227835126,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.47335,
-        "reach_qf": 0.329,
-        "reach_sf": 0.17395,
-        "reach_final": 0.103,
-        "win": 0.0576
+        "reach_r16": 0.4875,
+        "reach_qf": 0.33605,
+        "reach_sf": 0.1782,
+        "reach_final": 0.10625,
+        "win": 0.05845
       }
     },
     {
       "tla": "NED",
       "name": "Netherlands",
-      "win_probability_raw": 0.05715,
-      "win_probability_adjusted": 0.04178762026058258,
+      "win_probability_raw": 0.04705,
+      "win_probability_adjusted": 0.03548055386975249,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.8703,
-        "reach_qf": 0.4775,
-        "reach_sf": 0.2645,
-        "reach_final": 0.1146,
-        "win": 0.05715
-      }
-    },
-    {
-      "tla": "SUI",
-      "name": "Switzerland",
-      "win_probability_raw": 0.0346,
-      "win_probability_adjusted": 0.01586036490828738,
-      "round_probability": {
-        "reach_r32": 1.0,
-        "reach_r16": 0.7378,
-        "reach_qf": 0.37255,
-        "reach_sf": 0.1862,
-        "reach_final": 0.08625,
-        "win": 0.0346
+        "reach_r16": 0.86755,
+        "reach_qf": 0.45765,
+        "reach_sf": 0.24715,
+        "reach_final": 0.1079,
+        "win": 0.04705
       }
     },
     {
       "tla": "COL",
       "name": "Colombia",
-      "win_probability_raw": 0.0341,
-      "win_probability_adjusted": 0.014868827781421385,
+      "win_probability_raw": 0.0443,
+      "win_probability_adjusted": 0.01992165600847478,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.77775,
-        "reach_qf": 0.3311,
-        "reach_sf": 0.14735,
-        "reach_final": 0.07315,
-        "win": 0.0341
+        "reach_r16": 0.77575,
+        "reach_qf": 0.35525,
+        "reach_sf": 0.1731,
+        "reach_final": 0.0912,
+        "win": 0.0443
+      }
+    },
+    {
+      "tla": "SUI",
+      "name": "Switzerland",
+      "win_probability_raw": 0.0323,
+      "win_probability_adjusted": 0.015269997184267851,
+      "round_probability": {
+        "reach_r32": 1.0,
+        "reach_r16": 0.73785,
+        "reach_qf": 0.36645,
+        "reach_sf": 0.17425,
+        "reach_final": 0.0788,
+        "win": 0.0323
       }
     },
     {
       "tla": "BEL",
       "name": "Belgium",
-      "win_probability_raw": 0.0138,
-      "win_probability_adjusted": 0.00772616916154701,
+      "win_probability_raw": 0.01465,
+      "win_probability_adjusted": 0.00845906007367546,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.6385,
-        "reach_qf": 0.2639,
-        "reach_sf": 0.10625,
-        "reach_final": 0.0347,
+        "reach_r16": 0.6371,
+        "reach_qf": 0.26915,
+        "reach_sf": 0.11115,
+        "reach_final": 0.03905,
+        "win": 0.01465
+      }
+    },
+    {
+      "tla": "NOR",
+      "name": "Norway",
+      "win_probability_raw": 0.0138,
+      "win_probability_adjusted": 0.006790274017324243,
+      "round_probability": {
+        "reach_r32": 1.0,
+        "reach_r16": 0.58645,
+        "reach_qf": 0.22195,
+        "reach_sf": 0.09445,
+        "reach_final": 0.0357,
         "win": 0.0138
       }
     },
     {
       "tla": "MAR",
       "name": "Morocco",
-      "win_probability_raw": 0.04815,
-      "win_probability_adjusted": 0.0063234548051461364,
+      "win_probability_raw": 0.04845,
+      "win_probability_adjusted": 0.006562227268163023,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.66885,
-        "reach_qf": 0.37285,
-        "reach_sf": 0.2067,
-        "reach_final": 0.0973,
-        "win": 0.04815
-      }
-    },
-    {
-      "tla": "CRO",
-      "name": "Croatia",
-      "win_probability_raw": 0.01095,
-      "win_probability_adjusted": 0.005490996742233644,
-      "round_probability": {
-        "reach_r32": 1.0,
-        "reach_r16": 0.5667,
-        "reach_qf": 0.18305,
-        "reach_sf": 0.0686,
-        "reach_final": 0.02845,
-        "win": 0.01095
+        "reach_r16": 0.6505,
+        "reach_qf": 0.3714,
+        "reach_sf": 0.21235,
+        "reach_final": 0.09825,
+        "win": 0.04845
       }
     },
     {
       "tla": "MEX",
       "name": "Mexico",
-      "win_probability_raw": 0.03805,
-      "win_probability_adjusted": 0.005467768749024807,
+      "win_probability_raw": 0.04055,
+      "win_probability_adjusted": 0.006009601770279627,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.75615,
-        "reach_qf": 0.4617,
-        "reach_sf": 0.1982,
-        "reach_final": 0.09195,
-        "win": 0.03805
+        "reach_r16": 0.7401,
+        "reach_qf": 0.4556,
+        "reach_sf": 0.19715,
+        "reach_final": 0.0936,
+        "win": 0.04055
       }
     },
     {
-      "tla": "NOR",
-      "name": "Norway",
-      "win_probability_raw": 0.01045,
-      "win_probability_adjusted": 0.004985688560615881,
+      "tla": "CRO",
+      "name": "Croatia",
+      "win_probability_raw": 0.0092,
+      "win_probability_adjusted": 0.004757997970974042,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.5651,
-        "reach_qf": 0.2182,
-        "reach_sf": 0.0901,
-        "reach_final": 0.0344,
-        "win": 0.01045
+        "reach_r16": 0.54535,
+        "reach_qf": 0.17545,
+        "reach_sf": 0.06285,
+        "reach_final": 0.0259,
+        "win": 0.0092
       }
     },
     {
       "tla": "JPN",
       "name": "Japan",
-      "win_probability_raw": 0.01725,
-      "win_probability_adjusted": 0.0020498808826638197,
+      "win_probability_raw": 0.0204,
+      "win_probability_adjusted": 0.0025001671895441857,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.6243,
-        "reach_qf": 0.21455,
-        "reach_sf": 0.11635,
-        "reach_final": 0.04715,
-        "win": 0.01725
+        "reach_r16": 0.62125,
+        "reach_qf": 0.2212,
+        "reach_sf": 0.1195,
+        "reach_final": 0.052,
+        "win": 0.0204
       }
     },
     {
       "tla": "ECU",
       "name": "Ecuador",
-      "win_probability_raw": 0.003,
-      "win_probability_adjusted": 0.0011258990033630397,
+      "win_probability_raw": 0.00325,
+      "win_probability_adjusted": 0.0012579428159772883,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.21765,
-        "reach_qf": 0.0889,
-        "reach_sf": 0.0381,
-        "reach_final": 0.01175,
-        "win": 0.003
+        "reach_r16": 0.21065,
+        "reach_qf": 0.0873,
+        "reach_sf": 0.0366,
+        "reach_final": 0.01125,
+        "win": 0.00325
       }
     },
     {
       "tla": "AUT",
       "name": "Austria",
-      "win_probability_raw": 0.00215,
-      "win_probability_adjusted": 0.0009757122216455794,
+      "win_probability_raw": 0.0024,
+      "win_probability_adjusted": 0.0011232951532729129,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.3615,
-        "reach_qf": 0.1071,
-        "reach_sf": 0.03195,
-        "reach_final": 0.0071,
-        "win": 0.00215
-      }
-    },
-    {
-      "tla": "AUS",
-      "name": "Australia",
-      "win_probability_raw": 0.00845,
-      "win_probability_adjusted": 0.0008817347398630368,
-      "round_probability": {
-        "reach_r32": 1.0,
-        "reach_r16": 0.4349,
-        "reach_qf": 0.1656,
-        "reach_sf": 0.0634,
-        "reach_final": 0.0242,
-        "win": 0.00845
-      }
-    },
-    {
-      "tla": "CIV",
-      "name": "Ivory Coast",
-      "win_probability_raw": 0.0066,
-      "win_probability_adjusted": 0.0007843022507583309,
-      "round_probability": {
-        "reach_r32": 1.0,
-        "reach_r16": 0.5195,
-        "reach_qf": 0.23705,
-        "reach_sf": 0.0733,
-        "reach_final": 0.0241,
-        "win": 0.0066
-      }
-    },
-    {
-      "tla": "EGY",
-      "name": "Egypt",
-      "win_probability_raw": 0.00615,
-      "win_probability_adjusted": 0.000667925675261468,
-      "round_probability": {
-        "reach_r32": 1.0,
-        "reach_r16": 0.4805,
-        "reach_qf": 0.21665,
-        "reach_sf": 0.0648,
-        "reach_final": 0.022,
-        "win": 0.00615
-      }
-    },
-    {
-      "tla": "CAN",
-      "name": "Canada",
-      "win_probability_raw": 0.0044,
-      "win_probability_adjusted": 0.00062598684836226,
-      "round_probability": {
-        "reach_r32": 1.0,
-        "reach_r16": 0.33115,
-        "reach_qf": 0.12315,
-        "reach_sf": 0.048,
-        "reach_final": 0.01435,
-        "win": 0.0044
+        "reach_r16": 0.3629,
+        "reach_qf": 0.11485,
+        "reach_sf": 0.03445,
+        "reach_final": 0.0085,
+        "win": 0.0024
       }
     },
     {
       "tla": "PAR",
       "name": "Paraguay",
-      "win_probability_raw": 0.0016,
-      "win_probability_adjusted": 0.000548796912340948,
+      "win_probability_raw": 0.0025,
+      "win_probability_adjusted": 0.0008843639760073459,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.2381,
-        "reach_qf": 0.0887,
-        "reach_sf": 0.02715,
-        "reach_final": 0.0078,
-        "win": 0.0016
+        "reach_r16": 0.25045,
+        "reach_qf": 0.09915,
+        "reach_sf": 0.0336,
+        "reach_final": 0.0094,
+        "win": 0.0025
+      }
+    },
+    {
+      "tla": "EGY",
+      "name": "Egypt",
+      "win_probability_raw": 0.0078,
+      "win_probability_adjusted": 0.0008736691152327231,
+      "round_probability": {
+        "reach_r32": 1.0,
+        "reach_r16": 0.50295,
+        "reach_qf": 0.22225,
+        "reach_sf": 0.0713,
+        "reach_final": 0.0244,
+        "win": 0.0078
+      }
+    },
+    {
+      "tla": "CAN",
+      "name": "Canada",
+      "win_probability_raw": 0.00585,
+      "win_probability_adjusted": 0.0008583566119938274,
+      "round_probability": {
+        "reach_r32": 1.0,
+        "reach_r16": 0.3495,
+        "reach_qf": 0.1477,
+        "reach_sf": 0.0619,
+        "reach_final": 0.018,
+        "win": 0.00585
+      }
+    },
+    {
+      "tla": "CIV",
+      "name": "Ivory Coast",
+      "win_probability_raw": 0.00635,
+      "win_probability_adjusted": 0.0007782383163532146,
+      "round_probability": {
+        "reach_r32": 1.0,
+        "reach_r16": 0.49705,
+        "reach_qf": 0.2242,
+        "reach_sf": 0.0688,
+        "reach_final": 0.02205,
+        "win": 0.00635
       }
     },
     {
       "tla": "SEN",
       "name": "Senegal",
-      "win_probability_raw": 0.00425,
-      "win_probability_adjusted": 0.0005101188837193183,
+      "win_probability_raw": 0.00595,
+      "win_probability_adjusted": 0.0007365441671984257,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.4333,
-        "reach_qf": 0.1131,
-        "reach_sf": 0.03595,
-        "reach_final": 0.0132,
-        "win": 0.00425
+        "reach_r16": 0.45465,
+        "reach_qf": 0.1296,
+        "reach_sf": 0.04335,
+        "reach_final": 0.01705,
+        "win": 0.00595
       }
     },
     {
       "tla": "USA",
       "name": "United States",
-      "win_probability_raw": 0.0026,
-      "win_probability_adjusted": 0.00042547716953261186,
+      "win_probability_raw": 0.0038,
+      "win_probability_adjusted": 0.000641336368602662,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.3757,
-        "reach_qf": 0.08725,
-        "reach_sf": 0.0372,
-        "reach_final": 0.011,
-        "win": 0.0026
+        "reach_r16": 0.37875,
+        "reach_qf": 0.09085,
+        "reach_sf": 0.04055,
+        "reach_final": 0.01165,
+        "win": 0.0038
       }
     },
     {
-      "tla": "SWE",
-      "name": "Sweden",
-      "win_probability_raw": 0.00075,
-      "win_probability_adjusted": 0.00036814170818379795,
+      "tla": "AUS",
+      "name": "Australia",
+      "win_probability_raw": 0.00565,
+      "win_probability_adjusted": 0.000608035658287785,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.2622,
-        "reach_qf": 0.07095,
-        "reach_sf": 0.0203,
-        "reach_final": 0.0049,
-        "win": 0.00075
+        "reach_r16": 0.41355,
+        "reach_qf": 0.14755,
+        "reach_sf": 0.0544,
+        "reach_final": 0.01875,
+        "win": 0.00565
       }
     },
     {
       "tla": "COD",
       "name": "Congo DR",
-      "win_probability_raw": 0.0019,
-      "win_probability_adjusted": 0.00019628716354595324,
+      "win_probability_raw": 0.00275,
+      "win_probability_adjusted": 0.00029300184187678154,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.20395,
-        "reach_qf": 0.0768,
-        "reach_sf": 0.022,
-        "reach_final": 0.00725,
-        "win": 0.0019
+        "reach_r16": 0.22855,
+        "reach_qf": 0.0842,
+        "reach_sf": 0.02645,
+        "reach_final": 0.00925,
+        "win": 0.00275
+      }
+    },
+    {
+      "tla": "SWE",
+      "name": "Sweden",
+      "win_probability_raw": 0.0005,
+      "win_probability_adjusted": 0.00025311805366235737,
+      "round_probability": {
+        "reach_r32": 1.0,
+        "reach_r16": 0.26215,
+        "reach_qf": 0.0682,
+        "reach_sf": 0.01805,
+        "reach_final": 0.00455,
+        "win": 0.0005
       }
     },
     {
       "tla": "GHA",
       "name": "Ghana",
-      "win_probability_raw": 0.0018,
-      "win_probability_adjusted": 0.0001935452791461709,
+      "win_probability_raw": 0.00185,
+      "win_probability_adjusted": 0.00020515455515803714,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.2399,
-        "reach_qf": 0.09515,
-        "reach_sf": 0.0289,
-        "reach_final": 0.007,
-        "win": 0.0018
+        "reach_r16": 0.25695,
+        "reach_qf": 0.10335,
+        "reach_sf": 0.03245,
+        "reach_final": 0.0085,
+        "win": 0.00185
       }
     },
     {
       "tla": "RSA",
       "name": "South Africa",
-      "win_probability_raw": 0.00075,
-      "win_probability_adjusted": 7.51918425616089e-05,
+      "win_probability_raw": 0.00105,
+      "win_probability_adjusted": 0.00010856707098521794,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.1899,
-        "reach_qf": 0.0547,
-        "reach_sf": 0.0144,
-        "reach_final": 0.00345,
-        "win": 0.00075
-      }
-    },
-    {
-      "tla": "BIH",
-      "name": "Bosnia-Herzegovina",
-      "win_probability_raw": 0.00015,
-      "win_probability_adjusted": 5.743218359828809e-05,
-      "round_probability": {
-        "reach_r32": 1.0,
-        "reach_r16": 0.1297,
-        "reach_qf": 0.0265,
-        "reach_sf": 0.00565,
-        "reach_final": 0.0009,
-        "win": 0.00015
+        "reach_r16": 0.20785,
+        "reach_qf": 0.0662,
+        "reach_sf": 0.0181,
+        "reach_final": 0.005,
+        "win": 0.00105
       }
     },
     {
       "tla": "ALG",
       "name": "Algeria",
-      "win_probability_raw": 0.00035,
-      "win_probability_adjusted": 3.725934166920055e-05,
+      "win_probability_raw": 0.00075,
+      "win_probability_adjusted": 8.234320265963482e-05,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.24385,
-        "reach_qf": 0.0846,
-        "reach_sf": 0.0147,
-        "reach_final": 0.00235,
-        "win": 0.00035
+        "reach_r16": 0.2599,
+        "reach_qf": 0.09795,
+        "reach_sf": 0.0194,
+        "reach_final": 0.00455,
+        "win": 0.00075
       }
     },
     {
       "tla": "CPV",
       "name": "Cape Verde Islands",
-      "win_probability_raw": 0.00025,
-      "win_probability_adjusted": 2.3604336846457956e-05,
+      "win_probability_raw": 0.00065,
+      "win_probability_adjusted": 6.329428669509634e-05,
       "round_probability": {
         "reach_r32": 1.0,
-        "reach_r16": 0.22225,
-        "reach_qf": 0.04035,
-        "reach_sf": 0.00675,
-        "reach_final": 0.0018,
-        "win": 0.00025
+        "reach_r16": 0.22425,
+        "reach_qf": 0.04625,
+        "reach_sf": 0.0091,
+        "reach_final": 0.00235,
+        "win": 0.00065
+      }
+    },
+    {
+      "tla": "BIH",
+      "name": "Bosnia-Herzegovina",
+      "win_probability_raw": 5e-05,
+      "win_probability_adjusted": 1.9743922254416313e-05,
+      "round_probability": {
+        "reach_r32": 1.0,
+        "reach_r16": 0.13245,
+        "reach_qf": 0.02325,
+        "reach_sf": 0.00395,
+        "reach_final": 0.0006,
+        "win": 5e-05
       }
     },
     {
@@ -2103,11 +2103,11 @@
           "away_top_name": "Portugal",
           "p_away_top": 1.0,
           "p_matchup_top": 1.0,
-          "p_home_win": 0.37236554377181647,
-          "p_draw": 0.3011397337234256,
-          "p_away_win": 0.3264947225047579,
-          "expected_home_goals": 1.2709977137717208,
-          "expected_away_goals": 1.175613961649644
+          "p_home_win": 0.36634514262479184,
+          "p_draw": 0.29659537970200195,
+          "p_away_win": 0.3370594776732063,
+          "expected_home_goals": 1.2756066014724263,
+          "expected_away_goals": 1.214261411046066
         },
         {
           "match_idx": 1,
@@ -2118,11 +2118,11 @@
           "away_top_name": "Senegal",
           "p_away_top": 1.0,
           "p_matchup_top": 1.0,
-          "p_home_win": 0.42356702541543284,
-          "p_draw": 0.27090613190260726,
-          "p_away_win": 0.30552684268196,
-          "expected_home_goals": 1.5760992199181127,
-          "expected_away_goals": 1.3115144003629282
+          "p_home_win": 0.4074459593057693,
+          "p_draw": 0.2672157963191875,
+          "p_away_win": 0.32533824437504294,
+          "expected_home_goals": 1.567658553085089,
+          "expected_away_goals": 1.3821272423495812
         },
         {
           "match_idx": 2,
@@ -2133,11 +2133,11 @@
           "away_top_name": "Congo DR",
           "p_away_top": 1.0,
           "p_matchup_top": 1.0,
-          "p_home_win": 0.6335332416921907,
-          "p_draw": 0.2623493176109591,
-          "p_away_win": 0.10411744069685011,
-          "expected_home_goals": 1.6097533110117974,
-          "expected_away_goals": 0.5130607922051686
+          "p_home_win": 0.601957820886599,
+          "p_draw": 0.2769495179961175,
+          "p_away_win": 0.12109266111728374,
+          "expected_home_goals": 1.5212345472976052,
+          "expected_away_goals": 0.5469551512971403
         },
         {
           "match_idx": 3,
@@ -2148,11 +2148,11 @@
           "away_top_name": "Cape Verde Islands",
           "p_away_top": 1.0,
           "p_matchup_top": 1.0,
-          "p_home_win": 0.610657244633402,
-          "p_draw": 0.27769837345590137,
-          "p_away_win": 0.11164438191069653,
-          "expected_home_goals": 1.5135851321921674,
-          "expected_away_goals": 0.5084420532089785
+          "p_home_win": 0.6136172520958127,
+          "p_draw": 0.27219793792927005,
+          "p_away_win": 0.11418480997491731,
+          "expected_home_goals": 1.5449413813005486,
+          "expected_away_goals": 0.5280201747681919
         },
         {
           "match_idx": 4,
@@ -2163,11 +2163,11 @@
           "away_top_name": "Bosnia-Herzegovina",
           "p_away_top": 1.0,
           "p_matchup_top": 1.0,
-          "p_home_win": 0.7636429574536381,
-          "p_draw": 0.15580060604035895,
-          "p_away_win": 0.0805564365060029,
-          "expected_home_goals": 2.6954724805811168,
-          "expected_away_goals": 0.8129447068856571
+          "p_home_win": 0.7589916397862075,
+          "p_draw": 0.1588828372534823,
+          "p_away_win": 0.08212552296031025,
+          "expected_home_goals": 2.6375386975486275,
+          "expected_away_goals": 0.7966725003286628
         },
         {
           "match_idx": 5,
@@ -2178,11 +2178,11 @@
           "away_top_name": "Canada",
           "p_away_top": 1.0,
           "p_matchup_top": 1.0,
-          "p_home_win": 0.49451499529570525,
-          "p_draw": 0.30630705500776345,
-          "p_away_win": 0.19917794969653113,
-          "expected_home_goals": 1.3637815908052717,
-          "expected_away_goals": 0.7744607279489952
+          "p_home_win": 0.4785988153199596,
+          "p_draw": 0.30713675695394393,
+          "p_away_win": 0.21426442772609658,
+          "expected_home_goals": 1.3408113799974883,
+          "expected_away_goals": 0.8134573833848708
         },
         {
           "match_idx": 6,
@@ -2193,11 +2193,11 @@
           "away_top_name": "Ghana",
           "p_away_top": 1.0,
           "p_matchup_top": 1.0,
-          "p_home_win": 0.5841937200113393,
-          "p_draw": 0.28344274930265495,
-          "p_away_win": 0.1323635306860057,
-          "expected_home_goals": 1.5001620298541207,
-          "expected_away_goals": 0.5865027006954975
+          "p_home_win": 0.5741311225151058,
+          "p_draw": 0.2840480270378212,
+          "p_away_win": 0.14182085044707313,
+          "expected_home_goals": 1.4934778474533579,
+          "expected_away_goals": 0.6180237577680556
         },
         {
           "match_idx": 7,
@@ -2208,11 +2208,11 @@
           "away_top_name": "Austria",
           "p_away_top": 1.0,
           "p_matchup_top": 1.0,
-          "p_home_win": 0.5040318414739198,
-          "p_draw": 0.23429700710509616,
-          "p_away_win": 0.2616711514209843,
-          "expected_home_goals": 2.03049300056121,
-          "expected_away_goals": 1.434898049066253
+          "p_home_win": 0.5018102517117881,
+          "p_draw": 0.2405103392169708,
+          "p_away_win": 0.25767940907124104,
+          "expected_home_goals": 1.9392892113712752,
+          "expected_away_goals": 1.353140041936397
         },
         {
           "match_idx": 8,
@@ -2223,11 +2223,11 @@
           "away_top_name": "Paraguay",
           "p_away_top": 1.0,
           "p_matchup_top": 1.0,
-          "p_home_win": 0.5841447143157968,
-          "p_draw": 0.29435158781305043,
-          "p_away_win": 0.12150369787115256,
-          "expected_home_goals": 1.4160699712112468,
-          "expected_away_goals": 0.5100012243197265
+          "p_home_win": 0.5697614864170586,
+          "p_draw": 0.29501315468145606,
+          "p_away_win": 0.13522535890148538,
+          "expected_home_goals": 1.4135865109580983,
+          "expected_away_goals": 0.558498795429749
         },
         {
           "match_idx": 9,
@@ -2238,11 +2238,11 @@
           "away_top_name": "Australia",
           "p_away_top": 1.0,
           "p_matchup_top": 1.0,
-          "p_home_win": 0.4092170404176331,
-          "p_draw": 0.294394971189558,
-          "p_away_win": 0.296387988392809,
-          "expected_home_goals": 1.3752472309062402,
-          "expected_away_goals": 1.1374222143659896
+          "p_home_win": 0.42793395434921067,
+          "p_draw": 0.29089760982240825,
+          "p_away_win": 0.28116843582838125,
+          "expected_home_goals": 1.4111731752927055,
+          "expected_away_goals": 1.1012962188384408
         },
         {
           "match_idx": 10,
@@ -2253,11 +2253,11 @@
           "away_top_name": "Sweden",
           "p_away_top": 1.0,
           "p_matchup_top": 1.0,
-          "p_home_win": 0.6141775147337696,
-          "p_draw": 0.19191242596629815,
-          "p_away_win": 0.19391005929993216,
-          "expected_home_goals": 2.610323836087975,
-          "expected_away_goals": 1.4651708666232945
+          "p_home_win": 0.6196321571386018,
+          "p_draw": 0.19440724028688092,
+          "p_away_win": 0.18596060257451721,
+          "expected_home_goals": 2.5350233314205366,
+          "expected_away_goals": 1.3732063380659751
         },
         {
           "match_idx": 11,
@@ -2268,11 +2268,11 @@
           "away_top_name": "South Africa",
           "p_away_top": 1.0,
           "p_matchup_top": 1.0,
-          "p_home_win": 0.6817000615432811,
-          "p_draw": 0.19963423929024898,
-          "p_away_win": 0.11866569916647013,
-          "expected_home_goals": 2.2706103181190747,
-          "expected_away_goals": 0.8646900627976218
+          "p_home_win": 0.6626350337826117,
+          "p_draw": 0.20618288995568881,
+          "p_away_win": 0.1311820762616997,
+          "expected_home_goals": 2.2143903830369833,
+          "expected_away_goals": 0.9029401577537834
         },
         {
           "match_idx": 12,
@@ -2283,11 +2283,11 @@
           "away_top_name": "Algeria",
           "p_away_top": 1.0,
           "p_matchup_top": 1.0,
-          "p_home_win": 0.6084732901150526,
-          "p_draw": 0.24278368552998758,
-          "p_away_win": 0.14874302435495973,
-          "expected_home_goals": 1.8634871512154965,
-          "expected_away_goals": 0.8225116494772355
+          "p_home_win": 0.5940406770830294,
+          "p_draw": 0.24282430470860514,
+          "p_away_win": 0.16313501820836535,
+          "expected_home_goals": 1.869586966357868,
+          "expected_away_goals": 0.8880066045802892
         },
         {
           "match_idx": 13,
@@ -2298,11 +2298,11 @@
           "away_top_name": "Egypt",
           "p_away_top": 1.0,
           "p_matchup_top": 1.0,
-          "p_home_win": 0.3516726177596,
-          "p_draw": 0.33376098218800154,
-          "p_away_win": 0.3145664000523983,
-          "expected_home_goals": 1.0561741235029058,
-          "expected_away_goals": 0.9847194825060477
+          "p_home_win": 0.3317329804044851,
+          "p_draw": 0.332885442162685,
+          "p_away_win": 0.3353815774328297,
+          "expected_home_goals": 1.0131981893733775,
+          "expected_away_goals": 1.0202118368545614
         },
         {
           "match_idx": 14,
@@ -2313,11 +2313,11 @@
           "away_top_name": "Ecuador",
           "p_away_top": 1.0,
           "p_matchup_top": 1.0,
-          "p_home_win": 0.5939109111124714,
-          "p_draw": 0.3064776560863742,
-          "p_away_win": 0.09961143280115432,
-          "expected_home_goals": 1.3228200683154925,
-          "expected_away_goals": 0.39411024392315064
+          "p_home_win": 0.6088660229491384,
+          "p_draw": 0.28923484463842136,
+          "p_away_win": 0.10189913241244028,
+          "expected_home_goals": 1.4160166786913655,
+          "expected_away_goals": 0.43154589596532517
         },
         {
           "match_idx": 15,
@@ -2328,11 +2328,11 @@
           "away_top_name": "Japan",
           "p_away_top": 1.0,
           "p_matchup_top": 1.0,
-          "p_home_win": 0.2610730985569665,
-          "p_draw": 0.2623221159895234,
-          "p_away_win": 0.47660478545351,
-          "expected_home_goals": 1.2210839537595413,
-          "expected_away_goals": 1.7107320590126769
+          "p_home_win": 0.2615003541464081,
+          "p_draw": 0.2578045882079107,
+          "p_away_win": 0.4806950576456814,
+          "expected_home_goals": 1.2401855312486378,
+          "expected_away_goals": 1.742157796297655
         }
       ]
     },
@@ -2345,121 +2345,121 @@
           "match_idx": 0,
           "home_top": "FRA",
           "home_top_name": "France",
-          "p_home_top": 0.52665,
+          "p_home_top": 0.5125000000000001,
           "away_top": "CRO",
           "away_top_name": "Croatia",
-          "p_away_top": 0.5667,
-          "p_matchup_top": 0.29845,
-          "p_home_win": 0.5328516566760448,
-          "p_draw": 0.2666662084875084,
-          "p_away_win": 0.20048213483644656,
-          "expected_home_goals": 1.6826203170869658,
-          "expected_away_goals": 0.9528915544449819
+          "p_away_top": 0.54535,
+          "p_matchup_top": 0.281,
+          "p_home_win": 0.5316892729354604,
+          "p_draw": 0.2644786790776667,
+          "p_away_win": 0.203832047986873,
+          "expected_home_goals": 1.688870495205139,
+          "expected_away_goals": 0.9670330438408803
         },
         {
           "match_idx": 1,
           "home_top": "ENG",
           "home_top_name": "England",
-          "p_home_top": 0.7960499999999999,
+          "p_home_top": 0.77145,
           "away_top": "COL",
           "away_top_name": "Colombia",
-          "p_away_top": 0.7777499999999999,
-          "p_matchup_top": 0.6194,
-          "p_home_win": 0.48674447132189236,
-          "p_draw": 0.2855588513916417,
-          "p_away_win": 0.22769667728646614,
-          "expected_home_goals": 1.5137207779294886,
-          "expected_away_goals": 0.9650569635633167
+          "p_away_top": 0.7757499999999999,
+          "p_matchup_top": 0.5988,
+          "p_home_win": 0.45277913772478906,
+          "p_draw": 0.28930643304570935,
+          "p_away_win": 0.2579144292295015,
+          "expected_home_goals": 1.4488475643715644,
+          "expected_away_goals": 1.0379306132808215
         },
         {
           "match_idx": 2,
           "home_top": "NED",
           "home_top_name": "Netherlands",
-          "p_home_top": 0.8703000000000001,
+          "p_home_top": 0.86755,
           "away_top": "MAR",
           "away_top_name": "Morocco",
-          "p_away_top": 0.6688500000000001,
-          "p_matchup_top": 0.5823,
-          "p_home_win": 0.3359254389777663,
-          "p_draw": 0.29965506585118745,
-          "p_away_win": 0.36441949517104627,
-          "expected_home_goals": 1.2059522113016892,
-          "expected_away_goals": 1.2654466604596109
+          "p_away_top": 0.6505,
+          "p_matchup_top": 0.56375,
+          "p_home_win": 0.32097990899338064,
+          "p_draw": 0.29133463160035233,
+          "p_away_win": 0.3876854594062669,
+          "expected_home_goals": 1.2077624330523107,
+          "expected_away_goals": 1.3492131347369216
         },
         {
           "match_idx": 3,
           "home_top": "BRA",
           "home_top_name": "Brazil",
-          "p_home_top": 0.7601,
+          "p_home_top": 0.74305,
           "away_top": "BEL",
           "away_top_name": "Belgium",
-          "p_away_top": 0.6385,
-          "p_matchup_top": 0.4851,
-          "p_home_win": 0.5111331043477607,
-          "p_draw": 0.27058259224827674,
-          "p_away_win": 0.2182843034039626,
-          "expected_home_goals": 1.6477359222010333,
-          "expected_away_goals": 1.006127846414002
+          "p_away_top": 0.6371,
+          "p_matchup_top": 0.47385,
+          "p_home_win": 0.4947125570108194,
+          "p_draw": 0.27550194924452315,
+          "p_away_win": 0.22978549374465762,
+          "expected_home_goals": 1.585934583576704,
+          "expected_away_goals": 1.012713988512225
         },
         {
           "match_idx": 4,
           "home_top": "ARG",
           "home_top_name": "Argentina",
-          "p_home_top": 0.7619,
+          "p_home_top": 0.7495499999999999,
           "away_top": "NOR",
           "away_top_name": "Norway",
-          "p_away_top": 0.5651,
-          "p_matchup_top": 0.42885,
-          "p_home_win": 0.5829405790847662,
-          "p_draw": 0.20983219141427106,
-          "p_away_win": 0.20722722950096276,
-          "expected_home_goals": 2.3478781438251577,
-          "expected_away_goals": 1.3752472309062402
+          "p_away_top": 0.58645,
+          "p_matchup_top": 0.4386,
+          "p_home_win": 0.5898894439410124,
+          "p_draw": 0.20392911393112156,
+          "p_away_win": 0.2061814421278661,
+          "expected_home_goals": 2.419274761715839,
+          "expected_away_goals": 1.4111731752927055
         },
         {
           "match_idx": 5,
           "home_top": "SUI",
           "home_top_name": "Switzerland",
-          "p_home_top": 0.7378,
+          "p_home_top": 0.73785,
           "away_top": "GER",
           "away_top_name": "Germany",
-          "p_away_top": 0.8101,
-          "p_matchup_top": 0.596,
-          "p_home_win": 0.3297875730339992,
-          "p_draw": 0.23579811657666755,
-          "p_away_win": 0.43441431038933326,
-          "expected_home_goals": 1.6809712957597525,
-          "expected_away_goals": 1.9406628602173899
+          "p_away_top": 0.79215,
+          "p_matchup_top": 0.58465,
+          "p_home_win": 0.3288827944804415,
+          "p_draw": 0.23485296165971153,
+          "p_away_win": 0.43626424385984697,
+          "expected_home_goals": 1.6734377864507348,
+          "expected_away_goals": 1.9397128019889889
         },
         {
           "match_idx": 6,
           "home_top": "MEX",
           "home_top_name": "Mexico",
-          "p_home_top": 0.75615,
-          "away_top": "CIV",
-          "away_top_name": "Ivory Coast",
-          "p_away_top": 0.5195000000000001,
-          "p_matchup_top": 0.3921,
-          "p_home_win": 0.4160195777516628,
-          "p_draw": 0.34711577195725424,
-          "p_away_win": 0.236864650291083,
-          "expected_home_goals": 1.081434843781187,
-          "expected_away_goals": 0.7495630090177385
+          "p_home_top": 0.7401,
+          "away_top": "EGY",
+          "away_top_name": "Egypt",
+          "p_away_top": 0.50295,
+          "p_matchup_top": 0.37545,
+          "p_home_win": 0.41837517714933553,
+          "p_draw": 0.3522014158839649,
+          "p_away_win": 0.22942340696669972,
+          "expected_home_goals": 1.0517795426445078,
+          "expected_away_goals": 0.7071195294093487
         },
         {
           "match_idx": 7,
           "home_top": "ESP",
           "home_top_name": "Spain",
-          "p_home_top": 0.78235,
+          "p_home_top": 0.78935,
           "away_top": "JPN",
           "away_top_name": "Japan",
-          "p_away_top": 0.6243,
-          "p_matchup_top": 0.4879,
-          "p_home_win": 0.5718138868594573,
-          "p_draw": 0.26316365827560856,
-          "p_away_win": 0.16502245486493397,
-          "expected_home_goals": 1.6937389301141885,
-          "expected_away_goals": 0.8103065603635752
+          "p_away_top": 0.62125,
+          "p_matchup_top": 0.48995,
+          "p_home_win": 0.5543856885752139,
+          "p_draw": 0.26365304056265276,
+          "p_away_win": 0.18196127086213354,
+          "expected_home_goals": 1.6877280341330652,
+          "expected_away_goals": 0.8752548723209735
         }
       ]
     },
@@ -2472,61 +2472,61 @@
           "match_idx": 0,
           "home_top": "FRA",
           "home_top_name": "France",
-          "p_home_top": 0.37484999999999996,
+          "p_home_top": 0.3589,
           "away_top": "ENG",
           "away_top_name": "England",
-          "p_away_top": 0.55175,
-          "p_matchup_top": 0.205,
-          "p_home_win": 0.32257811088946675,
-          "p_draw": 0.29863130223839257,
-          "p_away_win": 0.37879058687214057,
-          "expected_home_goals": 1.1808315575076658,
-          "expected_away_goals": 1.2984149047260667
+          "p_away_top": 0.5143,
+          "p_matchup_top": 0.18605,
+          "p_home_win": 0.3278509263297594,
+          "p_draw": 0.2901688636050243,
+          "p_away_win": 0.38198021006521643,
+          "expected_home_goals": 1.2319912665281443,
+          "expected_away_goals": 1.3471729525057705
         },
         {
           "match_idx": 1,
           "home_top": "NED",
           "home_top_name": "Netherlands",
-          "p_home_top": 0.4775,
+          "p_home_top": 0.45765,
           "away_top": "BRA",
           "away_top_name": "Brazil",
-          "p_away_top": 0.53385,
-          "p_matchup_top": 0.25615,
-          "p_home_win": 0.3067443773093113,
-          "p_draw": 0.2847869322793484,
-          "p_away_win": 0.40846869041134015,
-          "expected_home_goals": 1.2233472609173655,
-          "expected_away_goals": 1.4433098175462358
+          "p_away_top": 0.51265,
+          "p_matchup_top": 0.235,
+          "p_home_win": 0.2978570331268844,
+          "p_draw": 0.28116787853893077,
+          "p_away_win": 0.42097508833418495,
+          "expected_home_goals": 1.2077624330523107,
+          "expected_away_goals": 1.4749423299968216
         },
         {
           "match_idx": 2,
           "home_top": "ARG",
           "home_top_name": "Argentina",
-          "p_home_top": 0.5275,
+          "p_home_top": 0.53135,
           "away_top": "GER",
           "away_top_name": "Germany",
-          "p_away_top": 0.5018,
-          "p_matchup_top": 0.26635,
-          "p_home_win": 0.43966681482616066,
-          "p_draw": 0.25753549463051467,
-          "p_away_win": 0.3027976905433246,
-          "expected_home_goals": 1.7190827680514484,
-          "expected_away_goals": 1.4011363196113578
+          "p_away_top": 0.49915,
+          "p_matchup_top": 0.2658,
+          "p_home_win": 0.45107283113068863,
+          "p_draw": 0.2473632306057092,
+          "p_away_win": 0.3015639382636022,
+          "expected_home_goals": 1.8210964718514986,
+          "expected_away_goals": 1.4652639947216095
         },
         {
           "match_idx": 3,
           "home_top": "MEX",
           "home_top_name": "Mexico",
-          "p_home_top": 0.4617,
+          "p_home_top": 0.4556,
           "away_top": "ESP",
           "away_top_name": "Spain",
-          "p_away_top": 0.6093,
-          "p_matchup_top": 0.2821,
-          "p_home_win": 0.18974576999160955,
-          "p_draw": 0.3126237432154333,
-          "p_away_win": 0.4976304867929573,
-          "expected_home_goals": 0.7193646084801107,
-          "expected_away_goals": 1.3228200683154925
+          "p_away_top": 0.60065,
+          "p_matchup_top": 0.27415,
+          "p_home_win": 0.2009864652123879,
+          "p_draw": 0.29730656650672466,
+          "p_away_win": 0.5017069682808875,
+          "expected_home_goals": 0.8057047797664204,
+          "expected_away_goals": 1.4160166786913655
         }
       ]
     },
@@ -2539,31 +2539,31 @@
           "match_idx": 0,
           "home_top": "ENG",
           "home_top_name": "England",
-          "p_home_top": 0.3359,
+          "p_home_top": 0.31034999999999996,
           "away_top": "BRA",
           "away_top_name": "Brazil",
-          "p_away_top": 0.30805000000000005,
-          "p_matchup_top": 0.104,
-          "p_home_win": 0.41537866616814234,
-          "p_draw": 0.3044545491587832,
-          "p_away_win": 0.28016678467307454,
-          "expected_home_goals": 1.3161039472030887,
-          "expected_away_goals": 1.038680357860092
+          "p_away_top": 0.29660000000000003,
+          "p_matchup_top": 0.09165,
+          "p_home_win": 0.41460401212213926,
+          "p_draw": 0.29765177209924615,
+          "p_away_win": 0.2877442157786145,
+          "expected_home_goals": 1.3471729525057705,
+          "expected_away_goals": 1.0834219208848839
         },
         {
           "match_idx": 1,
           "home_top": "ARG",
           "home_top_name": "Argentina",
-          "p_home_top": 0.3284500000000001,
+          "p_home_top": 0.33969999999999995,
           "away_top": "ESP",
           "away_top_name": "Spain",
-          "p_away_top": 0.45735,
-          "p_matchup_top": 0.1486,
-          "p_home_win": 0.28991011328436456,
-          "p_draw": 0.3019536718923779,
-          "p_away_win": 0.4081362148232574,
-          "expected_home_goals": 1.0784036710021123,
-          "expected_away_goals": 1.3228200683154925
+          "p_away_top": 0.4467,
+          "p_matchup_top": 0.15005,
+          "p_home_win": 0.3011248818128114,
+          "p_draw": 0.2872500112647633,
+          "p_away_win": 0.41162510692242504,
+          "expected_home_goals": 1.1797951597315126,
+          "expected_away_goals": 1.4160166786913655
         }
       ]
     },
@@ -2576,16 +2576,16 @@
           "match_idx": 0,
           "home_top": "ENG",
           "home_top_name": "England",
-          "p_home_top": 0.21255000000000004,
+          "p_home_top": 0.19855000000000003,
           "away_top": "ESP",
           "away_top_name": "Spain",
-          "p_away_top": 0.2998,
-          "p_matchup_top": 0.06385,
-          "p_home_win": 0.3491824707455403,
-          "p_draw": 0.28975998110443774,
-          "p_away_win": 0.361057548150022,
-          "expected_home_goals": 1.297389969420674,
-          "expected_away_goals": 1.3228200683154925
+          "p_away_top": 0.2951,
+          "p_matchup_top": 0.05725,
+          "p_home_win": 0.3448041558129812,
+          "p_draw": 0.27899110168393243,
+          "p_away_win": 0.3762047425030862,
+          "expected_home_goals": 1.3471729525057705,
+          "expected_away_goals": 1.4160166786913655
         }
       ]
     }
