@@ -507,6 +507,100 @@ def main() -> None:
               f"@ {round_matches[0]['p_matchup_top']*100:.1f}%)")
 
     # -----------------------------------------------------------------------
+    header("STEP 9: Round-of-32 four-outcome predictions + actuals")
+    # -----------------------------------------------------------------------
+    # The R32 bracket is real (fixed pairings). These predictions are inherently
+    # pre-match/frozen: the DC fit only ingests GROUP results, never knockout
+    # ones, so a team's rating — and therefore its R32 prediction — is identical
+    # before and after its R32 game is played. No snapshot store needed.
+    from wc26.knockout import four_outcome_prediction, confidence_tier  # noqa: E402
+
+    # Real R32 venues: fd.org's free tier has no venue field, but martj42's CSV
+    # `neutral` flag is False only when a host plays in its own country.
+    r32_host_home: set[str] = set()
+    try:
+        raw_csv = pd.read_csv(ROOT / "model" / "data" / "raw" / "results.csv", parse_dates=["date"])
+        host_name_to_tla = {"Mexico": "MEX", "United States": "USA", "Canada": "CAN"}
+        for r in raw_csv[raw_csv.date >= "2026-06-28"].itertuples(index=False):
+            if not bool(r.neutral) and host_name_to_tla.get(r.home_team):
+                r32_host_home.add(host_name_to_tla[r.home_team])
+    except Exception as e:  # non-fatal — fall back to all-neutral R32
+        print(f"  ⚠ could not read R32 venue flags ({e}); treating all R32 as neutral")
+
+    def _advancer(winner: str) -> str:
+        return "H" if winner == "HOME_TEAM" else "A"
+
+    r32_fixtures = [m for m in fd_matches if m["stage"] == "LAST_32"]
+    r32_fixtures.sort(key=lambda m: m.get("id", 0))  # official bracket order
+    knockout_r32 = []
+    for m in r32_fixtures:
+        h = m["homeTeam"].get("tla")
+        a = m["awayTeam"].get("tla")
+        if not h or not a or h not in teams_by_code or a not in teams_by_code:
+            continue
+        th, ta = teams_by_code[h], teams_by_code[a]
+        host_home = h in r32_host_home
+        pred = four_outcome_prediction(
+            th.attack, th.defence, ta.attack, ta.defence,
+            home_advantage=model.home_advantage, rho=model.rho, host_home=host_home)
+        predicted_advancer = "H" if pred["p_a_advances"] >= pred["p_b_advances"] else "A"
+        entry = {
+            "home": h, "away": a,
+            "home_name": tla_to_name_fd.get(h, h),
+            "away_name": tla_to_name_fd.get(a, a),
+            "host_home": host_home,
+            "utc_date": m.get("utcDate", ""),
+            "p_home_win_reg": pred["a_win_regulation"],
+            "p_away_win_reg": pred["b_win_regulation"],
+            "p_draw_home_adv": pred["draw_then_a_advances"],
+            "p_draw_away_adv": pred["draw_then_b_advances"],
+            "p_home_advances": pred["p_a_advances"],
+            "p_away_advances": pred["p_b_advances"],
+            "expected_home_goals": pred["expected_home_goals"],
+            "expected_away_goals": pred["expected_away_goals"],
+            "predicted_advancer": predicted_advancer,
+            "favored_name": tla_to_name_fd.get(h, h) if predicted_advancer == "H" else tla_to_name_fd.get(a, a),
+            "tier": confidence_tier(pred["p_a_advances"]),
+        }
+        score = m.get("score") or {}
+        if m.get("status") == "FINISHED" and score.get("winner"):
+            ft = score.get("fullTime") or {}
+            et = score.get("extraTime") or {}
+            pens = score.get("penalties") or {}
+            # fd.org folds ET and shootout goals into fullTime — peel them back
+            # out to recover the regulation (90') scoreline.
+            reg_h = (ft.get("home") or 0) - (et.get("home") or 0) - (pens.get("home") or 0)
+            reg_a = (ft.get("away") or 0) - (et.get("away") or 0) - (pens.get("away") or 0)
+            actual_advancer = _advancer(score["winner"])
+            entry.update({
+                "status": "FINISHED",
+                "resolution": score.get("duration", "REGULAR"),
+                "actual_home_goals": reg_h,
+                "actual_away_goals": reg_a,
+                "pens_home": pens.get("home"),
+                "pens_away": pens.get("away"),
+                "actual_advancer": actual_advancer,
+                "prediction_hit": predicted_advancer == actual_advancer,
+                "prediction_post_hoc": False,  # rating never sees knockout results
+            })
+        else:
+            entry["status"] = "SCHEDULED"
+        knockout_r32.append(entry)
+
+    r32_done = [e for e in knockout_r32 if e["status"] == "FINISHED"]
+    if r32_done:
+        hits = sum(1 for e in r32_done if e["prediction_hit"])
+        print(f"  {len(knockout_r32)} R32 ties; {len(r32_done)} decided — "
+              f"advancer predicted correctly in {hits}/{len(r32_done)}")
+        for e in r32_done:
+            mark = "✓" if e["prediction_hit"] else "✗"
+            print(f"    {mark} {e['home']} v {e['away']}: predicted {e['favored_name']} "
+                  f"({max(e['p_home_advances'], e['p_away_advances'])*100:.0f}%), "
+                  f"{'H' if e['actual_advancer']=='H' else 'A'} advanced ({e['resolution']})")
+    else:
+        print("  No R32 ties decided yet — all shown as scheduled.")
+
+    # -----------------------------------------------------------------------
     # Save predictions.json
     # -----------------------------------------------------------------------
     out = {
@@ -535,6 +629,7 @@ def main() -> None:
         ],
         "group_matches": sorted(group_preds, key=lambda p: (p.get("group") or "", p.get("utc_date", ""))),
         "knockout_bracket": knockout_bracket,
+        "knockout_r32": knockout_r32,
     }
     out_path = ROOT / "model" / "data" / "processed" / "predictions.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)

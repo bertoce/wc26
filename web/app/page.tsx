@@ -3,6 +3,7 @@ import { WinnerCard } from "@/components/winner-card";
 import { TopChart } from "@/components/top-chart";
 import { PredictionsTable } from "@/components/predictions-table";
 import { GroupMatchesSection } from "@/components/group-matches-section";
+import { R32MatchesSection } from "@/components/r32-matches-section";
 import { RoundProbabilitiesTable } from "@/components/round-probabilities-table";
 import { BracketView } from "@/components/bracket-view";
 import { CompoundProbabilityExplainer } from "@/components/compound-probability-explainer";
@@ -128,6 +129,24 @@ export default function Home() {
         </div>
         <GroupMatchesSection />
       </section>
+
+      {/* Per-tie Round-of-32 predictions (four outcomes + predicted vs actual) */}
+      {predictions.knockout_r32 && predictions.knockout_r32.length > 0 && (
+        <section className="space-y-3">
+          <div className="px-1">
+            <h3 className="text-base font-medium">Round of 32 — every tie</h3>
+            <p className="text-xs text-muted-foreground mt-1">
+              Four-outcome knockout model: home win / away win in 90&apos;, plus each side&apos;s
+              draw-then-advance path via extra time or penalties.
+              <span className="text-emerald-400"> Green</span> = home side advances,
+              <span className="text-rose-400"> red</span> = away side advances
+              (lighter = the ET/penalty path). The tier flags how confident the advance
+              call is; once a tie is played we mark whether the favoured team went through.
+            </p>
+          </div>
+          <R32MatchesSection />
+        </section>
+      )}
 
       {/* Full prediction-decomposition table */}
       {!GROUP_STAGE_ONLY && (
