@@ -23,13 +23,18 @@ name: Update WC26 predictions
 #      "Read and write permissions" (so the action can push commits)
 
 on:
-  schedule:
-    # Daily baseline at 12:00 UTC (refreshes the DC fit with new historical
-    # data even on days without matches). During match windows, the
-    # watch-results.yml workflow polls every 15 min and triggers this
-    # pipeline via workflow_dispatch the moment a match finishes — so no
-    # blind high-frequency cron is needed here.
-    - cron: '0 12 * * *'
+  # PAUSED 2026-10-19: WC26 ended 2026-07-19. The daily cron kept running for
+  # ~3 months past the final, burning Actions minutes, football-data.org /
+  # API-Football calls, and Vercel deploys for no reason. Commented out to
+  # sunset the project while keeping it revivable. To resume, uncomment the
+  # schedule block below. Manual runs still work via the Actions tab.
+  # schedule:
+  #   # Daily baseline at 12:00 UTC (refreshes the DC fit with new historical
+  #   # data even on days without matches). During match windows, the
+  #   # watch-results.yml workflow polls every 15 min and triggers this
+  #   # pipeline via workflow_dispatch the moment a match finishes — so no
+  #   # blind high-frequency cron is needed here.
+  #   - cron: '0 12 * * *'
   workflow_dispatch:  # manual trigger from the Actions tab
     inputs:
       force_deploy:

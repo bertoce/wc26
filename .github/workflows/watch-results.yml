@@ -17,11 +17,15 @@ name: Watch for finished matches
 # extend the jq filter alongside the knockout-conditioning work (task #42).
 
 on:
-  schedule:
-    # Match windows, June–July 2026 (UTC). Afternoon/evening block + late
-    # US West games. Remove after the final (July 19).
-    - cron: '*/15 14-23 * 6,7 *'
-    - cron: '*/15 0-4 * 6,7 *'
+  # PAUSED 2026-10-19: scoped to months 6,7 so it has been dormant since the
+  # WC26 final (2026-07-19), but commented out alongside predict.yml to make
+  # the sunset explicit. To resume for a future tournament, uncomment and
+  # update the month range. Manual runs still work via the Actions tab.
+  # schedule:
+  #   # Match windows, June–July 2026 (UTC). Afternoon/evening block + late
+  #   # US West games. Remove after the final (July 19).
+  #   - cron: '*/15 14-23 * 6,7 *'
+  #   - cron: '*/15 0-4 * 6,7 *'
   workflow_dispatch: {}  # manual test trigger
 
 concurrency:
