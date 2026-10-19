@@ -1,5 +1,12 @@
 # WC26 — World Cup 2026 win-probability model
 
+> ⏸️ **PAUSED (2026-10-19).** WC26 ended 2026-07-19; the automated pipeline is
+> sunset. The daily GitHub Actions cron in `.github/workflows/predict.yml` and
+> the match-window poller in `watch-results.yml` are commented out, so no more
+> scheduled runs, API calls, Vercel deploys, or daily commits. The dashboard
+> stays live at its final numbers. **To resume:** uncomment the `schedule:`
+> blocks in both workflows (or trigger either manually from the Actions tab).
+
 A Dixon-Coles Poisson goals model fit on competitive international matches
 since 2018 (with 1-year half-life time decay), simulated 20,000 times through
 a properly seeded 48-team bracket with FIFA tiebreakers and penalty
